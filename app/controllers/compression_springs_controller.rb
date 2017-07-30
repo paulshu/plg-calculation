@@ -1,0 +1,2 @@
+class CompressionSpringsController < ApplicationController
+end

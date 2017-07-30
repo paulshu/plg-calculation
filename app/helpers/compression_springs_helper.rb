@@ -1,0 +1,2 @@
+module CompressionSpringsHelper
+end

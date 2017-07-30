@@ -1,0 +1,2 @@
+class CompressionSpring < ApplicationRecord
+end
