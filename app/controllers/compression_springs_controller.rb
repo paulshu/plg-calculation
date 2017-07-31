@@ -1,2 +1,43 @@
 class CompressionSpringsController < ApplicationController
+  before_action :authenticate_user!
+
+  def index
+    @compression_springs = CompressionSpring.all
+  end
+
+  def show
+    @compression_spring = CompressionSpring.find(params[:id])
+  end
+
+  def new
+    @compression_spring = CompressionSpring.new
+  end
+
+  def create
+    @compression_spring = CompressionSpring.new(compression_spring_params)
+
+    if @compression_spring.save
+      redirect_to compression_springs_path
+    else
+      render :new
+    end
+  end
+
+  def update
+    @compression_spring = CompressionSpring.find(params[:id])
+
+    if@compression_spring.update(compression_spring_params)
+      redirect_to compression_springs_path
+    else
+      render :edit
+    end
+  end
+
+  private
+
+  def compression_spring_params
+    params.require(:compression_spring).permit(:product_name,:product_number , :min_force,:max_force, :od_length , :cd_length, :inside_diameter,
+        :wire_diameter, :active_coil_num, :total_num, :free_lengh, :od_force, :cd_force)
+  end
+
 end

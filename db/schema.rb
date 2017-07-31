@@ -13,18 +13,23 @@
 ActiveRecord::Schema.define(version: 20170730132514) do
 
   create_table "compression_springs", force: :cascade do |t|
+    t.string   "product_name"
+    t.string   "product_number"
     t.float    "min_force"
     t.float    "max_force"
     t.float    "od_length"
     t.float    "cd_length"
     t.float    "inside_diameter"
     t.float    "wire_diameter"
-    t.float    "active_coil_number"
+    t.float    "active_coil_num"
+    t.float    "total_num"
     t.float    "free_lengh"
     t.float    "od_force"
     t.float    "cd_force"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.integer  "max_tensile_strength", default: 2100,  null: false
+    t.integer  "G",                    default: 78800, null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
   end
 
   create_table "users", force: :cascade do |t|

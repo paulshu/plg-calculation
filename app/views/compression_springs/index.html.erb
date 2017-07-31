@@ -1,0 +1,4 @@
+<h3>弹簧计算</h3>
+<% @compression_springs.each do |compression_spring| %>
+  <%= link_to(compression_spring.product_name, compression_spring_path(compression_spring)) %>
+<% end %>
