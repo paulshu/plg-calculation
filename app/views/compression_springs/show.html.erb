@@ -1,0 +1,33 @@
+<div class="row">
+  <div class="col-md-10">
+    <table class="table table-hover">
+      <tbody>
+        <tr>
+          <td><%= @compression_spring.product_name %></td>
+          <td><%= @compression_spring.product_number%></td>
+          <td><%= @compression_spring.min_force %></td>
+          <td><%= @compression_spring.max_force %></td>
+          <td><%= @compression_spring.od_length %></td>
+          <td><%= @compression_spring.cd_length %></td>
+          <td><%= @compression_spring.wire_diameter %></td>
+          <td><%= @compression_spring.active_coil_num %></td>
+          <td><%= @compression_spring.total_num %></td>
+          <td><%= @compression_spring.inside_diameter %></td>
+          <td><%= @compression_spring.free_lengh %></td>
+          <td><%= @compression_spring_calulation %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<form class="form-inline">
+  <div class="form-group">
+    <div class="input-group">
+      <div class="input-group-addon">最小负荷</div>
+      <input type="text" class="form-control"  placeholder="Amount">
+      <div class="input-group-addon">N</div>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Transfer cash</button>
+</form>

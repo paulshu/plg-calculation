@@ -1,53 +1,60 @@
 <h2>New compression springs</h2>
+<div class="mb15 mt15">
+
 
 <%= simple_form_for [@compression_spring] do |f| %>
-
-  <div class="group">
-    <%= f.label :product_name %>
-    <%= f.input_field :product_name %>
+  <div class="form-group col-md-3">
+    <%#= f.label :product_name %>
+    <%= f.input :product_name, autofocus: true %>
   </div>
 
-  <div class="group">
-    <%= f.label :product_number %>
-    <%= f.input_field :product_number %>
+  <div class="form-group col-md-3">
+    <%#= f.label :product_number %>
+    <%= f.input :product_number %>
   </div>
 
-  <div class="group">
-    <%= f.label :min_force %>
-    <%= f.input_field :min_force %>
+  <div class="form-group col-md-3">
+    <%#= f.label :min_force %>
+    <%= f.input :min_force%>
   </div>
 
-  <div class="group">
-    <%= f.label :max_force %>
-    <%= f.input_field :max_force %>
+  <div class="form-group col-md-3">
+    <%#= f.label :max_force %>
+    <%= f.input :max_force, label: '最大负荷' %>
   </div>
 
-  <div class="group">
-    <%= f.label :od_length %>
-    <%= f.input_field :od_length %>
+  <div class="form-group col-md-3">
+    <%#= f.label :od_length %>
+    <%= f.input :od_length, :input_html => { :style => "width:120px" } %>
   </div>
 
-  <div class="group">
+  <div class="form-group col-md-3">
+    <%#= f.label :cd_length %>
+    <%= f.input :cd_length  %>
+  </div>
+
+  <div class="form-group col-md-3">
+    <%#= f.label :active_coil_num %>
+    <%= f.input :active_coil_num %>
+  </div>
+
+  <div class="form-group col-md-3">
+    <%#= f.label :free_lengh %>
+    <%= f.input :free_lengh %>
+  </div>
+
+  <div class="form-group col-md-3">
     <%= f.label :inside_diameter %>
-    <%= f.select :inside_diameter, [21.55, 18.55, 19.05] %>
-    <%#= f.submit "更新", data: { disable_with: "Submiting..." } %>
+    <%= f.select :inside_diameter, [21.55, 18.55, 19.05]%>
   </div>
 
-  <div class="group">
+  <div class="form-group col-md-3">
     <%= f.label :wire_diameter %>
-    <%= f.input_field :wire_diameter %>
+    <%= f.select :wire_diameter, [3.5, 3.6, 3.7, 3.8, 3.9, 4.0] %>
   </div>
 
-  <div class="group">
-    <%= f.label :active_coil_num %>
-    <%= f.input_field :active_coil_num %>
+  <div class="form-actions text-center mb15 mt15">
+    <%= f.submit "Submit", disable_with: "Submiting...", class: "btn btn-primary"%>
   </div>
-
-  <div class="group">
-    <%= f.label :free_lengh %>
-    <%= f.input_field :free_lengh %>
-  </div>
-
-  <%= f.submit "Submit", data: { disable_with: "Submitting..." }, :class => "btn btn-lg btn-danger" %>
-
 <% end %>
+</div>

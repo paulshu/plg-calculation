@@ -13,6 +13,10 @@ class CompressionSpringsController < ApplicationController
     @compression_spring = CompressionSpring.new
   end
 
+  def edit
+    @compression_spring = CompressionSpring.find(params[:id])
+  end
+
   def create
     @compression_spring = CompressionSpring.new(compression_spring_params)
 
@@ -31,6 +35,11 @@ class CompressionSpringsController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def spring_math
+    @compression_spring = CompressionSpring.find(params[:id])
+    compression_spring.total_num = @compression_spring.active_coil_num + 2
   end
 
   private
