@@ -1,43 +1,50 @@
-<h3>弹簧计算</h3>
-<div class="row">
-  <div class="col-md-11">
-    <div class="pull-right" style="padding-bottom: 20px;">
-      <%= link_to("新建弹簧计算", new_compression_spring_path, class: "btn btn-primary btn-sm") %>
-    </div>
+<div class="panel panel-info col-md-12">
+  <div class="panel-heading">
+    <h3 class="panel-title">弹簧计算</h3>
+  </div>
+  <div class="panel-body">
+    <!-- <div class="row"> -->
+      <!-- <div class="col-md-12"> -->
+        <div class="pull-right" style="padding-bottom: 20px;">
+          <%= link_to("新建弹簧计算", new_compression_spring_path, class: "btn btn-primary btn-sm") %>
+        </div>
 
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th>Product Name</th>
-          <th>Product Number</th>
-          <th>F1</th>
-          <th>F2</th>
-          <th>L1</th>
-          <th>L2</th>
-          <th>Wire Diameter</th>
-          <th>有效圈数</th>
-          <th>总圈数</th>
-          <th>I.D.</th>
-          <th>Free Lengh</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @compression_springs.each do |compression_spring| %>
-          <tr>
-            <td><%= link_to(compression_spring.product_name, compression_spring_path(compression_spring)) %></td>
-            <td><%= link_to(compression_spring.product_number, compression_spring_path(compression_spring)) %></td>
-            <td><%= compression_spring.min_force %></td>
-            <td><%= compression_spring.max_force %></td>
-            <td><%= compression_spring.od_length %></td>
-            <td><%= compression_spring.cd_length %></td>
-            <td><%= compression_spring.wire_diameter %></td>
-            <td><%= compression_spring.active_coil_num %></td>
-            <td><%= compression_spring.total_num %></td>
-            <td><%= compression_spring.inside_diameter %></td>
-            <td><%= compression_spring.free_lengh %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th>Product Number</th>
+              <th>F1</th>
+              <th>F2</th>
+              <th>L1</th>
+              <th>L2</th>
+              <th>Wire Diameter</th>
+              <th>有效圈数</th>
+              <th>总圈数</th>
+              <th>I.D.</th>
+              <th>Free Lengh</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @compression_springs.each do |compression_spring| %>
+              <tr>
+                <td><%= link_to(compression_spring.product_name, compression_spring_path(compression_spring)) %></td>
+                <td><%= link_to(compression_spring.product_number, compression_spring_path(compression_spring)) %></td>
+                <td><%= compression_spring.min_force %></td>
+                <td><%= compression_spring.max_force %></td>
+                <td><%= compression_spring.od_length %></td>
+                <td><%= compression_spring.cd_length %></td>
+                <td><%= compression_spring.wire_diameter %></td>
+                <td><%= compression_spring.active_coil_num %></td>
+                <td><%= compression_spring.total_num %></td>
+                <td><%= compression_spring.inside_diameter %></td>
+                <td><%= compression_spring.free_lengh %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <%= paginate @compression_springs %>
+      <!-- </div>
+    </div> -->
   </div>
 </div>

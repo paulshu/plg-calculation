@@ -2,7 +2,7 @@ class CompressionSpringsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @compression_springs = CompressionSpring.all
+    @compression_springs = CompressionSpring.order("id DESC").page(params[:page]) # kaminari 分页page(params[:page])
   end
 
   def show
