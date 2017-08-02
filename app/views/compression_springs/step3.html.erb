@@ -1,0 +1,23 @@
+<h2><%= @compression_spring.product_name %></h2>
+<h3>Step 3</h3>
+
+开门弹簧长度: <%=  @compression_spring.od_length %>
+关门弹簧长度: <%=  @compression_spring.cd_length %>
+<%= @compression_spring.od_force %>
+<%= @compression_spring.cd_force %>
+<%= simple_form_for [@compression_spring], :url => update_step3_compression_spring_path(@compression_spring) do |f| %>
+  <div class="form-group ">
+    <%= f.label :active_coil_num %>
+    <%= f.input_field :active_coil_num %>
+  </div>
+
+  <div class="form-group col-md-3">
+    <%= f.label :wire_diameter %>
+    <%= f.select :wire_diameter, [3.5, 3.6, 3.7, 3.8, 3.9, 4.0] %>
+  </div>
+<br><br>
+  <div class="form-actions text-center mb15 mt15">
+    <%= link_to "Previous", step2_compression_spring_path(@compression_spring), :class => "btn btn-default" %>
+    <%= f.submit "Submit", disable_with: "Submiting...", class: "btn btn-primary"%>
+  </div>
+<% end %>
