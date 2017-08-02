@@ -1,12 +1,14 @@
 <h2><%= @compression_spring.product_name %></h2>
 <h3>Step 3</h3>
+<div class="ml15">
+  开门弹簧长度: <%=  @compression_spring.od_length %> |
+  关门弹簧长度: <%=  @compression_spring.cd_length %><br>
+  开门最小负荷: <%= @compression_spring.min_force %> |
+  关门最大负荷: <%= @compression_spring.max_force %>
+</div>
 
-开门弹簧长度: <%=  @compression_spring.od_length %>
-关门弹簧长度: <%=  @compression_spring.cd_length %>
-<%= @compression_spring.od_force %>
-<%= @compression_spring.cd_force %>
 <%= simple_form_for [@compression_spring], :url => update_step3_compression_spring_path(@compression_spring) do |f| %>
-  <div class="form-group ">
+  <div class="form-group col-md-3">
     <%= f.label :active_coil_num %>
     <%= f.input_field :active_coil_num %>
   </div>
@@ -21,3 +23,6 @@
     <%= f.submit "Submit", disable_with: "Submiting...", class: "btn btn-primary"%>
   </div>
 <% end %>
+开门弹簧力: <%= @compression_spring.od_force %>
+关门弹簧力: <%= @compression_spring.cd_force %>
+弹簧总圈数: <%= @compression_spring.total_num %>

@@ -28,19 +28,14 @@ class CompressionSpringsController < ApplicationController
     end
   end
 
-  # def update
-  #   @compression_spring = CompressionSpring.find(params[:id])
-  #
-  #   if@compression_spring.update(compression_spring_params)
-  #     redirect_to compression_springs_path
-  #   else
-  #     render :edit
-  #   end
-  # end
-
-  def spring_math
+  def update
     @compression_spring = CompressionSpring.find(params[:id])
-    compression_spring.total_num = @compression_spring.active_coil_num + 2
+
+    if@compression_spring.update(compression_spring_params)
+      redirect_to compression_springs_path
+    else
+      render :edit
+    end
   end
 
   def step1
@@ -79,11 +74,19 @@ class CompressionSpringsController < ApplicationController
     @compression_spring = CompressionSpring.find(params[:id])
 
     if @compression_spring.update(compression_spring_params)
-      flash[:notice] = "弹簧计算成功"
-      redirect_to compression_spring_path(@compression_spring)
+      flash[:notice] = "弹簧更新成功"
+      @compression_spring.total_num?
+      redirect_to step3_compression_spring_path(@compression_spring)
     else
       render "step3"
     end
+  end
+
+  def destroy
+    @compression_spring = CompressionSpring.find(params[:id])
+    @compression_spring.destroy
+    flash[:warning] = "成功将 #{@compression_spring.product_name} 压簧参数从系统中删除!"
+    redirect_to :back
   end
 
   private

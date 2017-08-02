@@ -23,6 +23,7 @@
               <th>总圈数</th>
               <th>I.D.</th>
               <th>Free Lengh</th>
+              <th>Option</th>
             </tr>
           </thead>
           <tbody>
@@ -39,6 +40,11 @@
                 <td><%= compression_spring.total_num %></td>
                 <td><%= compression_spring.inside_diameter %></td>
                 <td><%= compression_spring.free_lengh %></td>
+                <td>
+                  <%= link_to("Edit", step1_compression_spring_path(compression_spring), class: "btn btn-sm btn-primary")%>
+                  <%= link_to("Delete", compression_spring_path(compression_spring), class: "btn btn-sm btn-danger",
+                              method: :delete, data: { confirm: "Are you sure?" } ) %>
+                </td>
               </tr>
             <% end %>
           </tbody>
