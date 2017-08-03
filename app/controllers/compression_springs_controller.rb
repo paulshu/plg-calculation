@@ -20,7 +20,7 @@ class CompressionSpringsController < ApplicationController
 
   def create
     @compression_spring = CompressionSpring.new(compression_spring_params)
-
+    @compression_spring.current_step = 1
     if @compression_spring.save
       redirect_to step2_compression_spring_path(@compression_spring)
     else
@@ -44,6 +44,7 @@ class CompressionSpringsController < ApplicationController
 
   def step1_update
     @compression_spring = CompressionSpring.find(params[:id])
+    @compression_spring.current_step = 1
 
     if @compression_spring.update(compression_spring_params)
       redirect_to step2_compression_spring_path(@compression_spring)
@@ -58,8 +59,11 @@ class CompressionSpringsController < ApplicationController
 
   def step2_update
     @compression_spring = CompressionSpring.find(params[:id])
+    @compression_spring.current_step = 2
 
     if @compression_spring.update(compression_spring_params)
+      @compression_spring.od_force?
+      @compression_spring.cd_force?
       redirect_to step3_compression_spring_path(@compression_spring)
     else
       render :step2
@@ -72,10 +76,13 @@ class CompressionSpringsController < ApplicationController
 
   def step3_update
     @compression_spring = CompressionSpring.find(params[:id])
-
+    @compression_spring.current_step = 3
+    
     if @compression_spring.update(compression_spring_params)
-      flash[:notice] = "弹簧更新成功"
       @compression_spring.total_num?
+      @compression_spring.od_force?
+      @compression_spring.cd_force?
+      flash[:notice] = "弹簧更新成功"
       redirect_to step3_compression_spring_path(@compression_spring)
     else
       render "step3"

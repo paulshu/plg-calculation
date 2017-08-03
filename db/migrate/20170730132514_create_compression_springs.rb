@@ -15,7 +15,7 @@ class CreateCompressionSprings < ActiveRecord::Migration[5.0]
       t.float :od_force
       t.float :cd_force
       t.integer :max_tensile_strength, default: 2100, null: false
-      t.integer :G, default: 78800, null: false
+      t.integer :s_elastic_modulus, default: 78800, null: false
       t.timestamps
     end
   end

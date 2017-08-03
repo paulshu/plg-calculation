@@ -1,28 +1,75 @@
 <h2><%= @compression_spring.product_name %></h2>
 <h3>Step 3</h3>
 <div class="ml15">
-  开门弹簧长度: <%=  @compression_spring.od_length %> |
-  关门弹簧长度: <%=  @compression_spring.cd_length %><br>
-  开门最小负荷: <%= @compression_spring.min_force %> |
-  关门最大负荷: <%= @compression_spring.max_force %>
+  <p>
+    <label>开门弹簧长度： </label><%=  @compression_spring.od_length %> |
+    <label>关门弹簧长度： </label><%=  @compression_spring.cd_length %>
+  </p>
+  <p>
+    <label>开门最小负荷： </label><%= @compression_spring.min_force %> |
+    <label>关门最大负荷： </label><%= @compression_spring.max_force %>
+  </p>
 </div>
 
 <%= simple_form_for [@compression_spring], :url => update_step3_compression_spring_path(@compression_spring) do |f| %>
-  <div class="form-group col-md-3">
-    <%= f.label :active_coil_num %>
-    <%= f.input_field :active_coil_num %>
+  <div class="form-group col-md-4">
+    <%= f.input :active_coil_num, autofocus: true %>
+    <h5>理论有效圈数n： <%= render_theoretical_active_coil_num(@compression_spring).round(3)%> </h5>
+    <h5>不压并建议有效圈数： <%= render_no_solid_position_active_coil_num(@compression_spring).round(3)%> </h5>
   </div>
 
-  <div class="form-group col-md-3">
-    <%= f.label :wire_diameter %>
-    <%= f.select :wire_diameter, [3.5, 3.6, 3.7, 3.8, 3.9, 4.0] %>
+  <div class="form-group col-md-4">
+    <%#= f.label :free_lengh %>
+    <%= f.input :free_lengh %>
+    <h5>理论自由长度Ho： <%= render_theoretical_free_lengh(@compression_spring).round(3)%> </h5>
   </div>
-<br><br>
-  <div class="form-actions text-center mb15 mt15">
-    <%= link_to "Previous", step2_compression_spring_path(@compression_spring), :class => "btn btn-default" %>
-    <%= f.submit "Submit", disable_with: "Submiting...", class: "btn btn-primary"%>
+
+
+  <div class="form-group col-md-4">
+    <%= f.input :wire_diameter, collection: [3.5, 3.6, 3.7, 3.8, 3.9, 4.0], :input_html => { :style => "width:200px" }%>
+    <%= f.submit "更新", disable_with: "Submiting..." , class: "btn btn-sm btn-info"  %>
+
+    <h5>理论线径d： <%= render_theoretical_wire_diameter(@compression_spring).round(3)%> </h5>
+  </div>
+
+  <div class="form-actions text-center mb15 mt15 mr100">
+    <%= link_to "Previous", step2_compression_spring_path(@compression_spring), :class => "btn btn-default pull-middle" %>
+    <%= link_to("确认提交", compression_springs_path, class: "btn btn-danger pull-middle", data: { confirm: "请您先更新再保存，再提交,否则不会保存最新数据!" } )%>
   </div>
 <% end %>
-开门弹簧力: <%= @compression_spring.od_force %>
-关门弹簧力: <%= @compression_spring.cd_force %>
-弹簧总圈数: <%= @compression_spring.total_num %>
+
+
+<div class="col-md-6 mt20">
+    <p>
+      <label>开门弹簧长度L1：</label> <%=  @compression_spring.od_length %> |
+      <label>关门弹簧长度L2：</label> <%=  @compression_spring.cd_length %>
+    </p>
+    <p>
+      <label> 开门弹簧力F1： </label> <%= @compression_spring.od_force.round(3) %> |
+      <label> 关门弹簧力F2： </label> <%= @compression_spring.cd_force.round(3) %>
+    </p>
+    <p>
+      弹簧有效圈数： <%= @compression_spring.active_coil_num %> |
+      弹簧总圈数： <%= @compression_spring.total_num %>
+    </p>
+    <p>
+      弹簧理论刚度： <%= render_spring_theoretical_rate(@compression_spring).round(3)%> |
+      弹簧实际刚度： <%= render_spring_rate(@compression_spring).round(3)%>
+    </p>
+</div>
+<div class="col-md-6 mt20">
+    <p>
+      <label> 弹簧压并校核：</label><strong><%= render_spring_solid_position(@compression_spring) %></strong>
+    </p>
+    <p>
+      <label> 弹簧长度校核：</label> <%=  @compression_spring.od_length %> 
+    </p>
+    <p>
+      弹簧有效圈数： <%= @compression_spring.active_coil_num %> |
+      弹簧总圈数： <%= @compression_spring.total_num %>
+    </p>
+    <p>
+      弹簧理论刚度： <%= render_spring_theoretical_rate(@compression_spring).round(3)%> |
+      弹簧实际刚度： <%= render_spring_rate(@compression_spring).round(3)%>
+    </p>
+</div>
