@@ -1,7 +1,11 @@
-<h2><%= @compression_spring.product_name %></h2>
-<h3>Step 1</h3>
-<%= simple_form_for [@compression_spring], :url => update_step1_compression_spring_path(@compression_spring) do |f| %>
+<div class="text-center">
+  <h2><%= @compression_spring.product_name %></h2>
+  <h4>Step 1</h4>
+</div>
+<div class="mt50">
+  <%= simple_form_for [@compression_spring], :url => update_step1_compression_spring_path(@compression_spring) do |f| %>
 
-  <%= render :partial => "step1_form", :locals => { :f => f } %>
+    <%= render :partial => "step1_form", :locals => { :f => f } %>
 
-<% end %>
+  <% end %>
+</div>

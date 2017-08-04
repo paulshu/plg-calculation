@@ -49,8 +49,8 @@ class CompressionSpring < ApplicationRecord
   # 以下为通用的弹簧参数
   Initial_wire_diameter = 3.8 # 初选线径
   PI = 3.1415926535
-  def distortion # 变形量
-    distortion = od_length - cd_length
+  def deformation # 变形量
+    deformation = od_length - cd_length
   end
 
   def max_test_shear_stress # 最大试验切应用力
@@ -71,7 +71,7 @@ class CompressionSpring < ApplicationRecord
 
   # 以下为helper调用的一些变量
   def spring_theoretical_rate # 理论刚度
-    spring_theoretical_rate = (max_force - min_force) / distortion
+    spring_theoretical_rate = (max_force - min_force) / deformation
   end
 
   def theoretical_wire_diameter # 理论线径
@@ -104,14 +104,92 @@ class CompressionSpring < ApplicationRecord
     end
   end
 
-  def spring_solid_position # 弹簧压并
-    if self.free_lengh.present?
-      spring_solid_position = (wire_diameter + 0.4) * total_num + 13
-      if spring_solid_position <= cd_length && spring_solid_position <= free_lengh
+  def safe_spring_solid_position #安全压并高度
+    if self.active_coil_num.present? && active_coil_num > 0
+      safe_spring_solid_position = (wire_diameter + 0.4) * total_num + 13
+    else
+      0
+    end
+  end
+
+  def spring_solid_position_check # 弹簧压并校核
+    if self.free_lengh.present? && self.active_coil_num.present? && active_coil_num > 0
+      if safe_spring_solid_position <= cd_length && safe_spring_solid_position <= free_lengh
         "弹簧不会压并"
       else
         "弹簧压并！"
       end
+    end
+  end
+
+  def max_working_shear_stress # 最大工作切应力
+    if self.free_lengh.present?
+      c = mean_diameter / wire_diameter
+      k = (4*c-1)/(4*c-4) + (0.615/c)
+      max_working_shearstress = 8 * mean_diameter * max_force / (PI * (wire_diameter ** (3))) * k
+    else
+      0
+    end
+  end
+
+  def max_test_load_deformation # 最大试验负荷弹簧变形量
+    if self.free_lengh.present? && self.active_coil_num.present? && active_coil_num > 0
+      hb = total_num * wire_diameter  # 不植绒压并高度
+      fb = spring_rate * (free_lengh - hb) # 弹簧压并负荷
+      fs = PI * (wire_diameter ** (3)) / (8 * mean_diameter) * max_test_shear_stress  # 弹簧最大试验负荷
+      ffs = [fb,fs].min
+      max_test_load_deformation = 8 * (mean_diameter ** (3)) * active_coil_num / (s_elastic_modulus * (wire_diameter ** (4))) * ffs
+    else
+      0
+    end
+  end
+
+  def spring_length_check #弹簧长度校核
+    if self.free_lengh.present? && self.active_coil_num.present? && active_coil_num > 0
+      l = free_lengh - max_test_load_deformation
+      if l > cd_length
+        "弹簧最大试验负荷变形量小于弹簧最大工作变形量（自由长度太长）"
+      elsif free_lengh < od_length
+        "弹簧自由长度小于开门弹簧长度"
+      else
+        "长度可以实现"
+      end
+    end
+  end
+
+  def stress_coefficient # 最大切应力与抗拉强度的比值
+    stress_coefficient = max_working_shear_stress / max_tensile_strength
+  end
+
+  def spring_attenuation_check
+    if stress_coefficient > 0.75
+      "衰减高，超高衰减标准，需与供应商确认"
+    elsif stress_coefficient > 0.7
+      "衰减较大，需测试验证后使用"
+    else
+      "基本无衰减"
+    end
+  end
+
+  def spring_pitch # 弹簧节距
+    if self.free_lengh.present? && self.active_coil_num.present? && active_coil_num > 0
+      spring_pitch = (free_lengh - 1.5 * wire_diameter) / active_coil_num
+    else
+      0
+    end
+  end
+
+  def spring_helix_angle # 弹簧螺旋升角
+    Math.atan(spring_pitch / (PI * mean_diameter)) * 180 / PI
+  end
+
+  def spring_helix_angle_check # 弹簧螺旋升角校核
+    if spring_helix_angle < 5  
+      "螺旋升角太小，必须大于等于 5"
+    elsif spring_helix_angle > 9
+      "螺旋升角过大，必须小于等于 9"
+    else
+      "弹簧螺旋升角满足要求"
     end
   end
 
