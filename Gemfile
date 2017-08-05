@@ -32,11 +32,13 @@ gem 'simple_form', '~> 3.5'
 gem 'font-awesome-rails', '~> 4.7', '>= 4.7.0.2'
 gem 'devise', '~> 4.3'
 gem 'kaminari'   #分页gem
-
+gem 'mysql2'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
 group :development, :test do
+  gem 'capistrano-rails'
+  gem 'capistrano-passenger'
   gem 'pry'
   gem 'awesome_rails_console'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
