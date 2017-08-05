@@ -105,7 +105,7 @@ class CompressionSpring < ApplicationRecord
   end
 
   def safe_spring_solid_position #安全压并高度
-    if self.active_coil_num.present? && active_coil_num > 0
+    if self.active_coil_num.present? && active_coil_num > 0 &&  self.total_num.present?
       safe_spring_solid_position = (wire_diameter + 0.4) * total_num + 13
     else
       0
@@ -184,7 +184,7 @@ class CompressionSpring < ApplicationRecord
   end
 
   def spring_helix_angle_check # 弹簧螺旋升角校核
-    if spring_helix_angle < 5  
+    if spring_helix_angle < 5
       "螺旋升角太小，必须大于等于 5"
     elsif spring_helix_angle > 9
       "螺旋升角过大，必须小于等于 9"
