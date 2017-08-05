@@ -1,0 +1,31 @@
+<div class="text-center">
+  <h2><%= @compression_spring.product_name %></h2>
+  <h4>Step 2</h4>
+</div>
+<div class="mt50">
+  <%= simple_form_for [@compression_spring], :url => update_step2_compression_spring_path(@compression_spring) do |f| %>
+
+    <div class="form-group col-md-3">
+      <%= f.input :max_tensile_strength %>
+    </div>
+
+    <div class="form-group col-md-3">
+      <%= f.input :s_elastic_modulus %>
+    </div>
+
+    <div class="form-group col-md-3">
+      <%= f.input :wire_diameter, collection: [3.5, 3.6, 3.7, 3.8, 3.9, 4.0], selected: 3.6 %>
+    </div>
+
+    <div class="form-group col-md-3">
+      <%= f.input :inside_diameter, collection: [21.55,16.05,18.55,19.05], prompt:"请选择一组", selected: 21.55 %>
+    </div>
+
+  <br><br>
+    <div class="form-actions text-center mt100">
+      <%= link_to "Previous", step1_compression_spring_path, :class => "btn btn-default" %>
+      <%= f.submit "Save and Next", disable_with: "Submiting...", class: "btn btn-primary"%>
+    </div>
+
+  <% end %>
+</div>
