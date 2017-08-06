@@ -40,6 +40,7 @@ gem 'mysql2'
 group :development, :test do
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
+  gem 'capistrano-sidekiq'
   gem 'pry'
   gem 'awesome_rails_console'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
