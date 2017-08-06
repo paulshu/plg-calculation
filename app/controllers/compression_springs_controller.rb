@@ -14,14 +14,20 @@ class CompressionSpringsController < ApplicationController
       format.csv {
         #@compression_springs = @compression_spring.reorder("id ASC") 因为这里只有一个产品
         csv_string = CSV.generate do |csv|
-          csv << ["开门弹簧长度L1","关门弹簧长度L2","开门最小负荷","关门最大负荷","开门弹簧力F1","关门弹簧力F2","弹簧有效圈数",
-            "弹簧总圈数","弹簧线径","弹簧内径","弹簧自由长度","弹簧螺旋升角"]
+          csv << ["输入参数"]
+          csv << ["开门弹簧长度L1","关门弹簧长度L2","开门最小负荷","关门最大负荷"]
           cs = @compression_spring
-            csv << [cs.od_length, cs.cd_length, cs.min_force, cs.max_force, cs.od_force.round(3), cs.cd_force.round(3), cs.active_coil_num,
-              cs.total_num, cs.wire_diameter, cs.inside_diameter, cs.free_lengh, cs.spring_helix_angle.round(3)]
-
+            csv << [cs.od_length, cs.cd_length, cs.min_force, cs.max_force]
+          csv << ["输出参数"]
+          csv << ["开门弹簧力F1","关门弹簧力F2","弹簧有效圈数",
+            "弹簧总圈数","弹簧线径","弹簧内径","弹簧自由长度","弹簧螺旋升角"]
+          csv << [ cs.od_force.round(3), cs.cd_force.round(3), cs.active_coil_num,
+            cs.total_num, cs.wire_diameter, cs.inside_diameter, cs.free_lengh, cs.spring_helix_angle.round(3)]
         end
         send_data csv_string, :filename => "#{@compression_spring.product_name}-压缩弹簧设计参数-#{@compression_spring.product_number}.csv"
+      }
+      format.xlsx {
+        response.headers['Content-Disposition'] = 'attachment; filename="压缩弹簧设计参数.xlsx"'
       }
     end
   end
