@@ -60,7 +60,7 @@
           <td><%= @compression_spring.wire_diameter %></td>
           <td>mm</td>
           <td align="right">弹簧内径：</td>
-          <td><%= @compression_spring.inside_diameter %></td>
+          <td><%= @compression_spring.inside_diameter - 0.05 %></td>
           <td>mm</td>
         </tr>
         <tr>
@@ -74,4 +74,9 @@
       </table>
     </div>
   </div>
+
 </div>
+<p class="mt10 pl100">
+  <%= link_to "导出 CSV", compression_spring_path(:format => :csv), :class => "btn btn-default" %>
+  <%= link_to "导出 Excel", compression_spring_path(:format => :csv), :class => "btn btn-default" %>
+</p>
