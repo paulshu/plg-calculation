@@ -21,6 +21,45 @@ class CompressionSpring < ApplicationRecord
   # :if 这个参数可以设定调用那一个方法来决定要不要启用这个验证，回传 true 就是要，回传 false 就是不要
   # 透过 attr_accessor :current_step 我们增加一个虚拟属性(也就是数据库中并没有这个字段)来代表目前做到哪一步, 并定义相关函数，且在controller中更新步骤。
 
+  def chart   # chart 图表
+    bg_colors = ['rgba(255, 99, 132, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(255, 206, 86, 0.2)',
+                 'rgba(75, 192, 192, 0.2)',
+                 'rgba(153, 102, 255, 0.2)',
+                 'rgba(255, 159, 64, 0.2)'
+                ]
+    bd_colors = [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+                ]
+    @data1 = {
+        labels: ["开门位置", "关门位置"],
+        datasets: [{
+            label: '理论弹簧力值曲线',
+            fill: false, # 取消这行将填充面积
+            data: [min_force, max_force ],
+            backgroundColor: bg_colors,
+            borderColor: bd_colors,
+            borderWidth: 1,
+
+          },{
+            label: '实际弹簧力值曲线',
+            fill: false,
+            data: od_force,
+            backgroundColor: bg_colors,
+            borderColor: bd_colors,
+            borderWidth: 1,
+            borderDash: [5, 5],
+          }]
+    }
+  end
+
+
   def total_num?
     if self.active_coil_num.present?
       self.total_num = self.active_coil_num + 2

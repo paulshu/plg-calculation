@@ -30,6 +30,42 @@ class CompressionSpringsController < ApplicationController
         response.headers['Content-Disposition'] = 'attachment; filename="压缩弹簧设计参数.xlsx"'
       }
     end
+
+    bg_colors = ['rgba(255, 99, 132, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(255, 206, 86, 0.2)',
+                 'rgba(75, 192, 192, 0.2)',
+                 'rgba(153, 102, 255, 0.2)',
+                 'rgba(255, 159, 64, 0.2)'
+                ]
+    bd_colors = [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+                ]
+    @data1 = {
+        labels: ["开门位置", "关门位置"],
+        datasets: [{
+            label: '理论弹簧力值曲线',
+            fill: false, # 取消这行将填充面积
+            data: [@compression_spring.min_force, @compression_spring.max_force ],
+            backgroundColor: bg_colors,
+            borderColor: bd_colors,
+            borderWidth: 1,
+
+          },{
+            label: '实际弹簧力值曲线',
+            fill: false,
+            data: [@compression_spring.od_force, @compression_spring.cd_force ],
+            backgroundColor: bg_colors,
+            borderColor: bd_colors,
+            borderWidth: 1,
+            borderDash: [5, 5],
+          }]
+    }
   end
 
   def new
