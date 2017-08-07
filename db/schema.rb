@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20170730132514) do
     t.float    "wire_diameter"
     t.float    "active_coil_num"
     t.float    "total_num"
-    t.float    "free_lengh"
+    t.float    "free_length"
     t.float    "od_force"
     t.float    "cd_force"
     t.integer  "max_tensile_strength", default: 2100,  null: false
