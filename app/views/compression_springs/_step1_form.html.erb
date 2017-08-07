@@ -1,34 +1,35 @@
-<div class="form-group col-md-6">
-  <%#= f.label :product_name %>
-  <%= f.input :product_name, autofocus: true %>
-</div>
+<div class="container col-md-10 col-md-offset-1 mt20">
+  <div class="form-group col-md-6">
+    <%#= f.label :product_name %>
+    <%= f.input :product_name, autofocus: true %>
+  </div>
 
-<div class="form-group col-md-6">
-  <%#= f.label :product_number %>
-  <%= f.input :product_number %>
-</div>
+  <div class="form-group col-md-6">
+    <%#= f.label :product_number %>
+    <%= f.input :product_number %>
+  </div>
 
-<div class="form-group col-md-3">
-  <%#= f.label :min_force %>
-  <%= f.input :min_force%>
-</div>
+  <div class="form-group col-md-3">
+    <%#= f.label :min_force %>
+    <%= f.input :min_force%>
+  </div>
 
-<div class="form-group col-md-3">
-  <%#= f.label :max_force %>
-  <%= f.input :max_force, label: '最大负荷' %>
-</div>
+  <div class="form-group col-md-3">
+    <%#= f.label :max_force %>
+    <%= f.input :max_force, label: '最大负荷' %>
+  </div>
 
-<div class="form-group col-md-3">
-  <%#= f.label :od_length %>
-  <%= f.input :od_length %>
-  <%#= f.input :od_length, :input_html => { :style => "width:120px" } %>
-</div>
+  <div class="form-group col-md-3">
+    <%#= f.label :od_length %>
+    <%= f.input :od_length %>
+    <%#= f.input :od_length, :input_html => { :style => "width:120px" } %>
+  </div>
 
-<div class="form-group col-md-3">
-  <%#= f.label :cd_length %>
-  <%= f.input :cd_length  %>
-</div>
-
-<div class="form-actions text-center mt50">
-  <%= f.submit "Save and Next", disable_with: "Submiting...", class: "btn btn-primary"%>
+  <div class="form-group col-md-3">
+    <%#= f.label :cd_length %>
+    <%= f.input :cd_length  %>
+  </div>
+  <div class="form-actions text-center mt50">
+    <%= f.submit "Save and Next", disable_with: "Submiting...", class: "btn btn-primary"%>
+  </div>
 </div>
