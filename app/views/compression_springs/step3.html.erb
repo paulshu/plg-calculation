@@ -17,7 +17,9 @@
       <h5>理论自由长度Ho： <%= render_theoretical_free_length(@compression_spring).round(3)%> </h5>
       <h5>弹簧理论刚度F'： <%= render_spring_theoretical_rate(@compression_spring).round(3)%> </h5>
     </div>
-
+    <!-- <div class="form-group col-md-2">
+      <%= f.input :flocking, collection: ["植绒", "不植绒"], selected: "植绒" %>
+    </div> -->
 
     <div class="form-group col-md-3">
       <%= f.input :wire_diameter, collection: [3.5, 3.6, 3.7, 3.8, 3.9, 4.0] %>
@@ -25,7 +27,10 @@
       <h5>弹簧实际刚度： <%= render_spring_rate(@compression_spring).round(3)%></h5>
       <%= f.submit "更新", disable_with: "Submiting..." , class: "btn btn-sm btn-info pull-right"  %>
     </div>
-
+    <div class="btn-group mt30" data-toggle="buttons">
+      <%= f.collection_radio_buttons :flocking, [[0.4,"植绒"],[0,"不植绒"]], :first, :last,
+                  checked: (@compression_spring.flocking.nil?? 0.4 : @compression_spring.flocking) %>
+    </div>
     <div class="col-md-10 mt20">
       <h4>弹簧校核</h4>
       <div class="table-responsive">
@@ -129,7 +134,7 @@
 
     <div class="form-actions col-md-10 text-right mb15 mt15 mr100">
       <%= link_to "Previous", step2_compression_spring_path(@compression_spring), :class => "btn btn-default pull-middle" %>
-      <%= link_to("确认提交", compression_springs_path, class: "btn btn-danger pull-middle", data: { confirm: "请您先更新再保存，再提交,否则不会保存最新数据!" } )%>
+      <%= link_to("确认提交", compression_springs_path, class: "btn btn-danger pull-middle", data: { confirm: "请您先更新再提交,否则不会保存最新数据!" } )%>
     </div>
   <% end %>
 </div>

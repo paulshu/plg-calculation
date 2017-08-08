@@ -17,7 +17,8 @@ class CompressionSpring < ApplicationRecord
   validates :cd_length, numericality:  { greater_than: 0, message: "弹簧关门长度必须大于0" }, :if => :should_validate_basic_data?
   validates :active_coil_num, numericality:  { greater_than: 0, message: "弹簧有效圈数必须大于0" }, :if => :should_validate_all_data?
   validates :free_length, numericality:  { greater_than: 0, message: "弹簧自由长度必须大于0" }, :if => :should_validate_all_data?
-
+  # validates :flocking, inclusion: { :in => ["植绒", "不植绒"]}, :if => :should_validate_all_data?
+  # validates_inclusion_of :flocking, :in => ["植绒", "不植绒"], :if => :should_validate_all_data?
   # :if 这个参数可以设定调用那一个方法来决定要不要启用这个验证，回传 true 就是要，回传 false 就是不要
   # 透过 attr_accessor :current_step 我们增加一个虚拟属性(也就是数据库中并没有这个字段)来代表目前做到哪一步, 并定义相关函数，且在controller中更新步骤。
 
@@ -87,7 +88,7 @@ class CompressionSpring < ApplicationRecord
   end
 
   def no_solid_position_active_coil_num # 不压并建议有效圈数
-    no_solid_position_active_coil_num = (cd_length - 13) / (wire_diameter + 0.4) - 2
+    no_solid_position_active_coil_num = (cd_length - 13) / (wire_diameter + flocking.to_f) - 2
   end
 
   def spring_rate # 实际刚度
@@ -108,7 +109,7 @@ class CompressionSpring < ApplicationRecord
 
   def safe_spring_solid_position #安全压并高度
     if self.active_coil_num.present? && active_coil_num > 0 &&  self.total_num.present?
-      safe_spring_solid_position = (wire_diameter + 0.4) * total_num + 13
+      safe_spring_solid_position = (wire_diameter + flocking.to_f) * total_num + 13
     else
       0
     end
@@ -194,6 +195,14 @@ class CompressionSpring < ApplicationRecord
       "弹簧螺旋升角满足要求"
     end
   end
+
+  # def is_flocking # 植绒判断
+  #   if :flocking == "植绒"
+  #     0.4
+  #   else
+  #     0
+  #   end
+  # end
 
   protected
 

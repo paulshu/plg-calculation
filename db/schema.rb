@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20170730132514) do
     t.float    "cd_force"
     t.integer  "max_tensile_strength", default: 2100,  null: false
     t.integer  "s_elastic_modulus",    default: 78800, null: false
+    t.string   "flocking"
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
     t.index ["product_number"], name: "index_compression_springs_on_product_number"

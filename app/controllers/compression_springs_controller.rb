@@ -159,7 +159,7 @@ class CompressionSpringsController < ApplicationController
 
   def compression_spring_params
     params.require(:compression_spring).permit(:product_name,:product_number , :min_force,:max_force, :od_length , :cd_length, :inside_diameter,
-        :wire_diameter, :active_coil_num, :total_num, :free_length, :od_force, :cd_force)
+        :wire_diameter, :active_coil_num, :total_num, :free_length, :od_force, :cd_force, :flocking)
   end
 
 end
