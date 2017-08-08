@@ -40,3 +40,15 @@
     line-height: 23px;
   }
 }
+
+/* compression spring 示意图 */
+
+.cspring {
+  background-image:image-url("spring.png") ;
+  max-width: 600px;
+  max-height: auto;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-bottom: 250px;
+  background-position: center ;
+}

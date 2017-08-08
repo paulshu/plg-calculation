@@ -16,48 +16,12 @@ class CompressionSpring < ApplicationRecord
                         :if => :should_validate_basic_data?
   validates :cd_length, numericality:  { greater_than: 0, message: "弹簧关门长度必须大于0" }, :if => :should_validate_basic_data?
   validates :active_coil_num, numericality:  { greater_than: 0, message: "弹簧有效圈数必须大于0" }, :if => :should_validate_all_data?
-  validates :free_lengh, numericality:  { greater_than: 0, message: "弹簧自由长度必须大于0" }, :if => :should_validate_all_data?
-
+  validates :free_length, numericality:  { greater_than: 0, message: "弹簧自由长度必须大于0" }, :if => :should_validate_all_data?
+  # validates :flocking, inclusion: { :in => ["植绒", "不植绒"]}, :if => :should_validate_all_data?
+  # validates_inclusion_of :flocking, :in => ["植绒", "不植绒"], :if => :should_validate_all_data?
   # :if 这个参数可以设定调用那一个方法来决定要不要启用这个验证，回传 true 就是要，回传 false 就是不要
   # 透过 attr_accessor :current_step 我们增加一个虚拟属性(也就是数据库中并没有这个字段)来代表目前做到哪一步, 并定义相关函数，且在controller中更新步骤。
 
-  def chart   # chart 图表
-    bg_colors = ['rgba(255, 99, 132, 0.2)',
-                 'rgba(54, 162, 235, 0.2)',
-                 'rgba(255, 206, 86, 0.2)',
-                 'rgba(75, 192, 192, 0.2)',
-                 'rgba(153, 102, 255, 0.2)',
-                 'rgba(255, 159, 64, 0.2)'
-                ]
-    bd_colors = [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-                ]
-    @data1 = {
-        labels: ["开门位置", "关门位置"],
-        datasets: [{
-            label: '理论弹簧力值曲线',
-            fill: false, # 取消这行将填充面积
-            data: [min_force, max_force ],
-            backgroundColor: bg_colors,
-            borderColor: bd_colors,
-            borderWidth: 1,
-
-          },{
-            label: '实际弹簧力值曲线',
-            fill: false,
-            data: od_force,
-            backgroundColor: bg_colors,
-            borderColor: bd_colors,
-            borderWidth: 1,
-            borderDash: [5, 5],
-          }]
-    }
-  end
 
 
   def total_num?
@@ -68,8 +32,8 @@ class CompressionSpring < ApplicationRecord
   end
 
   def od_force?
-    if self.active_coil_num.present? && self.free_lengh.present?
-      self.od_force = (free_lengh - od_length) * spring_rate
+    if self.active_coil_num.present? && self.free_length.present?
+      self.od_force = (free_length - od_length) * spring_rate
     else
       self.od_force = 0
     end
@@ -77,8 +41,8 @@ class CompressionSpring < ApplicationRecord
   end
 
   def cd_force?
-    if self.active_coil_num.present? && self.free_lengh.present?
-      self.cd_force = (free_lengh - cd_length) * spring_rate
+    if self.active_coil_num.present? && self.free_length.present?
+      self.cd_force = (free_length - cd_length) * spring_rate
     else
       self.cd_force = 0
     end
@@ -124,7 +88,7 @@ class CompressionSpring < ApplicationRecord
   end
 
   def no_solid_position_active_coil_num # 不压并建议有效圈数
-    no_solid_position_active_coil_num = (cd_length - 13) / (wire_diameter + 0.4) - 2
+    no_solid_position_active_coil_num = (cd_length - 13) / (wire_diameter + flocking.to_f) - 2
   end
 
   def spring_rate # 实际刚度
@@ -133,11 +97,11 @@ class CompressionSpring < ApplicationRecord
     end
   end
 
-  def theoretical_free_lengh # 理论自由长度
+  def theoretical_free_length # 理论自由长度
     if self.spring_rate.present?
       f1 = min_force / spring_rate
       f2 = max_force / spring_rate
-      theoretical_free_lengh = [(od_length + f1), (cd_length + f2)].min
+      theoretical_free_length = [(od_length + f1), (cd_length + f2)].min
     else
       0
     end
@@ -145,15 +109,15 @@ class CompressionSpring < ApplicationRecord
 
   def safe_spring_solid_position #安全压并高度
     if self.active_coil_num.present? && active_coil_num > 0 &&  self.total_num.present?
-      safe_spring_solid_position = (wire_diameter + 0.4) * total_num + 13
+      safe_spring_solid_position = (wire_diameter + flocking.to_f) * total_num + 13
     else
       0
     end
   end
 
   def spring_solid_position_check # 弹簧压并校核
-    if self.free_lengh.present? && self.active_coil_num.present? && active_coil_num > 0
-      if safe_spring_solid_position <= cd_length && safe_spring_solid_position <= free_lengh
+    if self.free_length.present? && self.active_coil_num.present? && active_coil_num > 0
+      if safe_spring_solid_position <= cd_length && safe_spring_solid_position <= free_length
         "弹簧不会压并"
       else
         "弹簧压并！"
@@ -162,7 +126,7 @@ class CompressionSpring < ApplicationRecord
   end
 
   def max_working_shear_stress # 最大工作切应力
-    if self.free_lengh.present?
+    if self.free_length.present?
       c = mean_diameter / wire_diameter
       k = (4*c-1)/(4*c-4) + (0.615/c)
       max_working_shearstress = 8 * mean_diameter * max_force / (PI * (wire_diameter ** (3))) * k
@@ -172,9 +136,9 @@ class CompressionSpring < ApplicationRecord
   end
 
   def max_test_load_deformation # 最大试验负荷弹簧变形量
-    if self.free_lengh.present? && self.active_coil_num.present? && active_coil_num > 0
+    if self.free_length.present? && self.active_coil_num.present? && active_coil_num > 0
       hb = total_num * wire_diameter  # 不植绒压并高度
-      fb = spring_rate * (free_lengh - hb) # 弹簧压并负荷
+      fb = spring_rate * (free_length - hb) # 弹簧压并负荷
       fs = PI * (wire_diameter ** (3)) / (8 * mean_diameter) * max_test_shear_stress  # 弹簧最大试验负荷
       ffs = [fb,fs].min
       max_test_load_deformation = 8 * (mean_diameter ** (3)) * active_coil_num / (s_elastic_modulus * (wire_diameter ** (4))) * ffs
@@ -184,11 +148,11 @@ class CompressionSpring < ApplicationRecord
   end
 
   def spring_length_check #弹簧长度校核
-    if self.free_lengh.present? && self.active_coil_num.present? && active_coil_num > 0
-      l = free_lengh - max_test_load_deformation
+    if self.free_length.present? && self.active_coil_num.present? && active_coil_num > 0
+      l = free_length - max_test_load_deformation
       if l > cd_length
         "弹簧最大试验负荷变形量小于弹簧最大工作变形量（自由长度太长）"
-      elsif free_lengh < od_length
+      elsif free_length < od_length
         "弹簧自由长度小于开门弹簧长度"
       else
         "长度可以实现"
@@ -211,8 +175,8 @@ class CompressionSpring < ApplicationRecord
   end
 
   def spring_pitch # 弹簧节距
-    if self.free_lengh.present? && self.active_coil_num.present? && active_coil_num > 0
-      spring_pitch = (free_lengh - 1.5 * wire_diameter) / active_coil_num
+    if self.free_length.present? && self.active_coil_num.present? && active_coil_num > 0
+      spring_pitch = (free_length - 1.5 * wire_diameter) / active_coil_num
     else
       0
     end
@@ -231,6 +195,14 @@ class CompressionSpring < ApplicationRecord
       "弹簧螺旋升角满足要求"
     end
   end
+
+  # def is_flocking # 植绒判断
+  #   if :flocking == "植绒"
+  #     0.4
+  #   else
+  #     0
+  #   end
+  # end
 
   protected
 

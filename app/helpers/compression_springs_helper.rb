@@ -24,8 +24,8 @@ module CompressionSpringsHelper
     end
   end
 
-  def render_theoretical_free_lengh(compression_spring)
-    compression_spring.theoretical_free_lengh
+  def render_theoretical_free_length(compression_spring)
+    compression_spring.theoretical_free_length
   end
 
   def render_spring_solid_position_check(compression_spring)

@@ -8,6 +8,6 @@ wb.add_worksheet(name: "Buttons") do |sheet|
   sheet.add_row ["开门弹簧力F1","关门弹簧力F2","弹簧有效圈数",
     "弹簧总圈数","弹簧线径","弹簧内径","弹簧自由长度","弹簧螺旋升角"]
   sheet.add_row [ cs.od_force.round(3), cs.cd_force.round(3), cs.active_coil_num,
-    cs.total_num, cs.wire_diameter, cs.inside_diameter, cs.free_lengh, cs.spring_helix_angle.round(3)]
+    cs.total_num, cs.wire_diameter, cs.inside_diameter, cs.free_length, cs.spring_helix_angle.round(3)]
 
 end

@@ -11,11 +11,12 @@ class CreateCompressionSprings < ActiveRecord::Migration[5.0]
       t.float :wire_diameter
       t.float :active_coil_num
       t.float :total_num
-      t.float :free_lengh
+      t.float :free_length
       t.float :od_force
       t.float :cd_force
       t.integer :max_tensile_strength, default: 2100, null: false
       t.integer :s_elastic_modulus, default: 78800, null: false
+      t.string :flocking
       t.timestamps
     end
   end

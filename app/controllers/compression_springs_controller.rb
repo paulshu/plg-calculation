@@ -22,7 +22,7 @@ class CompressionSpringsController < ApplicationController
           csv << ["开门弹簧力F1","关门弹簧力F2","弹簧有效圈数",
             "弹簧总圈数","弹簧线径","弹簧内径","弹簧自由长度","弹簧螺旋升角"]
           csv << [ cs.od_force.round(3), cs.cd_force.round(3), cs.active_coil_num,
-            cs.total_num, cs.wire_diameter, cs.inside_diameter, cs.free_lengh, cs.spring_helix_angle.round(3)]
+            cs.total_num, cs.wire_diameter, cs.inside_diameter, cs.free_length, cs.spring_helix_angle.round(3)]
         end
         send_data csv_string, :filename => "#{@compression_spring.product_name}-压缩弹簧设计参数-#{@compression_spring.product_number}.csv"
       }
@@ -159,7 +159,7 @@ class CompressionSpringsController < ApplicationController
 
   def compression_spring_params
     params.require(:compression_spring).permit(:product_name,:product_number , :min_force,:max_force, :od_length , :cd_length, :inside_diameter,
-        :wire_diameter, :active_coil_num, :total_num, :free_lengh, :od_force, :cd_force)
+        :wire_diameter, :active_coil_num, :total_num, :free_length, :od_force, :cd_force, :flocking)
   end
 
 end
