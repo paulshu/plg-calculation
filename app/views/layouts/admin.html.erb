@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PLG Calculation 后台</title>
+  <%= stylesheet_link_tag 'application', media: 'all'%>
+  <%= javascript_include_tag 'application' %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <%= render "common/navbar" %>
+  <%= render "common/flashes" %>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-2 nav-left-style">
+        <hr>
+        <h5>后台管理</h5>
+        <hr>
+        <ul class="nav nav-pills nav-stacked" style="max-width: 300px;">
+          <li> <%= link_to("平台管理", admin_platforms_path)%></li>
+          <li> <%#= link_to("订单管理", admin_orders_path) %></li>
+          <li> <%#= link_to("分类管理", admin_categories_path) %></li>
+        </ul>
+      </div>
+      <div class="col-md-10">
+          <%= yield %>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

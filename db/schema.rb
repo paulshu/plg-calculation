@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170730132514) do
+ActiveRecord::Schema.define(version: 20170808131744) do
 
   create_table "compression_springs", force: :cascade do |t|
     t.string   "product_name"
@@ -34,6 +34,21 @@ ActiveRecord::Schema.define(version: 20170730132514) do
     t.index ["product_number"], name: "index_compression_springs_on_product_number"
   end
 
+  create_table "platforms", force: :cascade do |t|
+    t.string   "platform_name"
+    t.string   "platform_number"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+    t.string   "screw_name"
+    t.integer  "number"
+    t.float    "pitch"
+    t.float    "major_diameter"
+    t.float    "pitch_diameter"
+    t.float    "lead"
+    t.float    "thread_angle"
+    t.float    "coefficient_friction"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
@@ -47,6 +62,7 @@ ActiveRecord::Schema.define(version: 20170730132514) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
+    t.string   "role"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

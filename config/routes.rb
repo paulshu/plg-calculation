@@ -11,5 +11,8 @@ Rails.application.routes.draw do
       patch "steps/3/update" => "compression_springs#step3_update", :as => :update_step3
     end
   end
+  namespace :admin do
+    resources :platforms
+  end
   root 'welcome#index'
 end
