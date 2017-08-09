@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170808131744) do
+ActiveRecord::Schema.define(version: 20170809032432) do
 
   create_table "compression_springs", force: :cascade do |t|
     t.string   "product_name"
@@ -37,8 +37,8 @@ ActiveRecord::Schema.define(version: 20170808131744) do
   create_table "platforms", force: :cascade do |t|
     t.string   "platform_name"
     t.string   "platform_number"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
     t.string   "screw_name"
     t.integer  "number"
     t.float    "pitch"
@@ -47,6 +47,9 @@ ActiveRecord::Schema.define(version: 20170808131744) do
     t.float    "lead"
     t.float    "thread_angle"
     t.float    "coefficient_friction"
+    t.string   "gearbox_type"
+    t.float    "gear_transmission_ratio"
+    t.float    "gear_transmission_efficiency"
   end
 
   create_table "users", force: :cascade do |t|

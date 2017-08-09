@@ -14,8 +14,8 @@
             <th>平台名称</th>
             <th>平台编号</th>
             <th>螺杆名称</th>
-            <th>减速箱名称</th>
-            <th>电机名称</th>
+            <th>减速箱型号</th>
+            <th>电机型号</th>
             <th colspan="2">设置</th>
           </tr>
         </thead>
@@ -26,6 +26,7 @@
               <td><%= platform.platform_name %></td>
               <td><%= platform.platform_number%></td>
               <td><%= platform.screw_name%></td>
+              <td><%= platform.gearbox_type%></td>
               <td><%= link_to 'Edit', edit_admin_platform_path(platform) %></td>
               <td><%= link_to 'Destroy', admin_platform_path(platform), method: :delete, data: { confirm: 'Are you sure?' } %></td>
             </tr>
