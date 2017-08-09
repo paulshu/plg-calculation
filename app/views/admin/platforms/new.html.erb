@@ -68,6 +68,22 @@
     <%= f.input :motor_efficiency %>
   </div>
 
+  <p class="mt20"> <h3>弹簧通用参数 </h3></p>
+  <div class="form-group col-md-4">
+    <%= f.input :spring_static_length %>
+  </div>
+  <div class="form-group col-md-4">
+    <%= f.input :inside_diameter %>
+  </div>
+
+  <div class="form-group col-md-4">
+    <%= f.input :max_tensile_strength %>
+  </div>
+
+  <div class="form-group col-md-12">
+    <%= f.input :s_elastic_modulus %>
+  </div>
+
   <div class="form-actions text-right mt10">
     <%= f.submit "提 交", disable_with: "Submiting...", class: "btn btn-lg btn-primary"%>
   </div>

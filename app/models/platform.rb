@@ -18,7 +18,8 @@ class Platform < ApplicationRecord
   validates :rated_current, presence:  { message: "请填写电机额定电流" }
   validates :rated_speed, presence:  { message: "请填写电机额定转速" }
   validates :motor_efficiency, presence:  { message: "请填写电机效率" }
-
+  validates :spring_static_length, presence:  { message: "请填写弹簧静长" }
+  validates :inside_diameter, presence:  { message: "请填写弹簧内径" }
 
 
   def pitch_diameter? # 螺杆中径

@@ -58,6 +58,7 @@ class Admin::PlatformsController < ApplicationController
   def platform_params
     params.require(:platform).permit(:platform_name,:platform_number, :screw_name, :number, :pitch, :major_diameter, :lead,
             :thread_angle, :coefficient_friction, :gearbox_type, :gear_transmission_ratio, :gear_transmission_efficiency,
-            :motor_type, :min_operating_voltage, :rated_voltage, :rated_current, :rated_speed, :motor_efficiency)
+            :motor_type, :min_operating_voltage, :rated_voltage, :rated_current, :rated_speed, :motor_efficiency, :spring_static_length,
+            :inside_diameter, :max_tensile_strength, :s_elastic_modulus)
   end
 end

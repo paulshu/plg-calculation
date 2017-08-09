@@ -105,6 +105,27 @@
           </tr>
         </table>
       </div>
+      <h4>弹簧通用参数</h4>
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+          <tr>
+            <td align="right">弹簧静长：</td>
+            <td><%= @platform.spring_static_length  %></td>
+            <td>mm</td>
+            <td align="right">弹簧内径：</td>
+            <td><%= @platform.inside_diameter %></td>
+            <td>mm</td>
+          </tr>
+          <tr>
+            <td align="right">弹簧最大抗拉强度：</td>
+            <td><%= @platform.max_tensile_strength %></td>
+            <td>Mpa</td>
+            <td align="right">剪切弹性模量G：</td>
+            <td><%= @platform.s_elastic_modulus  %></td>
+            <td>Mpa</td>
+          </tr>
+        </table>
+      </div>
     </div>
   </div>
 </div>
