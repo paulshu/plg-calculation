@@ -1,0 +1,110 @@
+<div class="col-md-12 col-centered">
+  <div class="panel panel-info">
+    <div class="panel-heading ">
+      <h2><%= @platform.platform_number %> - <%= @platform.platform_name %></h2>
+    </div>
+    <div class="panel-footer">
+      <h4>螺杆参数</h4>
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+          <tr>
+            <td align="right">螺杆名称：</td>
+            <td><%= @platform.screw_name %></td>
+            <td></td>
+            <td align="right">螺杆头数：</td>
+            <td><%= @platform.number %></td>
+            <td>头</td>
+
+            <td align="right">螺杆螺距：</td>
+            <td><%= @platform.pitch %></td>
+            <td>mm</td>
+          </tr>
+          <tr>
+            <td align="right">螺杆大径：</td>
+            <td><%= @platform.major_diameter %></td>
+            <td>mm</td>
+
+            <td align="right">螺杆中径：</td>
+            <td><%= @platform.pitch_diameter %></td>
+            <td>mm</td>
+
+            <td align="right">螺杆导程：</td>
+            <td><%= @platform.lead %></td>
+            <td>mm</td>
+          </tr>
+          <tr>
+
+            <td align="right">螺杆牙型角：</td>
+            <td><%= @platform.thread_angle %></td>
+            <td>度</td>
+
+            <td align="right">摩擦系数：</td>
+            <td><%= @platform.coefficient_friction %></td>
+            <td></td>
+
+            <td align="right">螺旋升角（导程角）λ：</td>
+            <td><%= @platform.lead_angle.round(3) %></td>
+            <td>度</td>
+
+          </tr>
+          <tr>
+            <td align="right">螺杆当量摩擦角ρ：</td>
+            <td><%= @platform.friction_angle.round(3) %></td>
+            <td>度</td>
+
+            <td align="right">螺杆传动效率η：</td>
+            <td><%= (@platform.screw_transmission_efficiency * 100).round(3)   %> %</td>
+            <td></td>
+          </tr>
+        </table>
+      </div>
+
+      <h4>减速箱参数</h4>
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+          <tr>
+            <td align="right">减速箱型号：</td>
+            <td><%= @platform.gearbox_type  %></td>
+
+            <td align="right">传动比：</td>
+            <td><%= @platform.gear_transmission_ratio  %></td>
+
+            <td align="right">传动效率：</td>
+            <td><%= @platform.gear_transmission_efficiency * 100  %>%</td>
+
+          </tr>
+        </table>
+      </div>
+
+      <h4>电机参数</h4>
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+          <tr>
+            <td align="right">电机型号：</td>
+            <td><%= @platform.motor_type  %></td>
+            <td></td>
+            <td align="right">最低工作电压：</td>
+            <td><%= @platform.min_operating_voltage %></td>
+            <td>V</td>
+
+            <td align="right">额定电压：</td>
+            <td><%= @platform.rated_voltage %></td>
+            <td>V</td>
+          </tr>
+          <tr>
+            <td align="right">额定电流：</td>
+            <td><%= @platform.rated_current  %></td>
+            <td>A</td>
+            <td align="right">额定转速：</td>
+            <td><%= @platform.rated_speed %></td>
+            <td>RPM</td>
+
+            <td align="right">电机效率：</td>
+            <td><%= (@platform.motor_efficiency * 100).round(3) %>%</td>
+            <td>V</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -51,7 +51,7 @@ class CompressionSpring < ApplicationRecord
 
   # 以下为通用的弹簧参数
   Initial_wire_diameter = 3.8 # 初选线径
-  PI = 3.1415926535
+  
   def deformation # 变形量
     deformation = od_length - cd_length
   end

@@ -23,7 +23,7 @@
         <tbody>
           <% @platforms.each do |platform| %>
             <tr>
-              <td><%= platform.platform_name %></td>
+              <td><%= link_to(platform.platform_name, admin_platform_path(platform)) %></td>
               <td><%= platform.platform_number%></td>
               <td><%= platform.screw_name%></td>
               <td><%= platform.gearbox_type%></td>
