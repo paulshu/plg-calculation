@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170809032432) do
+ActiveRecord::Schema.define(version: 20170809033631) do
 
   create_table "compression_springs", force: :cascade do |t|
     t.string   "product_name"
@@ -50,6 +50,12 @@ ActiveRecord::Schema.define(version: 20170809032432) do
     t.string   "gearbox_type"
     t.float    "gear_transmission_ratio"
     t.float    "gear_transmission_efficiency"
+    t.string   "motor_type"
+    t.float    "min_operating_voltage"
+    t.float    "rated_voltage"
+    t.float    "rated_current"
+    t.integer  "rated_speed"
+    t.float    "motor_efficiency"
   end
 
   create_table "users", force: :cascade do |t|

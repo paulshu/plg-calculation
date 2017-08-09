@@ -45,6 +45,30 @@
     <%= f.input :gear_transmission_efficiency %>
   </div>
 
+  <p class="mt20"> <h3>电机参数 </h3></p>
+  <div class="form-group col-md-4">
+    <%= f.input :motor_type %>
+  </div>
+  <div class="form-group col-md-4">
+    <%= f.input :min_operating_voltage %>
+  </div>
+
+  <div class="form-group col-md-4">
+    <%= f.input :rated_voltage %>
+  </div>
+
+  <div class="form-group col-md-4">
+    <%= f.input :rated_current %>
+  </div>
+
+  <div class="form-group col-md-4">
+    <%= f.input :rated_speed %>
+  </div>
+
+  <div class="form-group col-md-4">
+    <%= f.input :motor_efficiency %>
+  </div>
+
   <div class="form-actions text-right mt10">
     <%= f.submit "提 交", disable_with: "Submiting...", class: "btn btn-lg btn-primary"%>
   </div>
