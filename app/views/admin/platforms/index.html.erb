@@ -1,0 +1,37 @@
+<div class="col-md-12 col-centered">
+  <div class="panel panel-info">
+    <div class="panel-heading text-left">
+      <h2>撑杆平台</h2>
+    </div>
+    <div class="panel-footer">
+      <div class="pull-right" style="padding-bottom: 20px;">
+          <%= link_to("新建平台", new_admin_platform_path, class: "btn btn-primary btn-sm") %>
+      </div>
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>平台名称</th>
+            <th>平台编号</th>
+            <th>螺杆名称</th>
+            <th>减速箱名称</th>
+            <th>电机名称</th>
+            <th colspan="2">设置</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @platforms.each do |platform| %>
+            <tr>
+              <td><%= platform.platform_name %></td>
+              <td><%= platform.platform_number%></td>
+              <td><%= platform.screw_name%></td>
+              <td><%= link_to 'Edit', edit_admin_platform_path(platform) %></td>
+              <td><%= link_to 'Destroy', admin_platform_path(platform), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

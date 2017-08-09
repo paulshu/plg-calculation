@@ -1,0 +1,45 @@
+<div class="container col-md-10 col-md-offset-1 mt20">
+<h2>New Platform</h2>
+
+<%= simple_form_for [:admin, @platform] do |f| %>
+  <div class="form-group col-md-8">
+    <%= f.input :platform_name %>
+  </div>
+
+  <div class="form-group col-md-4">
+    <%= f.input :platform_number %>
+  </div>
+
+  <p class="mt20"> <h3> 螺杆参数 </h3></p>
+  <div class="form-group col-md-4">
+    <%= f.input :screw_name %>
+  </div>
+  <div class="form-group col-md-4">
+    <%= f.input :number %>
+  </div>
+  <div class="form-group col-md-4">
+    <%= f.input :pitch %>
+  </div>
+
+  <div class="form-group col-md-4">
+    <%= f.input :major_diameter %>
+  </div>
+
+  <div class="form-group col-md-4">
+    <%= f.input :thread_angle %>
+  </div>
+  <div class="form-group col-md-4">
+    <%= f.input :coefficient_friction %>
+  </div>
+
+  <p class="mt20"> <h3>减速箱参数 </h3></p>
+  <div class="form-group col-md-4">
+    <%= f.input :screw_name %>
+  </div>
+
+  <div class="form-actions text-right mt10">
+    <%= f.submit "提 交", disable_with: "Submiting...", class: "btn btn-lg btn-primary"%>
+  </div>
+
+<% end %>
+</div>
