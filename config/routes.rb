@@ -14,5 +14,7 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :platforms
   end
+
+  resources :manual_calculations
   root 'welcome#index'
 end
