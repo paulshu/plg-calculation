@@ -1,0 +1,2 @@
+class ManualCalculation < ApplicationRecord
+end

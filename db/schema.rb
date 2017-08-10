@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170809135300) do
+ActiveRecord::Schema.define(version: 20170810023811) do
 
   create_table "compression_springs", force: :cascade do |t|
     t.string   "product_name"
@@ -32,6 +32,41 @@ ActiveRecord::Schema.define(version: 20170809135300) do
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
     t.index ["product_number"], name: "index_compression_springs_on_product_number"
+  end
+
+  create_table "manual_calculations", force: :cascade do |t|
+    t.string   "product_name"
+    t.string   "product_number"
+    t.float    "hinge_x"
+    t.float    "hinge_y"
+    t.float    "hinge_z"
+    t.float    "centre_gravity_x"
+    t.float    "centre_gravity_y"
+    t.float    "centre_gravity_z"
+    t.float    "door_weight"
+    t.float    "body_a_x"
+    t.float    "body_a_y"
+    t.float    "body_a_z"
+    t.float    "gate_b_x"
+    t.float    "gate_b_y"
+    t.float    "gate_b_z"
+    t.float    "open_handle_x"
+    t.float    "open_handle_y"
+    t.float    "open_handle_z"
+    t.float    "close_handle_x"
+    t.float    "close_handle_y"
+    t.float    "close_handle_z"
+    t.float    "open_angle"
+    t.float    "open_time"
+    t.float    "close_time"
+    t.integer  "open_dynamic_friction"
+    t.integer  "close_dynamic_friction"
+    t.integer  "open_static_friction"
+    t.integer  "close_static_friction"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.index ["product_name"], name: "index_manual_calculations_on_product_name"
+    t.index ["product_number"], name: "index_manual_calculations_on_product_number"
   end
 
   create_table "platforms", force: :cascade do |t|
