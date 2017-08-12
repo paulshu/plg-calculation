@@ -1,0 +1,46 @@
+<div class="col-md-12 col-centered">
+  <div class="panel panel-info">
+    <div class="panel-heading text-left">
+      <h3>手工布点计算</h3>
+    </div>
+    <div class="panel-body">
+      <div class="pull-right" style="padding-bottom: 20px;">
+          <%= link_to("新建计算项目", new_manual_calculation_path, class: "btn btn-primary btn-sm") %>
+      </div>
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>项目名称</th>
+            <th>项目编号</th>
+            <th>A点X坐标</th>
+            <th>A点Y坐标</th>
+            <th>A点Z坐标</th>
+            <th>B点X坐标</th>
+            <th>B点Y坐标</th>
+            <th>B点Z坐标</th>
+            <th colspan="2">设置</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @manual_calculations.each do |manual_calculation| %>
+            <tr>
+              <td><%= link_to(manual_calculation.product_name, manual_calculation_path(manual_calculation)) %></td>
+              <td><%= manual_calculation.product_number%></td>
+              <td><%= manual_calculation.body_a_x%></td>
+              <td><%= manual_calculation.body_a_y%></td>
+              <td><%= manual_calculation.body_a_z %></td>
+              <td><%= manual_calculation.gate_b_x%></td>
+              <td><%= manual_calculation.gate_b_y%></td>
+              <td><%= manual_calculation.gate_b_z %></td>
+              <td><%= link_to 'Edit', edit_manual_calculation_path(manual_calculation) %></td>
+              <td><%= link_to 'Destroy', manual_calculation_path(manual_calculation), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%= paginate @manual_calculations %>
+    </div>
+  </div>
+</div>
