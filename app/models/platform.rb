@@ -22,6 +22,9 @@ class Platform < ApplicationRecord
   validates :inside_diameter, presence:  { message: "请填写弹簧内径" }
 
 
+  # has_many :manual_calculations, inverse_of: :platform
+  # 报错时考虑用
+  has_many :manual_calculations
   def pitch_diameter? # 螺杆中径
     pd = major_diameter - 0.5 * pitch
     self.update_columns(pitch_diameter: pd)

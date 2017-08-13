@@ -2,6 +2,11 @@
 <h2>Edit Manual calculation</h2>
 
 <%= simple_form_for [@manual_calculation] do |f| %>
+  <div class="group col-md-12">
+    <%= f.label :platform_id, @platforms %><br>
+    <%#= f.select :platform_id, @platforms %>
+    <%= f.select :platform_id, Platform.all.map{ |p| [p.platform_name, p.id] }, {},  :class => "form-control" %>
+  </div>
   <div class="form-group col-md-8">
     <%= f.input :product_name %>
   </div>

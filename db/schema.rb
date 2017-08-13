@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170810023811) do
+ActiveRecord::Schema.define(version: 20170812083039) do
 
   create_table "compression_springs", force: :cascade do |t|
     t.string   "product_name"
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 20170810023811) do
     t.integer  "close_static_friction"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+    t.integer  "platform_id"
     t.index ["product_name"], name: "index_manual_calculations_on_product_name"
     t.index ["product_number"], name: "index_manual_calculations_on_product_number"
   end

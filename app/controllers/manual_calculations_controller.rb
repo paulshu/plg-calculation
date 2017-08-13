@@ -7,6 +7,7 @@ class ManualCalculationsController < ApplicationController
 
   def new
     @manual_calculation = ManualCalculation.new
+    @platforms = Platform.all.map { |p| [p.platform_name, p.id] } # 找对应的平台
   end
 
   def show
@@ -15,20 +16,24 @@ class ManualCalculationsController < ApplicationController
 
   def edit
     @manual_calculation = ManualCalculation.find(params[:id])
+    @platforms = Platform.all.map { |p| [p.platform_name, p.id] } # 找对应的平台
   end
 
   def create
     @manual_calculation = ManualCalculation.new(manual_calculation_params)
-
+    @manual_calculation.platform_id = params[:platform_id]
     if @manual_calculation.save
       redirect_to manual_calculations_path
     else
+      @platforms = Platform.all.map { |p| [p.platform_name, p.id] }
+      #此处主要解决验证失效返回重新构建下拉菜单失败报错的问题
       render :new
     end
   end
 
   def update
     @manual_calculation = ManualCalculation.find(params[:id])
+    @manual_calculation.platform_id = params[:platform_id]
 
     if @manual_calculation.update(manual_calculation_params)
       redirect_to manual_calculations_path
@@ -49,6 +54,6 @@ class ManualCalculationsController < ApplicationController
   def manual_calculation_params
     params.require(:manual_calculation).permit(:product_name,:product_number, :hinge_x, :hinge_y, :hinge_z, :centre_gravity_x, :centre_gravity_y, :centre_gravity_z,
             :door_weight, :body_a_x, :body_a_y, :body_a_z, :gate_b_x, :gate_b_y, :gate_b_z, :open_handle_x, :open_handle_y, :open_handle_z, :close_handle_x, :close_handle_y,
-            :close_handle_z, :open_angle, :open_time, :close_time, :open_dynamic_friction, :close_dynamic_friction, :open_static_friction, :close_static_friction )
+            :close_handle_z, :open_angle, :open_time, :close_time, :open_dynamic_friction, :close_dynamic_friction, :open_static_friction, :close_static_friction, :platform_id )
   end
 end

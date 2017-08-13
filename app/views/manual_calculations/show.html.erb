@@ -1,0 +1,85 @@
+<div class="col-md-12 col-centered">
+  <div class="panel panel-info">
+    <div class="panel-heading ">
+      <h2><%= @manual_calculation.product_number %> - <%= @manual_calculation.product_name %></h2>
+    </div>
+    <div class="panel-body">
+      <h4>输入参数</h4> 使用的平台：<%= @manual_calculation.platform.try(:platform_name)%>
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+          <tr>
+            <td align="right">旋转中心O(XYZ)：</td>
+            <td><%= @manual_calculation.hinge_x %></td>
+            <td><%= @manual_calculation.hinge_y %></td>
+            <td><%= @manual_calculation.hinge_z %></td>
+            <td align="right">门重心G(XYZ)：</td>
+            <td><%= @manual_calculation.centre_gravity_x %></td>
+            <td><%= @manual_calculation.centre_gravity_y %></td>
+            <td><%= @manual_calculation.centre_gravity_z %></td>
+            <td align="right">开门作用点H1(XYZ)：</td>
+            <td><%= @manual_calculation.open_handle_x %></td>
+            <td><%= @manual_calculation.open_handle_y %></td>
+            <td><%= @manual_calculation.open_handle_z %></td>
+          </tr>
+          <tr>
+            <td align="right">关门作用点H2(XYZ)：</td>
+            <td><%= @manual_calculation.close_handle_x %></td>
+            <td><%= @manual_calculation.close_handle_y %></td>
+            <td><%= @manual_calculation.close_handle_z %></td>
+            <td align="right">车身连接点A(XYZ)：</td>
+            <td><%= @manual_calculation.body_a_x %></td>
+            <td><%= @manual_calculation.body_a_y %></td>
+            <td><%= @manual_calculation.body_a_z %></td>
+            <td align="right">车门连接点B(XYZ)：</td>
+            <td><%= @manual_calculation.gate_b_x %></td>
+            <td><%= @manual_calculation.gate_b_y %></td>
+            <td><%= @manual_calculation.gate_b_z %></td>
+          </tr>
+        </table>
+
+        <table class="table table-striped table-bordered">
+          <tr>
+            <td align="right">门重：</td>
+            <td><%= @manual_calculation.door_weight %></td>
+            <td>kg</td>
+            <td align="right">开门时间：</td>
+            <td><%= @manual_calculation.open_time %></td>
+            <td>s</td>
+
+
+            <td align="right">开门阻力（动）：</td>
+            <td><%= @manual_calculation.open_dynamic_friction %></td>
+            <td>N</td>
+            <td align="right">关门阻力（动）：</td>
+            <td><%= @manual_calculation.close_dynamic_friction %></td>
+            <td>N</td>
+          </tr>
+
+          <tr>
+            <td align="right">开门角度：</td>
+            <td><%= @manual_calculation.open_angle %></td>
+            <td>度</td>
+
+            <td align="right">关门时间：</td>
+            <td><%= @manual_calculation.close_time %></td>
+            <td>s</td>
+
+            <td align="right">开门阻力（静）：</td>
+            <td><%= @manual_calculation.open_static_friction %></td>
+            <td>N</td>
+
+            <td align="right">关门阻力（静）：</td>
+            <td><%= @manual_calculation.close_static_friction %></td>
+            <td>N</td>
+          </tr>
+          <tr>
+            <td align="right">使用的平台：</td>
+            <td><%= @manual_calculation.platform.try(:platform_name) %></td>
+            <!-- 避免调用 nil.name 就会出现 NoMethodError 了 -->
+            <%#= @manual_calculation.platform.platform_name %>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>
