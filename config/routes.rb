@@ -15,6 +15,13 @@ Rails.application.routes.draw do
     resources :platforms
   end
 
-  resources :manual_calculations
+  resources :manual_calculations do
+    member do
+      get "input_manual_calculation" => "manual_calculations#input_manual_calculation", :as => :input_manual_calculation
+      patch "input_manual_calculation/update" => "manual_calculations#input_manual_calculation_update", :as => :update_input_manula_calculation
+      get "spring_calculation" => "manual_calculations#spring_calculation", :as => :spring_calculation
+      patch "spring_calculation/update" => "manual_calculations#spring_calculation_update", :as => :update_spring_calculation
+    end
+  end
   root 'welcome#index'
 end

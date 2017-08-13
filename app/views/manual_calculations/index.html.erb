@@ -34,7 +34,7 @@
               <td><%= manual_calculation.gate_b_x%></td>
               <td><%= manual_calculation.gate_b_y%></td>
               <td><%= manual_calculation.gate_b_z %></td>
-              <td><%= link_to 'Edit', edit_manual_calculation_path(manual_calculation) %></td>
+              <td><%= link_to 'Edit', input_manual_calculation_manual_calculation_path(manual_calculation) %></td>
               <td><%= link_to 'Destroy', manual_calculation_path(manual_calculation), method: :delete, data: { confirm: 'Are you sure?' } %></td>
             </tr>
           <% end %>

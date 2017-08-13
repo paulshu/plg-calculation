@@ -35,4 +35,7 @@ belongs_to :platform
 # 报错时考虑用
 # belongs_to :user
 
+def o_centre_gravity_z
+end 
+
 end
