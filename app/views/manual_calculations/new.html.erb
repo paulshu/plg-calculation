@@ -2,7 +2,7 @@
 <h2>New Manual calculation</h2>
 
 <%= simple_form_for [@manual_calculation] do |f| %>
-  <div class="form-group col-md-12">
+  <div class="form-group col-md-8">
     <h5><%= f.label "请选择撑杆平台"%></h5>
     <%#= f.select :platform_id, @platforms %>
     <%= select_tag(:platform_id, options_for_select(@platforms) ) %>

@@ -6,7 +6,7 @@
   <div class="cspring mb15" ></div>
   <%= simple_form_for [@manual_calculation], :url => update_spring_calculation_manual_calculation_path(@manual_calculation) do |f| %>
     <div class="form-group col-md-3">
-      <%= f.input :door_weight %>
+      <%= f.input :active_coil_num, autofocus: true %>
       <%= f.submit "更新", disable_with: "Submiting..." , class: "btn btn-sm btn-info pull-right"  %>
     </div>
 

@@ -22,6 +22,7 @@ class ManualCalculationsController < ApplicationController
   def create
     @manual_calculation = ManualCalculation.new(manual_calculation_params)
     @manual_calculation.platform_id = params[:platform_id]
+    @manual_calculation.current_step = 1
     if @manual_calculation.save
       redirect_to spring_calculation_manual_calculation_path(@manual_calculation)
     else
@@ -34,7 +35,7 @@ class ManualCalculationsController < ApplicationController
   def update
     @manual_calculation = ManualCalculation.find(params[:id])
     @manual_calculation.platform_id = params[:platform_id]
-
+    @manual_calculation.current_step = 1
     if @manual_calculation.update(manual_calculation_params)
       redirect_to manual_calculations_path
     else
@@ -51,14 +52,18 @@ class ManualCalculationsController < ApplicationController
 
   def input_manual_calculation
     @manual_calculation = ManualCalculation.find(params[:id])
+    @platforms = Platform.all.map { |p| [p.platform_name, p.id] } # 找对应的平台
   end
 
   def input_manual_calculation_update
     @manual_calculation = ManualCalculation.find(params[:id])
     @manual_calculation.platform_id = params[:platform_id]
+    @manual_calculation.current_step = 1
+
     if @manual_calculation.update(manual_calculation_params)
-      redirect_to spring_calculation_manual_calculation_path
+      redirect_to spring_calculation_manual_calculation_path(@manual_calculation)
     else
+
       render :input_manual_calculation
     end
   end
@@ -69,8 +74,11 @@ class ManualCalculationsController < ApplicationController
 
   def spring_calculation_update
     @manual_calculation = ManualCalculation.find(params[:id])
+    @manual_calculation.current_step = 2
+
     if @manual_calculation.update(manual_calculation_params)
-      redirect_to spring_calculation_manual_calculation_path
+      flash[:notice] = "手动布点更新成功"
+      redirect_to spring_calculation_manual_calculation_path(@manual_calculation)
     else
       render :spring_calculation
     end
@@ -81,6 +89,7 @@ class ManualCalculationsController < ApplicationController
   def manual_calculation_params
     params.require(:manual_calculation).permit(:product_name,:product_number, :hinge_x, :hinge_y, :hinge_z, :centre_gravity_x, :centre_gravity_y, :centre_gravity_z,
             :door_weight, :body_a_x, :body_a_y, :body_a_z, :gate_b_x, :gate_b_y, :gate_b_z, :open_handle_x, :open_handle_y, :open_handle_z, :close_handle_x, :close_handle_y,
-            :close_handle_z, :open_angle, :open_time, :close_time, :open_dynamic_friction, :close_dynamic_friction, :open_static_friction, :close_static_friction, :platform_id )
+            :close_handle_z, :open_angle, :open_time, :close_time, :open_dynamic_friction, :close_dynamic_friction, :open_static_friction, :close_static_friction, :platform_id,
+            :wire_diameter, :active_coil_num, :free_length, :flocking, :climbing_degree )
   end
 end

@@ -3,8 +3,8 @@
     <h2><%= @manual_calculation.product_name %> - 弹簧计算</h2>
   </div>
 
-<%= simple_form_for [@manual_calculation], :url => update_spring_calculation_manual_calculation_path(@manual_calculation) do |f| %>
-  <div class="group col-md-12">
+<%= simple_form_for [@manual_calculation], :url => update_input_manual_calculation_manual_calculation_path(@manual_calculation) do |f| %>
+  <div class="group col-md-8">
     <%= f.label :platform_id, @platforms %><br>
     <%#= f.select :platform_id, @platforms %>
     <%= f.select :platform_id, Platform.all.map{ |p| [p.platform_name, p.id] }, {},  :class => "form-control" %>

@@ -4,6 +4,6 @@ class AddCspringToManualCalculation < ActiveRecord::Migration[5.0]
     add_column :manual_calculations, :active_coil_num, :float
     add_column :manual_calculations, :free_length, :float
     add_column :manual_calculations, :flocking, :string
-
+    add_column :manual_calculations, :climbing_degree, :float, default: 0.2, null: false
   end
 end

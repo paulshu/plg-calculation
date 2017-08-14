@@ -1,6 +1,6 @@
 class CompressionSpring < ApplicationRecord
 
-  attr_accessor :current_step
+  attr_accessor :current_step # 增加一个虚拟属性(也就是数据库中并没有这个字段)来代表目前做到哪一步
   validates :product_name, presence:  { message: "请填写产品名称" }, :if => :should_validate_basic_data?
   validates :product_number,  presence:  { message: "请填写产品编号" },
                               uniqueness: { message: "产品编号重复了" } ,

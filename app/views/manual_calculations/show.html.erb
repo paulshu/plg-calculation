@@ -77,6 +77,43 @@
             <td><%= @manual_calculation.platform.try(:platform_name) %></td>
             <!-- 避免调用 nil.name 就会出现 NoMethodError 了 -->
             <%#= @manual_calculation.platform.platform_name %>
+            <td><%= @manual_calculation.vector_og_on_xz%> </td>
+            <td><%= @manual_calculation.vector_ob_on_xz%> </td>
+            <td><%= @manual_calculation.vector_ab %> </td>
+            <td><%= @manual_calculation.vector_ob_on_xz_x_angle %> </td>
+            <td><%= @manual_calculation.vector_og_on_xz_x_angle %> </td>
+            <td><%= @manual_calculation.vector_ab1_ob1_on_xz_angle %> </td>
+          </tr>
+
+          <tr>
+            <td><%= @manual_calculation.o_centre_gravity_x %> </td>
+            <td><%= @manual_calculation.o_centre_gravity_z %> </td>
+            <td><%= @manual_calculation.o_gate_b1_x %> </td>
+            <td><%= @manual_calculation.o_gate_b1_z %> </td>
+            <td><%= @manual_calculation.vector_ob1_length_x %> </td>
+            <td><%= @manual_calculation.vector_ob1_length_y %> </td>
+            <td><%= @manual_calculation.vector_ob1_length_z %> </td>
+          </tr>
+          <tr>
+            <td><%= @manual_calculation.vector_ab1_length_x %> </td>
+            <td><%= @manual_calculation.vector_ab1_length_y %> </td>
+            <td><%= @manual_calculation.vector_ab1_length_z %> </td>
+            <td><%= @manual_calculation.vector_ab1_ob1_on_xz_angle %> </td>
+            <td><%= @manual_calculation.od_length %> </td>
+            <td><%= @manual_calculation.cd_length %> </td>
+            <td><%= @manual_calculation.working_stroke %> </td>
+            <td><%= @manual_calculation.car_climbing_angle %> </td>
+          </tr>
+          <tr>
+            <td><%= @manual_calculation.vector_ob_slope %> </td>
+            <td><%= @manual_calculation.vector_ab_slope %> </td>
+            <td><%= @manual_calculation.vector_ob_ab_angle %> </td>
+            <td><%= @manual_calculation.vector_ab1_ob1_on_xz_angle %> </td>
+            <td><%= @manual_calculation.od_length %> </td>
+            <td><%= @manual_calculation.cd_length %> </td>
+            <td><%= @manual_calculation.working_stroke %> </td>
+            <td><%= @manual_calculation.car_climbing_angle %> </td>
+          </tr>
         </table>
 
       </div>

@@ -63,13 +63,14 @@ ActiveRecord::Schema.define(version: 20170814064556) do
     t.integer  "close_dynamic_friction"
     t.integer  "open_static_friction"
     t.integer  "close_static_friction"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
     t.integer  "platform_id"
     t.float    "wire_diameter"
     t.float    "active_coil_num"
     t.float    "free_length"
     t.string   "flocking"
+    t.float    "climbing_degree",        default: 0.2, null: false
     t.index ["product_name"], name: "index_manual_calculations_on_product_name"
     t.index ["product_number"], name: "index_manual_calculations_on_product_number"
   end
