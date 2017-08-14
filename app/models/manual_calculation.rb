@@ -36,6 +36,7 @@ belongs_to :platform
 # belongs_to :user
 
 def o_centre_gravity_z
-end 
+  
+end
 
 end

@@ -41,10 +41,10 @@
         </tr>
         <tr>
           <td align="right">开门弹簧力F1：</td>
-          <td><%= @compression_spring.od_force.round(3) %></td>
+          <td><%= @compression_spring.od_force %></td>
           <td>N</td>
           <td align="right">关门弹簧力F2：</td>
-          <td><%= @compression_spring.cd_force.round(3) %></td>
+          <td><%= @compression_spring.cd_force %></td>
           <td>N</td>
         </tr>
         <tr>
@@ -60,7 +60,7 @@
           <td><%= @compression_spring.wire_diameter %></td>
           <td>mm</td>
           <td align="right">弹簧内径：</td>
-          <td><%= @compression_spring.inside_diameter - 0.05 %></td>
+          <td><%= @compression_spring.inside_diameter %></td>
           <td>mm</td>
         </tr>
         <tr>
@@ -68,7 +68,7 @@
           <td><%= @compression_spring.free_length %></td>
           <td>mm</td>
           <td align="right">弹簧螺旋升角：</td>
-          <td><%= @compression_spring.spring_helix_angle.round(3) %></td>
+          <td><%= @compression_spring.spring_helix_angle %></td>
           <td>度</td>
         </tr>
       </table>

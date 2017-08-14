@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170812083039) do
+ActiveRecord::Schema.define(version: 20170814064556) do
 
   create_table "compression_springs", force: :cascade do |t|
     t.string   "product_name"
@@ -66,6 +66,10 @@ ActiveRecord::Schema.define(version: 20170812083039) do
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
     t.integer  "platform_id"
+    t.float    "wire_diameter"
+    t.float    "active_coil_num"
+    t.float    "free_length"
+    t.string   "flocking"
     t.index ["product_name"], name: "index_manual_calculations_on_product_name"
     t.index ["product_number"], name: "index_manual_calculations_on_product_number"
   end

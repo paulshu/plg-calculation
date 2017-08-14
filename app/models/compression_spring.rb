@@ -33,7 +33,7 @@ class CompressionSpring < ApplicationRecord
 
   def od_force?
     if self.active_coil_num.present? && self.free_length.present?
-      self.od_force = (free_length - od_length) * spring_rate
+      self.od_force = ((free_length - od_length) * spring_rate).round(3)
     else
       self.od_force = 0
     end
@@ -42,7 +42,7 @@ class CompressionSpring < ApplicationRecord
 
   def cd_force?
     if self.active_coil_num.present? && self.free_length.present?
-      self.cd_force = (free_length - cd_length) * spring_rate
+      self.cd_force = ((free_length - cd_length) * spring_rate).round(3)
     else
       self.cd_force = 0
     end
@@ -51,7 +51,7 @@ class CompressionSpring < ApplicationRecord
 
   # 以下为通用的弹簧参数
   Initial_wire_diameter = 3.8 # 初选线径
-  
+
   def deformation # 变形量
     deformation = od_length - cd_length
   end
@@ -69,7 +69,9 @@ class CompressionSpring < ApplicationRecord
   end
 
   def mean_diameter # 弹簧中径
-    mean_diameter = inside_diameter + wire_diameter
+    if inside_diameter.present? && wire_diameter.present?
+      mean_diameter = inside_diameter + wire_diameter
+    end
   end
 
   # 以下为helper调用的一些变量
@@ -183,7 +185,9 @@ class CompressionSpring < ApplicationRecord
   end
 
   def spring_helix_angle # 弹簧螺旋升角
-    Math.atan(spring_pitch / (PI * mean_diameter)) * 180 / PI
+    if mean_diameter.present?
+      (Math.atan(spring_pitch / (PI * mean_diameter)) * 180 / PI).round(3)
+    end
   end
 
   def spring_helix_angle_check # 弹簧螺旋升角校核

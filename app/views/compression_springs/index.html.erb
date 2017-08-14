@@ -37,10 +37,10 @@
               <td><%= compression_spring.cd_length %></td>
               <td><%= compression_spring.wire_diameter %></td>
               <td><%= compression_spring.active_coil_num %></td>
-              <td><%= compression_spring.inside_diameter - 0.05 %></td>
+              <td><%= compression_spring.inside_diameter %></td>
               <td><%= compression_spring.free_length %></td>
-              <td><%= compression_spring.od_force.round(2) %></td>
-              <td><%= compression_spring.cd_force.round(2) %></td>
+              <td><%= compression_spring.od_force %></td>
+              <td><%= compression_spring.cd_force %></td>
               <td>
                 <%= link_to("Edit", step1_compression_spring_path(compression_spring), class: "btn btn-sm btn-primary")%>
                 <%= link_to("Delete", compression_spring_path(compression_spring), class: "btn btn-sm btn-danger",
