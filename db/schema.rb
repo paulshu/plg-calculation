@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(version: 20170814064556) do
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
     t.integer  "platform_id"
-    t.float    "wire_diameter"
+    t.float    "wire_diameter",          default: 3.6, null: false
     t.float    "active_coil_num"
     t.float    "free_length"
     t.string   "flocking"

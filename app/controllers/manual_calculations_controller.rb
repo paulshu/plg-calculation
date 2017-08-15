@@ -70,6 +70,7 @@ class ManualCalculationsController < ApplicationController
 
   def spring_calculation
     @manual_calculation = ManualCalculation.find(params[:id])
+    @platform = Platform.find(@manual_calculation.platform_id)
   end
 
   def spring_calculation_update
