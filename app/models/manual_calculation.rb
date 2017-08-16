@@ -173,10 +173,11 @@ class ManualCalculation < ApplicationRecord
   # 以下为通用的弹簧参数
   Initial_wire_diameter = 3.8 # 初选线径
 
-  platform = Platform.find(2)
-  def inside_diameter
-    platform.inside_diameter
+  def platform
+    platform = Platform.find(self.platform_id)
+
   end
+
 
   def spring_cd_length
     cd_length - platform.spring_static_length
@@ -236,7 +237,7 @@ class ManualCalculation < ApplicationRecord
     end
   end
 
-  def hige_temperature_spring_rate # 高温弹簧刚度
+  def ht_spring_rate # 高温弹簧刚度
     spring_rate * 0.96
   end
 
@@ -364,6 +365,213 @@ class ManualCalculation < ApplicationRecord
       "弹簧螺旋升角满足要求"
     end
   end
+
+  # 撑杆中间参数计算 #
+
+  def open_angle_arr # 开门角度增量
+    if open_angle % 2 == 0
+      oa = open_angle/2 + 1
+    else
+      oa = open_angle/2 + 2
+    end
+    open_angle_arr = Array.new(oa) { |e| e = e * 2 }
+  end
+
+
+  def o_gate_b_x_arr # 开门尾门连接点B实时 X坐标
+    o_gate_b_x_arr = []
+    open_angle_arr.each do |i|
+        o_gate_b_x_arr << vector_ob_on_xz * cos((i + vector_ob_on_xz_x_angle) * PI/180 ) + hinge_x
+    end
+    o_gate_b_x_arr
+  end
+
+  def o_gate_b_y_arr # 开门尾门连接点B实时 y坐标
+    o_gate_b_y_arr = []
+    open_angle_arr.each do |i|
+      o_gate_b_y_arr << gate_b_y
+    end
+    o_gate_b_y_arr
+  end
+
+  def o_gate_b_z_arr # 开门尾门连接点B实时 z坐标
+    o_gate_b_z_arr = []
+    open_angle_arr.each do |i|
+      o_gate_b_z_arr << vector_ob_on_xz * sin((i + vector_ob_on_xz_x_angle) * PI/180 ) + hinge_z
+    end
+    o_gate_b_z_arr
+  end
+
+  def pole_length_arr # 撑杆实时长度
+    pole_length_arr = []
+    o_gate_b_x_arr.each_index do |i|
+      x = o_gate_b_x_arr[i]
+      y = o_gate_b_y_arr[i]
+      z = o_gate_b_z_arr[i]
+      pole_length_arr << sqrt((x - body_a_x) ** (2) + (y - body_a_y) ** (2) + (z - body_a_z) ** (2) )
+    end
+    pole_length_arr
+  end
+
+  def vector_ba_length_x_arr # 向量BA的实时长度（X方向分量）
+    vector_ba_length_x_arr = []
+    o_gate_b_x_arr.each do |i|
+      vector_ba_length_x_arr << body_a_x - i
+    end
+    vector_ba_length_x_arr
+  end
+
+  def vector_ba_length_z_arr # 向量BA的实时长度（Z方向分量）
+    vector_ba_length_z_arr = []
+    o_gate_b_z_arr.each do |i|
+      vector_ba_length_z_arr << body_a_z - i
+    end
+    vector_ba_length_z_arr
+  end
+
+  def vector_ob_length_x_arr # 向量OB的实时长度（X方向分量）
+    vector_ob_length_x_arr = []
+    o_gate_b_x_arr.each do |i|
+      vector_ob_length_x_arr << hinge_x - i
+    end
+    vector_ob_length_x_arr
+  end
+
+  def vector_ob_length_z_arr # 向量OB的实时长度（Z方向分量）
+    vector_ob_length_z_arr = []
+    o_gate_b_z_arr.each do |i|
+      vector_ob_length_z_arr << hinge_z - i
+    end
+    vector_ob_length_z_arr
+  end
+
+  def vector_ba_ob_on_xz_angle_arr # 向量BA和OB在XZ平面的夹角(°)
+    vector_ba_ob_on_xz_angle_arr = []
+    vector_ob_length_x_arr.each_index do |i|
+      vector_ba_ob_on_xz_angle_arr << 180 / PI * acos((vector_ob_length_x_arr[i] * vector_ba_length_x_arr[i] + vector_ob_length_z_arr[i] * vector_ba_length_z_arr[i]) / (sqrt(vector_ob_length_x_arr[i] **(2) +
+          vector_ob_length_z_arr[i] **(2)) * sqrt(vector_ba_length_x_arr[i] ** (2) + vector_ba_length_z_arr[i] **(2))))
+    end
+    vector_ba_ob_on_xz_angle_arr
+  end
+
+  def pole_force_arm_arr  # 撑杆力臂
+    pole_force_arm_arr = []
+    vector_ba_ob_on_xz_angle_arr.each do |i|
+      pole_force_arm_arr << vector_ob_on_xz * sin(i * PI / 180)
+    end
+    pole_force_arm_arr
+  end
+
+  def vector_ab_xz_angle_arr # 向量AB与XZ平面的实时线面夹角（空间夹角）
+    vector_ab_xz_angle_arr = []
+    vector_ba_length_x_arr.each_index do |i|
+      x = vector_ba_length_x_arr[i]
+      y = vector_ab_length_y
+      z = vector_ba_length_z_arr[i]
+      vector_ab_xz_angle_arr << 180 / PI * acos((x * x + z * z) / (sqrt(x ** (2) + y ** (2) + z ** (2)) * sqrt(x ** (2) + z ** (2) ) ))
+    end
+    vector_ab_xz_angle_arr
+  end
+
+  def uphill_gravity_arm_arr # 上坡重力力臂
+    uphill_gravity_arm_arr = []
+    open_angle_arr.each do |i|
+      uphill_gravity_arm_arr << vector_og_on_xz * cos(( vector_og_on_xz_x_angle + i - car_climbing_angle ) * PI / 180)
+    end
+    uphill_gravity_arm_arr
+  end
+
+  def flat_slope_gravity_arm_arr # 平坡重力力臂
+    flat_slope_gravity_arm_arr = []
+    open_angle_arr.each do |i|
+      flat_slope_gravity_arm_arr << vector_og_on_xz * cos(( vector_og_on_xz_x_angle + i ) * PI / 180)
+    end
+    flat_slope_gravity_arm_arr
+  end
+
+  def downhill_gravity_arm_arr # 下坡重力力臂
+    downhill_gravity_arm_arr = []
+    open_angle_arr.each do |i|
+      downhill_gravity_arm_arr << vector_og_on_xz * cos(( vector_og_on_xz_x_angle + i + car_climbing_angle ) * PI / 180)
+    end
+    downhill_gravity_arm_arr
+  end
+
+  #  重力矩 #
+  def uphill_gravity_torque_arr # 上坡重力力矩
+    uphill_gravity_torque_arr = []
+    uphill_gravity_arm_arr.each do |i|
+      uphill_gravity_torque_arr << (door_weight * 9.8 * i / 1000).abs
+    end
+    uphill_gravity_torque_arr
+  end
+
+  def flat_slope_gravity_torque_arr # 平坡重力力矩
+    flat_slope_gravity_torque_arr = []
+    flat_slope_gravity_arm_arr.each do |i|
+      flat_slope_gravity_torque_arr << (door_weight * 9.8 * i / 1000).abs
+    end
+    flat_slope_gravity_torque_arr
+  end
+
+  def downhill_gravity_torque_arr # 下坡重力力矩
+    downhill_gravity_torque_arr = []
+    downhill_gravity_arm_arr.each do |i|
+      downhill_gravity_torque_arr << (door_weight * 9.8 * i / 1000).abs
+    end
+    downhill_gravity_torque_arr
+  end
+
+  #  弹簧力矩 以下均为单根力矩 #
+  def nt_spring_force_arr # 常温弹簧力
+    nt_spring_force_arr = []
+    pole_length_arr.each do |i|
+      nt_spring_force_arr << ( free_length - (spring_cd_length + i - cd_length )) * spring_rate
+    end
+    nt_spring_force_arr
+  end
+
+  def ht_spring_force_arr # 高温弹簧力
+    ht_spring_force_arr = []
+    pole_length_arr.each do |i|
+      ht_spring_force_arr << ( free_length - (spring_cd_length + i - cd_length )) * ht_spring_rate
+    end
+    ht_spring_force_arr
+  end
+
+  def lt_lower_deviation_spring_torque_arr # 低温下偏差弹簧力矩
+    lt_lower_deviation_spring_torque_arr = []
+    open_angle_arr.each_index do |i|
+      j = nt_spring_force_arr[i]
+      h = pole_force_arm_arr[i]
+      k = vector_ab_xz_angle_arr[i]
+      lt_lower_deviation_spring_torque_arr << (j - 30) * h * cos(PI / 180 * k) / 1000
+    end
+    lt_lower_deviation_spring_torque_arr
+  end
+
+  def lt_median_spring_torque_arr # 低温中值弹簧力矩
+    lt_median_spring_torque_arr = []
+    nt_spring_force_arr.each_index do |i|
+      j = nt_spring_force_arr[i]
+      h = pole_force_arm_arr[i]
+      k = vector_ab_xz_angle_arr[i]
+      lt_median_spring_torque_arr << j * h * cos(PI / 180 * k) / 1000
+    end
+    lt_median_spring_torque_arr
+  end
+
+  def lt_upper_deviation_spring_torque_arr # 低温上偏差弹簧力矩
+  end
+
+  def lt_after_life_spring_torque_arr # 低温寿命后弹簧力矩
+  end
+
+
+
+  # 悬停计算  #
+
+
 
 
   protected
