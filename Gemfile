@@ -48,7 +48,10 @@ group :development, :test do
   #gem 'capistrano-sidekiq'
   gem 'pry'
   gem 'awesome_rails_console'
-  gem 'rack-mini-profiler'
+  gem 'rack-mini-profiler'  # 效能分析用的
+  gem 'memory_profiler'     # 配合上面的gem进行内存分析
+  # gem 'flamegraph'      # 配合rack-mini-profiler进行图形分析
+  # gem 'stackprof'        # 同上
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
 end

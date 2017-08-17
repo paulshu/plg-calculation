@@ -618,7 +618,7 @@ class ManualCalculation < ApplicationRecord
     end
     ht_after_life_spring_torque_arr
   end
-
+binding.pry
 
 
   # 悬停计算  #
