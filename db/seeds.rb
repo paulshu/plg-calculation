@@ -51,6 +51,28 @@ end
 
 puts "B17平台导入完成"
 
+
+# Initialize compression_spring
+CompressionSpring.create!(
+  :id => 1,
+  :product_name => "众泰A45",
+  :product_number => "A45",
+  :min_force => 624.5,
+  :max_force => 1013.0,
+  :od_length => 387.23,
+  :cd_length => 225.0,
+  :inside_diameter => 21.55,
+  :wire_diameter => 3.8,
+  :active_coil_num => 48.0,
+  :total_num => 50.0,
+  :free_length => 610.5,
+  :od_force => 586.443,
+  :cd_force => 1012.558,
+  :max_tensile_strength => 2100,
+  :s_elastic_modulus => 78800,
+  :flocking => "0.4"
+)
+
 # Initialize ManualCalculation
 
 ManualCalculation.create!(

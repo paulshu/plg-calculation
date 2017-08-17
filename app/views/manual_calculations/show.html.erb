@@ -77,7 +77,7 @@
             <td><%= @manual_calculation.platform.try(:platform_name) %></td>
             <!-- 避免调用 nil.name 就会出现 NoMethodError 了 -->
             <%#= @manual_calculation.platform.platform_name %>
-            <td><%= @manual_calculation.vector_og_on_xz%> </td>
+            <!-- <td><%= @manual_calculation.vector_og_on_xz%> </td>
             <td><%= @manual_calculation.vector_ob_on_xz%> </td>
             <td><%= @manual_calculation.vector_ab %> </td>
             <td><%= @manual_calculation.vector_ob_on_xz_x_angle %> </td>
@@ -113,7 +113,7 @@
             <td><%= @manual_calculation.od_min_force %> </td>
             <td><%= @manual_calculation.cd_max_force %> </td>
             <td><%= @manual_calculation.car_climbing_angle %> </td>
-          </tr>
+          </tr> -->
           <!-- <tr>
             <td><%= @manual_calculation.open_angle_arr %> </td>
             <td><%= @manual_calculation.o_gate_b_x_arr %></td>
@@ -138,11 +138,24 @@
             <td><%= @manual_calculation.downhill_gravity_torque_arr %> </td>
             <td><%= @manual_calculation.pole_length_arr %></td>
             <td><%= @manual_calculation.nt_spring_force_arr %></td>
-            <td><%#= @manual_calculation.lt_lower_deviation_spring_torque_arr %></td>
-            <td><%= @manual_calculation.lt_median_spring_torque_arr %></td>
-            <td><%= @manual_calculation.lt_upper_deviation_spring_torque_arr %></td>
-            <td><%= @manual_calculation.lt_after_life_spring_torque_arr %></td>
-            <td><%= @manual_calculation %></td>
+            <td><%#= @manual_calculation.nt_lower_deviation_spring_torque_arr %></td>
+            <td><%= @manual_calculation.nt_median_spring_torque_arr %></td>
+            <td><%#= @manual_calculation.nt_upper_deviation_spring_torque_arr %></td>
+            <td><%#= @manual_calculation.nt_after_life_spring_torque_arr %></td>
+            <td><%#= @manual_calculation.ht_lower_deviation_spring_torque_arr %></td>
+            <td><%#= @manual_calculation.ht_median_spring_torque_arr %></td>
+            <td><%#= @manual_calculation.ht_upper_deviation_spring_torque_arr %></td>
+            <td><%#= @manual_calculation.ht_after_life_spring_torque_arr %></td>
+          </tr>
+          <tr>
+            <td><%#= @manual_calculation.uphill_lt_lower_deviation_hover_arr %> </td>
+            <td><%#= @manual_calculation.uphill_lt_median_hover_arr %></td>
+            <td><%#= @manual_calculation.uphill_lt_upper_deviation_hover_arr %></td>
+            <td><%#= @manual_calculation.uphill_lt_after_life_hover_arr %></td>
+            <td><%#= @manual_calculation.flat_slope_gravity_arm_arr %></td>
+            <td><%#= @manual_calculation.downhill_gravity_arm_arr %></td>
+            <td><%#= @manual_calculation.uphill_gravity_torque_arr %></td>
+            <td><%#= @manual_calculation.flat_slope_gravity_torque_arr %></td>
           </tr>
         </table>
 

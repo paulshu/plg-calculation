@@ -172,11 +172,15 @@ class ManualCalculation < ApplicationRecord
 
   # 以下为通用的弹簧参数
   Initial_wire_diameter = 3.8 # 初选线径
+  # manual_calculations = ManualCalculation.joins(:platform)
+  # 回传所有manual_calculation内含有platform_id的项目, 不会同时查询关联的数据资料，后面会重新生成瓣的查询指令
+  manual_calculations = ManualCalculation.includes(:platform)
+  # 回传所有manual_calculation内含有platform项目, 会同时查询关联的数据
 
-  def platform
-    platform = Platform.find(self.platform_id)
-
-  end
+  # def platform
+  #   platform = Platform.find(self.platform_id)
+  # end
+  # 可以代替上面的代码，但效率低25%
 
 
   def spring_cd_length
@@ -368,12 +372,19 @@ class ManualCalculation < ApplicationRecord
 
   # 撑杆中间参数计算 #
 
-  def open_angle_arr # 开门角度增量
+  def oa
     if open_angle % 2 == 0
       oa = open_angle/2 + 1
     else
       oa = open_angle/2 + 2
     end
+  end
+
+  def oa_public_arr  # 用于公用的索引
+    oa_public_arr = Array.new(oa) { |e| e = e + 1 }
+  end
+
+  def open_angle_arr # 开门角度增量
     open_angle_arr = Array.new(oa) { |e| e = e * 2 }
   end
 
@@ -447,7 +458,7 @@ class ManualCalculation < ApplicationRecord
 
   def vector_ba_ob_on_xz_angle_arr # 向量BA和OB在XZ平面的夹角(°)
     vector_ba_ob_on_xz_angle_arr = []
-    vector_ob_length_x_arr.each_index do |i|
+    oa_public_arr.each_index do |i|
       vector_ba_ob_on_xz_angle_arr << 180 / PI * acos((vector_ob_length_x_arr[i] * vector_ba_length_x_arr[i] + vector_ob_length_z_arr[i] * vector_ba_length_z_arr[i]) / (sqrt(vector_ob_length_x_arr[i] **(2) +
           vector_ob_length_z_arr[i] **(2)) * sqrt(vector_ba_length_x_arr[i] ** (2) + vector_ba_length_z_arr[i] **(2))))
     end
@@ -464,7 +475,7 @@ class ManualCalculation < ApplicationRecord
 
   def vector_ab_xz_angle_arr # 向量AB与XZ平面的实时线面夹角（空间夹角）
     vector_ab_xz_angle_arr = []
-    vector_ba_length_x_arr.each_index do |i|
+    oa_public_arr.each_index do |i|
       x = vector_ba_length_x_arr[i]
       y = vector_ab_length_y
       z = vector_ba_length_z_arr[i]
@@ -523,7 +534,7 @@ class ManualCalculation < ApplicationRecord
   end
 
   #  弹簧力矩 以下均为单根力矩 #
-  def nt_spring_force_arr # 常温弹簧力
+  def nt_spring_force_arr # 常温弹簧力中值
     nt_spring_force_arr = []
     pole_length_arr.each do |i|
       nt_spring_force_arr << ( free_length - (spring_cd_length + i - cd_length )) * spring_rate
@@ -531,46 +542,104 @@ class ManualCalculation < ApplicationRecord
     nt_spring_force_arr
   end
 
-  def ht_spring_force_arr # 高温弹簧力
-    ht_spring_force_arr = []
-    pole_length_arr.each do |i|
-      ht_spring_force_arr << ( free_length - (spring_cd_length + i - cd_length )) * ht_spring_rate
-    end
-    ht_spring_force_arr
-  end
 
-  def lt_lower_deviation_spring_torque_arr # 低温下偏差弹簧力矩
-    lt_lower_deviation_spring_torque_arr = []
-    open_angle_arr.each_index do |i|
+  def nt_lower_deviation_spring_torque_arr # 常温下偏差弹簧力矩
+    nt_lower_deviation_spring_torque_arr = []
+    oa_public_arr.each_index do |i|
       j = nt_spring_force_arr[i]
       h = pole_force_arm_arr[i]
       k = vector_ab_xz_angle_arr[i]
-      lt_lower_deviation_spring_torque_arr << (j - 30) * h * cos(PI / 180 * k) / 1000
+      nt_lower_deviation_spring_torque_arr << (j - 30) * h * cos(PI / 180 * k) / 1000
     end
-    lt_lower_deviation_spring_torque_arr
+    nt_lower_deviation_spring_torque_arr
   end
 
-  def lt_median_spring_torque_arr # 低温中值弹簧力矩
-    lt_median_spring_torque_arr = []
+  def nt_median_spring_torque_arr # 常温中值弹簧力矩
+    nt_median_spring_torque_arr = []
+    oa_public_arr.each_index do |i|
+      j = nt_spring_force_arr[i]
+      h = pole_force_arm_arr[i]
+      k = vector_ab_xz_angle_arr[i]
+      nt_median_spring_torque_arr << j * h * cos(PI / 180 * k) / 1000
+    end
+    nt_median_spring_torque_arr
+  end
+
+  def nt_upper_deviation_spring_torque_arr # 常温上偏差弹簧力矩
+    nt_upper_deviation_spring_torque_arr = []
     nt_spring_force_arr.each_index do |i|
       j = nt_spring_force_arr[i]
       h = pole_force_arm_arr[i]
       k = vector_ab_xz_angle_arr[i]
-      lt_median_spring_torque_arr << j * h * cos(PI / 180 * k) / 1000
+      nt_upper_deviation_spring_torque_arr << (j + 30) * h * cos(PI / 180 * k) / 1000
     end
-    lt_median_spring_torque_arr
+    nt_upper_deviation_spring_torque_arr
   end
 
-  def lt_upper_deviation_spring_torque_arr # 低温上偏差弹簧力矩
+  def nt_after_life_spring_torque_arr # 常温寿命后弹簧力矩
+    nt_after_life_spring_torque_arr = []
+    nt_spring_force_arr.each_index do |i|
+      j = nt_spring_force_arr[i]
+      h = pole_force_arm_arr[i]
+      k = vector_ab_xz_angle_arr[i]
+      nt_after_life_spring_torque_arr << (j * (1 - 0.05)) * h * cos(PI / 180 * k) / 1000
+    end
+    nt_after_life_spring_torque_arr
   end
 
-  def lt_after_life_spring_torque_arr # 低温寿命后弹簧力矩
+  def ht_lower_deviation_spring_torque_arr # 高温下偏差弹簧力矩
+    ht_lower_deviation_spring_torque_arr = []
+    nt_lower_deviation_spring_torque_arr.each do |i|
+      ht_lower_deviation_spring_torque_arr << i * 0.96
+    end
+    ht_lower_deviation_spring_torque_arr
+  end
+
+  def ht_median_spring_torque_arr # 高温中值弹簧力矩
+    ht_median_spring_torque_arr = []
+    nt_median_spring_torque_arr.each do |i|
+      ht_median_spring_torque_arr << i * 0.96
+    end
+    ht_median_spring_torque_arr
+  end
+
+  def ht_upper_deviation_spring_torque_arr # 高温上偏差弹簧力矩
+    ht_upper_deviation_spring_torque_arr = []
+    nt_upper_deviation_spring_torque_arr.each do |i|
+      ht_upper_deviation_spring_torque_arr << i * 0.96
+    end
+    ht_upper_deviation_spring_torque_arr
+  end
+
+  def ht_after_life_spring_torque_arr # 高温寿命后弹簧力矩
+    ht_after_life_spring_torque_arr = []
+    nt_after_life_spring_torque_arr.each do |i|
+      ht_after_life_spring_torque_arr << i * 0.96
+    end
+    ht_after_life_spring_torque_arr
   end
 
 
 
   # 悬停计算  #
 
+
+  def uphill_lt_lower_deviation_hover_arr # 上坡低温下偏差悬停
+    uphill_lt_ower_deviation_hover_arr = []
+    nt_lower_deviation_spring_torque_arr.each_index do |i|
+      uphill_lt_lower_deviation_hover_arr << (55) * pole_force_arm_arr[i] / cos(PI / 180 * vector_ab_xz_angle_arr[i]) / 1000
+    end
+    uphill_lt_lower_deviation_hover_arr
+  end
+
+  def uphill_lt_median_hover_arr # 上坡低温中值悬停
+  end
+
+  def uphill_lt_upper_deviation_hover_arr # 上坡低温上偏差悬停
+  end
+
+  def uphill_lt_after_life_hover_arr # 上坡低温寿命后悬停
+  end
 
 
 
