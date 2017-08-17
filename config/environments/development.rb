@@ -26,6 +26,17 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
+
+  # Bullet initializer  N+1的问题
+  # config.after_initialize do
+  #   Bullet.enable = true
+  #   Bullet.alert = true
+  #   Bullet.bullet_logger = true
+  #   Bullet.console = true
+  #   Bullet.rails_logger = true
+  #   Bullet.add_footer = true
+  # end
+
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
 

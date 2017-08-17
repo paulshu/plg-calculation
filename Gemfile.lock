@@ -150,6 +150,8 @@ GEM
       pry (>= 0.10.4)
     puma (3.9.1)
     rack (2.0.3)
+    rack-mini-profiler (0.10.1)
+      rack (>= 1.2.0)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (5.0.4)
@@ -257,6 +259,7 @@ DEPENDENCIES
   mysql2
   pry
   puma (~> 3.0)
+  rack-mini-profiler
   rails (~> 5.0.4)
   rubyzip
   sass-rails (~> 5.0)
