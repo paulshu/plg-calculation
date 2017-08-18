@@ -605,9 +605,56 @@ class ManualCalculation < ApplicationRecord
 
   # 撑杆动摩擦阻力
 
-  
+  def nt_open_dynamic_friction_arr  # 常温开门摩擦阻力
+    nt_open_dynamic_friction_arr = Array.new(oa, open_dynamic_friction)
+  end
+
+  def lt_open_dynamic_friction_arr  # 低温开门摩擦阻力
+    lt_open_dynamic_friction_arr = Array.new(oa, open_dynamic_friction + 50)
+  end
+
+  def ht_open_dynamic_friction_arr  # 低温开门摩擦阻力
+    ht_open_dynamic_friction_arr = Array.new(oa, open_dynamic_friction - 50)
+  end
+
+  def nt_close_dynamic_friction_arr  # 常温关门摩擦阻力
+    nt_close_dynamic_friction_arr = Array.new(oa, close_dynamic_friction)
+  end
+
+  def lt_close_dynamic_friction_arr  # 低温关门摩擦阻力
+    lt_open_dynamic_friction_arr = Array.new(oa, close_dynamic_friction - 50)
+  end
+
+  def ht_close_dynamic_friction_arr  # 低温关门摩擦阻力
+    ht_open_dynamic_friction_arr = Array.new(oa, close_dynamic_friction + 50)
+  end
+
 
   # 撑杆静摩擦阻力
+
+  def nt_open_static_friction_arr  # 常温开门静摩擦阻力
+    nt_open_dynamic_friction_arr = Array.new(oa, open_static_friction)
+  end
+
+  def lt_open_static_friction_arr  # 低温开门静摩擦阻力
+    lt_open_dynamic_friction_arr = Array.new(oa, open_static_friction + 50)
+  end
+
+  def ht_open_static_friction_arr  # 低温开门静摩擦阻力
+    ht_open_dynamic_friction_arr = Array.new(oa, open_static_friction - 50)
+  end
+
+  def nt_close_static_friction_arr  # 常温关门静摩擦阻力
+    nt_close_dynamic_friction_arr = Array.new(oa, close_static_friction)
+  end
+
+  def lt_close_static_friction_arr  # 低温关门静摩擦阻力
+    lt_open_dynamic_friction_arr = Array.new(oa, close_static_friction - 50)
+  end
+
+  def ht_close_static_friction_arr  # 低温关门静摩擦阻力
+    ht_open_dynamic_friction_arr = Array.new(oa, close_static_friction + 50)
+  end
 
   # 悬停计算  #
 

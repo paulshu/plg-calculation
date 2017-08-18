@@ -25,10 +25,10 @@ class CreateManualCalculations < ActiveRecord::Migration[5.0]
       t.float :open_angle
       t.float :open_time
       t.float :close_time
-      t.integer :open_dynamic_friction  # 开门阻力（动摩擦力）
-      t.integer :close_dynamic_friction
-      t.integer :open_static_friction  # 开门阻力（静摩擦力）
-      t.integer :close_static_friction
+      t.integer :open_dynamic_friction, default: 250, null: false # 开门阻力（动摩擦力）
+      t.integer :close_dynamic_friction, default: -270, null: false
+      t.integer :open_static_friction, default: 300, null: false  # 开门阻力（静摩擦力）
+      t.integer :close_static_friction, default: -320, null: false
       t.timestamps
     end
   end
