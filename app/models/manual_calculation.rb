@@ -36,8 +36,6 @@ class ManualCalculation < ApplicationRecord
   validates :active_coil_num, presence:  { message: "请填写弹簧有效圈数" }, :if => :should_validate_all_data?
 
 
-
-
   belongs_to :platform
   # belongs_to :platform, inverse_of: :manual_calculations
   # 报错时考虑用
@@ -380,10 +378,6 @@ class ManualCalculation < ApplicationRecord
     end
   end
 
-  def oa_public_arr  # 用于公用的索引
-    oa_public_arr = Array.new(oa) { |e| e = e + 1 }
-  end
-
   def open_angle_arr # 开门角度增量
     open_angle_arr = Array.new(oa) { |e| e = e * 2 }
   end
@@ -415,10 +409,11 @@ class ManualCalculation < ApplicationRecord
 
   def pole_length_arr # 撑杆实时长度
     pole_length_arr = []
-    o_gate_b_x_arr.each_index do |i|
-      x = o_gate_b_x_arr[i]
-      y = o_gate_b_y_arr[i]
-      z = o_gate_b_z_arr[i]
+    # o_gate_b_x_arr.each_index do |i|
+    #   x = o_gate_b_x_arr[i]
+    #   y = o_gate_b_y_arr[i]
+    #   z = o_gate_b_z_arr[i]
+    o_gate_b_x_arr.zip(o_gate_b_y_arr,o_gate_b_z_arr) do |x,y,z|
       pole_length_arr << sqrt((x - body_a_x) ** (2) + (y - body_a_y) ** (2) + (z - body_a_z) ** (2) )
     end
     pole_length_arr
@@ -458,9 +453,8 @@ class ManualCalculation < ApplicationRecord
 
   def vector_ba_ob_on_xz_angle_arr # 向量BA和OB在XZ平面的夹角(°)
     vector_ba_ob_on_xz_angle_arr = []
-    oa_public_arr.each_index do |i|
-      vector_ba_ob_on_xz_angle_arr << 180 / PI * acos((vector_ob_length_x_arr[i] * vector_ba_length_x_arr[i] + vector_ob_length_z_arr[i] * vector_ba_length_z_arr[i]) / (sqrt(vector_ob_length_x_arr[i] **(2) +
-          vector_ob_length_z_arr[i] **(2)) * sqrt(vector_ba_length_x_arr[i] ** (2) + vector_ba_length_z_arr[i] **(2))))
+    vector_ob_length_x_arr.zip(vector_ba_length_x_arr,vector_ob_length_z_arr, vector_ba_length_z_arr) do |i,j,k,l|
+      vector_ba_ob_on_xz_angle_arr << 180 / PI * acos((i * j + k * l) / (sqrt(i **(2) + k **(2)) * sqrt(j ** (2) + l **(2))))
     end
     vector_ba_ob_on_xz_angle_arr
   end
@@ -475,10 +469,8 @@ class ManualCalculation < ApplicationRecord
 
   def vector_ab_xz_angle_arr # 向量AB与XZ平面的实时线面夹角（空间夹角）
     vector_ab_xz_angle_arr = []
-    oa_public_arr.each_index do |i|
-      x = vector_ba_length_x_arr[i]
       y = vector_ab_length_y
-      z = vector_ba_length_z_arr[i]
+    vector_ba_length_x_arr.zip(vector_ba_length_z_arr) do |x,z|
       vector_ab_xz_angle_arr << 180 / PI * acos((x * x + z * z) / (sqrt(x ** (2) + y ** (2) + z ** (2)) * sqrt(x ** (2) + z ** (2) ) ))
     end
     vector_ab_xz_angle_arr
@@ -545,10 +537,11 @@ class ManualCalculation < ApplicationRecord
 
   def nt_lower_deviation_spring_torque_arr # 常温下偏差弹簧力矩
     nt_lower_deviation_spring_torque_arr = []
-    oa_public_arr.each_index do |i|
-      j = nt_spring_force_arr[i]
-      h = pole_force_arm_arr[i]
-      k = vector_ab_xz_angle_arr[i]
+    # oa_public_arr.each_index do |i|
+    #   j = nt_spring_force_arr[i]
+    #   h = pole_force_arm_arr[i]
+    #   k = vector_ab_xz_angle_arr[i]   上面这种写法效率很低，在多层迭代取值后运行时间变得很长，而下面的zip方法，而可以提高速度12倍以上
+    nt_spring_force_arr.zip(pole_force_arm_arr,vector_ab_xz_angle_arr) do |j,h,k|
       nt_lower_deviation_spring_torque_arr << (j - 30) * h * cos(PI / 180 * k) / 1000
     end
     nt_lower_deviation_spring_torque_arr
@@ -556,10 +549,7 @@ class ManualCalculation < ApplicationRecord
 
   def nt_median_spring_torque_arr # 常温中值弹簧力矩
     nt_median_spring_torque_arr = []
-    oa_public_arr.each_index do |i|
-      j = nt_spring_force_arr[i]
-      h = pole_force_arm_arr[i]
-      k = vector_ab_xz_angle_arr[i]
+    nt_spring_force_arr.zip(pole_force_arm_arr,vector_ab_xz_angle_arr) do |j,h,k|
       nt_median_spring_torque_arr << j * h * cos(PI / 180 * k) / 1000
     end
     nt_median_spring_torque_arr
@@ -567,22 +557,16 @@ class ManualCalculation < ApplicationRecord
 
   def nt_upper_deviation_spring_torque_arr # 常温上偏差弹簧力矩
     nt_upper_deviation_spring_torque_arr = []
-    nt_spring_force_arr.each_index do |i|
-      j = nt_spring_force_arr[i]
-      h = pole_force_arm_arr[i]
-      k = vector_ab_xz_angle_arr[i]
-      nt_upper_deviation_spring_torque_arr << (j + 30) * h * cos(PI / 180 * k) / 1000
+    nt_spring_force_arr.zip(pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k|
+      nt_upper_deviation_spring_torque_arr << (i + 30) * j * cos(PI / 180 * k) / 1000
     end
     nt_upper_deviation_spring_torque_arr
   end
 
   def nt_after_life_spring_torque_arr # 常温寿命后弹簧力矩
     nt_after_life_spring_torque_arr = []
-    nt_spring_force_arr.each_index do |i|
-      j = nt_spring_force_arr[i]
-      h = pole_force_arm_arr[i]
-      k = vector_ab_xz_angle_arr[i]
-      nt_after_life_spring_torque_arr << (j * (1 - 0.05)) * h * cos(PI / 180 * k) / 1000
+    nt_spring_force_arr.zip(pole_force_arm_arr, vector_ab_xz_angle_arr) do |i,j,k|
+      nt_after_life_spring_torque_arr << (i * (1 - 0.05)) * j * cos(PI / 180 * k) / 1000
     end
     nt_after_life_spring_torque_arr
   end
@@ -618,29 +602,220 @@ class ManualCalculation < ApplicationRecord
     end
     ht_after_life_spring_torque_arr
   end
-binding.pry
 
+  # 撑杆动摩擦阻力
+
+  
+
+  # 撑杆静摩擦阻力
 
   # 悬停计算  #
 
-
   def uphill_lt_lower_deviation_hover_arr # 上坡低温下偏差悬停
-    uphill_lt_ower_deviation_hover_arr = []
-    nt_lower_deviation_spring_torque_arr.each_index do |i|
-      uphill_lt_lower_deviation_hover_arr << (55) * pole_force_arm_arr[i] / cos(PI / 180 * vector_ab_xz_angle_arr[i]) / 1000
+    uphill_lt_lower_deviation_hover_arr = []
+    uphill_gravity_torque_arr.zip(nt_lower_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+      uphill_lt_lower_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
     end
     uphill_lt_lower_deviation_hover_arr
   end
 
   def uphill_lt_median_hover_arr # 上坡低温中值悬停
+    uphill_lt_median_hover_arr = []
+    uphill_gravity_torque_arr.zip(nt_median_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+      uphill_lt_median_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+    end
+    uphill_lt_median_hover_arr
   end
 
   def uphill_lt_upper_deviation_hover_arr # 上坡低温上偏差悬停
+    uphill_lt_upper_deviation_hover_arr = []
+    uphill_gravity_torque_arr.zip(nt_upper_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+      uphill_lt_upper_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+    end
+    uphill_lt_upper_deviation_hover_arr
   end
 
   def uphill_lt_after_life_hover_arr # 上坡低温寿命后悬停
+    uphill_lt_after_life_hover_arr = []
+    uphill_gravity_torque_arr.zip(nt_after_life_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+      uphill_lt_after_life_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+    end
+    uphill_lt_after_life_hover_arr
   end
 
+# 高温
+
+  def uphill_ht_lower_deviation_hover_arr # 上坡高温下偏差悬停
+    uphill_ht_lower_deviation_hover_arr = []
+    uphill_gravity_torque_arr.zip(ht_lower_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+      uphill_ht_lower_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+    end
+    uphill_ht_lower_deviation_hover_arr
+  end
+
+  def uphill_ht_median_hover_arr # 上坡高温中值悬停
+    uphill_ht_median_hover_arr = []
+    uphill_gravity_torque_arr.zip(ht_median_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+      uphill_ht_median_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+    end
+    uphill_ht_median_hover_arr
+  end
+
+  def uphill_ht_upper_deviation_hover_arr # 上坡高温上偏差悬停
+    uphill_ht_upper_deviation_hover_arr = []
+    uphill_gravity_torque_arr.zip(ht_upper_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+      uphill_ht_upper_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+    end
+    uphill_ht_upper_deviation_hover_arr
+  end
+
+  def uphill_ht_after_life_hover_arr # 上坡高温寿命后悬停
+    uphill_ht_after_life_hover_arr = []
+    uphill_gravity_torque_arr.zip(ht_after_life_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+      uphill_ht_after_life_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+    end
+    uphill_ht_after_life_hover_arr
+  end
+
+  # 平坡
+
+
+    def flat_slope_lt_lower_deviation_hover_arr # 平坡低温下偏差悬停
+      flat_slope_lt_lower_deviation_hover_arr = []
+      flat_slope_gravity_torque_arr.zip(nt_lower_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+        flat_slope_lt_lower_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+      end
+      flat_slope_lt_lower_deviation_hover_arr
+    end
+
+    def flat_slope_lt_median_hover_arr # 平坡低温中值悬停
+      flat_slope_lt_median_hover_arr = []
+      flat_slope_gravity_torque_arr.zip(nt_median_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+        flat_slope_lt_median_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+      end
+      flat_slope_lt_median_hover_arr
+    end
+
+    def flat_slope_lt_upper_deviation_hover_arr # 平坡低温上偏差悬停
+      flat_slope_lt_upper_deviation_hover_arr = []
+      flat_slope_gravity_torque_arr.zip(nt_upper_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+        flat_slope_lt_upper_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+      end
+      flat_slope_lt_upper_deviation_hover_arr
+    end
+
+    def flat_slope_lt_after_life_hover_arr # 平坡低温寿命后悬停
+      flat_slope_lt_after_life_hover_arr = []
+      flat_slope_gravity_torque_arr.zip(nt_after_life_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+        flat_slope_lt_after_life_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+      end
+      flat_slope_lt_after_life_hover_arr
+    end
+
+  # 高温
+
+    def flat_slope_ht_lower_deviation_hover_arr # 平坡高温下偏差悬停
+      flat_slope_ht_lower_deviation_hover_arr = []
+      flat_slope_gravity_torque_arr.zip(ht_lower_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+        flat_slope_ht_lower_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+      end
+      flat_slope_ht_lower_deviation_hover_arr
+    end
+
+    def flat_slope_ht_median_hover_arr # 平坡高温中值悬停
+      flat_slope_ht_median_hover_arr = []
+      flat_slope_gravity_torque_arr.zip(ht_median_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+        flat_slope_ht_median_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+      end
+      flat_slope_ht_median_hover_arr
+    end
+
+    def flat_slope_ht_upper_deviation_hover_arr # 平坡高温上偏差悬停
+      flat_slope_ht_upper_deviation_hover_arr = []
+      flat_slope_gravity_torque_arr.zip(ht_upper_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+        flat_slope_ht_upper_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+      end
+      flat_slope_ht_upper_deviation_hover_arr
+    end
+
+    def flat_slope_ht_after_life_hover_arr # 平坡高温寿命后悬停
+      flat_slope_ht_after_life_hover_arr = []
+      flat_slope_gravity_torque_arr.zip(ht_after_life_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+        flat_slope_ht_after_life_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+      end
+      flat_slope_ht_after_life_hover_arr
+    end
+
+    # 下坡
+
+
+      def downhill_lt_lower_deviation_hover_arr # 下坡低温下偏差悬停
+        downhill_lt_lower_deviation_hover_arr = []
+        downhill_gravity_torque_arr.zip(nt_lower_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+          downhill_lt_lower_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+        end
+        downhill_lt_lower_deviation_hover_arr
+      end
+
+      def downhill_lt_median_hover_arr # 下坡低温中值悬停
+        downhill_lt_median_hover_arr = []
+        downhill_gravity_torque_arr.zip(nt_median_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+          downhill_lt_median_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+        end
+        downhill_lt_median_hover_arr
+      end
+
+      def downhill_lt_upper_deviation_hover_arr # 下坡低温上偏差悬停
+        downhill_lt_upper_deviation_hover_arr = []
+        downhill_gravity_torque_arr.zip(nt_upper_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+          downhill_lt_upper_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+        end
+        downhill_lt_upper_deviation_hover_arr
+      end
+
+      def downhill_lt_after_life_hover_arr # 下坡低温寿命后悬停
+        downhill_lt_after_life_hover_arr = []
+        downhill_gravity_torque_arr.zip(nt_after_life_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+          downhill_lt_after_life_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+        end
+        downhill_lt_after_life_hover_arr
+      end
+
+    # 高温
+
+      def downhill_ht_lower_deviation_hover_arr # 下坡高温下偏差悬停
+        downhill_ht_lower_deviation_hover_arr = []
+        downhill_gravity_torque_arr.zip(ht_lower_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+          downhill_ht_lower_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+        end
+        downhill_ht_lower_deviation_hover_arr
+      end
+
+      def downhill_ht_median_hover_arr # 下坡高温中值悬停
+        downhill_ht_median_hover_arr = []
+        downhill_gravity_torque_arr.zip(ht_median_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+          downhill_ht_median_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+        end
+        downhill_ht_median_hover_arr
+      end
+
+      def downhill_ht_upper_deviation_hover_arr # 下坡高温上偏差悬停
+        downhill_ht_upper_deviation_hover_arr = []
+        downhill_gravity_torque_arr.zip(ht_upper_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+          downhill_ht_upper_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+        end
+        downhill_ht_upper_deviation_hover_arr
+      end
+
+      def downhill_ht_after_life_hover_arr # 下坡高温寿命后悬停
+        downhill_ht_after_life_hover_arr = []
+        downhill_gravity_torque_arr.zip(ht_after_life_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+          downhill_ht_after_life_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+        end
+        downhill_ht_after_life_hover_arr
+      end
+
+      # 手动开门力 #
 
 
   protected
