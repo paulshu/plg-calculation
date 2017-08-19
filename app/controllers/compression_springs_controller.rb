@@ -66,6 +66,7 @@ class CompressionSpringsController < ApplicationController
             borderDash: [5, 5],
           }]
     }
+
   end
 
   def new

@@ -30,7 +30,7 @@ server "47.92.153.162", user: "deploy", roles: %w{app db web}, my_property: :my_
 # For available Capistrano configuration variables see the documentation page.
 # http://capistranorb.com/documentation/getting-started/configuration/
 # Feel free to add new variables to customise your setup.
-
+# config.serve_static_assets = true
 
 
 # Custom SSH Options

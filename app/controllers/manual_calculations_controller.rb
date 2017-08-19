@@ -12,6 +12,16 @@ class ManualCalculationsController < ApplicationController
 
   def show
     @manual_calculation = ManualCalculation.find(params[:id])
+    @lt_hover_chart = @manual_calculation.lt_hover_chart
+    @nt_hover_chart = @manual_calculation.nt_hover_chart
+    @ht_hover_chart = @manual_calculation.ht_hover_chart
+    @lt_manually_open_door_chart = @manual_calculation.lt_manually_open_door_chart
+    @nt_manually_open_door_chart = @manual_calculation.nt_manually_open_door_chart
+    @ht_manually_open_door_chart = @manual_calculation.ht_manually_open_door_chart
+    @lt_manually_close_door_chart = @manual_calculation.lt_manually_close_door_chart
+    @nt_manually_close_door_chart = @manual_calculation.nt_manually_close_door_chart
+    @ht_manually_close_door_chart = @manual_calculation.ht_manually_close_door_chart
+
   end
 
   def edit

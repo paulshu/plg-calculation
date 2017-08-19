@@ -640,7 +640,7 @@ class ManualCalculation < ApplicationRecord
     lt_open_dynamic_friction_arr = Array.new(oa, open_static_friction + 50)
   end
 
-  def ht_open_static_friction_arr  # 低温开门静摩擦阻力
+  def ht_open_static_friction_arr  # 高温开门静摩擦阻力
     ht_open_dynamic_friction_arr = Array.new(oa, open_static_friction - 50)
   end
 
@@ -652,16 +652,17 @@ class ManualCalculation < ApplicationRecord
     lt_open_dynamic_friction_arr = Array.new(oa, close_static_friction - 50)
   end
 
-  def ht_close_static_friction_arr  # 低温关门静摩擦阻力
+  def ht_close_static_friction_arr  # 高温关门静摩擦阻力
     ht_open_dynamic_friction_arr = Array.new(oa, close_static_friction + 50)
   end
 
   # 悬停计算  #
 
+
   def uphill_lt_lower_deviation_hover_arr # 上坡低温下偏差悬停
     uphill_lt_lower_deviation_hover_arr = []
     uphill_gravity_torque_arr.zip(nt_lower_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
-      uphill_lt_lower_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+      uphill_lt_lower_deviation_hover_arr << ((j - i/2) / k / cos(PI / 180 * m ) * 1000).round(3)
     end
     uphill_lt_lower_deviation_hover_arr
   end
@@ -669,7 +670,7 @@ class ManualCalculation < ApplicationRecord
   def uphill_lt_median_hover_arr # 上坡低温中值悬停
     uphill_lt_median_hover_arr = []
     uphill_gravity_torque_arr.zip(nt_median_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
-      uphill_lt_median_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+      uphill_lt_median_hover_arr << ((j - i/2) / k / cos(PI / 180 * m ) * 1000).round(3)
     end
     uphill_lt_median_hover_arr
   end
@@ -677,7 +678,7 @@ class ManualCalculation < ApplicationRecord
   def uphill_lt_upper_deviation_hover_arr # 上坡低温上偏差悬停
     uphill_lt_upper_deviation_hover_arr = []
     uphill_gravity_torque_arr.zip(nt_upper_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
-      uphill_lt_upper_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+      uphill_lt_upper_deviation_hover_arr << ((j - i/2) / k / cos(PI / 180 * m ) * 1000).round(3)
     end
     uphill_lt_upper_deviation_hover_arr
   end
@@ -685,7 +686,7 @@ class ManualCalculation < ApplicationRecord
   def uphill_lt_after_life_hover_arr # 上坡低温寿命后悬停
     uphill_lt_after_life_hover_arr = []
     uphill_gravity_torque_arr.zip(nt_after_life_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
-      uphill_lt_after_life_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+      uphill_lt_after_life_hover_arr << ((j - i/2) / k / cos(PI / 180 * m ) * 1000).round(3)
     end
     uphill_lt_after_life_hover_arr
   end
@@ -727,142 +728,2011 @@ class ManualCalculation < ApplicationRecord
   # 平坡
 
 
-    def flat_slope_lt_lower_deviation_hover_arr # 平坡低温下偏差悬停
-      flat_slope_lt_lower_deviation_hover_arr = []
-      flat_slope_gravity_torque_arr.zip(nt_lower_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
-        flat_slope_lt_lower_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
-      end
-      flat_slope_lt_lower_deviation_hover_arr
+  def flat_slope_lt_lower_deviation_hover_arr # 平坡低温下偏差悬停
+    flat_slope_lt_lower_deviation_hover_arr = []
+    flat_slope_gravity_torque_arr.zip(nt_lower_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+      flat_slope_lt_lower_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
     end
+    flat_slope_lt_lower_deviation_hover_arr
+  end
 
-    def flat_slope_lt_median_hover_arr # 平坡低温中值悬停
-      flat_slope_lt_median_hover_arr = []
-      flat_slope_gravity_torque_arr.zip(nt_median_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
-        flat_slope_lt_median_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
-      end
-      flat_slope_lt_median_hover_arr
+  def flat_slope_lt_median_hover_arr # 平坡低温中值悬停
+    flat_slope_lt_median_hover_arr = []
+    flat_slope_gravity_torque_arr.zip(nt_median_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+      flat_slope_lt_median_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
     end
+    flat_slope_lt_median_hover_arr
+  end
 
-    def flat_slope_lt_upper_deviation_hover_arr # 平坡低温上偏差悬停
-      flat_slope_lt_upper_deviation_hover_arr = []
-      flat_slope_gravity_torque_arr.zip(nt_upper_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
-        flat_slope_lt_upper_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
-      end
-      flat_slope_lt_upper_deviation_hover_arr
+  def flat_slope_lt_upper_deviation_hover_arr # 平坡低温上偏差悬停
+    flat_slope_lt_upper_deviation_hover_arr = []
+    flat_slope_gravity_torque_arr.zip(nt_upper_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+      flat_slope_lt_upper_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
     end
+    flat_slope_lt_upper_deviation_hover_arr
+  end
 
-    def flat_slope_lt_after_life_hover_arr # 平坡低温寿命后悬停
-      flat_slope_lt_after_life_hover_arr = []
-      flat_slope_gravity_torque_arr.zip(nt_after_life_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
-        flat_slope_lt_after_life_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
-      end
-      flat_slope_lt_after_life_hover_arr
+  def flat_slope_lt_after_life_hover_arr # 平坡低温寿命后悬停
+    flat_slope_lt_after_life_hover_arr = []
+    flat_slope_gravity_torque_arr.zip(nt_after_life_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+      flat_slope_lt_after_life_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
     end
+    flat_slope_lt_after_life_hover_arr
+  end
 
-  # 高温
+# 高温
 
-    def flat_slope_ht_lower_deviation_hover_arr # 平坡高温下偏差悬停
-      flat_slope_ht_lower_deviation_hover_arr = []
-      flat_slope_gravity_torque_arr.zip(ht_lower_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
-        flat_slope_ht_lower_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
-      end
-      flat_slope_ht_lower_deviation_hover_arr
+  def flat_slope_ht_lower_deviation_hover_arr # 平坡高温下偏差悬停
+    flat_slope_ht_lower_deviation_hover_arr = []
+    flat_slope_gravity_torque_arr.zip(ht_lower_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+      flat_slope_ht_lower_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
     end
+    flat_slope_ht_lower_deviation_hover_arr
+  end
 
-    def flat_slope_ht_median_hover_arr # 平坡高温中值悬停
-      flat_slope_ht_median_hover_arr = []
-      flat_slope_gravity_torque_arr.zip(ht_median_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
-        flat_slope_ht_median_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
-      end
-      flat_slope_ht_median_hover_arr
+  def flat_slope_ht_median_hover_arr # 平坡高温中值悬停
+    flat_slope_ht_median_hover_arr = []
+    flat_slope_gravity_torque_arr.zip(ht_median_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+      flat_slope_ht_median_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
     end
+    flat_slope_ht_median_hover_arr
+  end
 
-    def flat_slope_ht_upper_deviation_hover_arr # 平坡高温上偏差悬停
-      flat_slope_ht_upper_deviation_hover_arr = []
-      flat_slope_gravity_torque_arr.zip(ht_upper_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
-        flat_slope_ht_upper_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
-      end
-      flat_slope_ht_upper_deviation_hover_arr
+  def flat_slope_ht_upper_deviation_hover_arr # 平坡高温上偏差悬停
+    flat_slope_ht_upper_deviation_hover_arr = []
+    flat_slope_gravity_torque_arr.zip(ht_upper_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+      flat_slope_ht_upper_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
     end
+    flat_slope_ht_upper_deviation_hover_arr
+  end
 
-    def flat_slope_ht_after_life_hover_arr # 平坡高温寿命后悬停
-      flat_slope_ht_after_life_hover_arr = []
-      flat_slope_gravity_torque_arr.zip(ht_after_life_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
-        flat_slope_ht_after_life_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
-      end
-      flat_slope_ht_after_life_hover_arr
+  def flat_slope_ht_after_life_hover_arr # 平坡高温寿命后悬停
+    flat_slope_ht_after_life_hover_arr = []
+    flat_slope_gravity_torque_arr.zip(ht_after_life_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+      flat_slope_ht_after_life_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
     end
+    flat_slope_ht_after_life_hover_arr
+  end
 
-    # 下坡
+# 下坡
 
 
-      def downhill_lt_lower_deviation_hover_arr # 下坡低温下偏差悬停
-        downhill_lt_lower_deviation_hover_arr = []
-        downhill_gravity_torque_arr.zip(nt_lower_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
-          downhill_lt_lower_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
-        end
-        downhill_lt_lower_deviation_hover_arr
-      end
+  def downhill_lt_lower_deviation_hover_arr # 下坡低温下偏差悬停
+    downhill_lt_lower_deviation_hover_arr = []
+    downhill_gravity_torque_arr.zip(nt_lower_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+      downhill_lt_lower_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+    end
+    downhill_lt_lower_deviation_hover_arr
+  end
 
-      def downhill_lt_median_hover_arr # 下坡低温中值悬停
-        downhill_lt_median_hover_arr = []
-        downhill_gravity_torque_arr.zip(nt_median_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
-          downhill_lt_median_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
-        end
-        downhill_lt_median_hover_arr
-      end
+  def downhill_lt_median_hover_arr # 下坡低温中值悬停
+    downhill_lt_median_hover_arr = []
+    downhill_gravity_torque_arr.zip(nt_median_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+      downhill_lt_median_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+    end
+    downhill_lt_median_hover_arr
+  end
 
-      def downhill_lt_upper_deviation_hover_arr # 下坡低温上偏差悬停
-        downhill_lt_upper_deviation_hover_arr = []
-        downhill_gravity_torque_arr.zip(nt_upper_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
-          downhill_lt_upper_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
-        end
-        downhill_lt_upper_deviation_hover_arr
-      end
+  def downhill_lt_upper_deviation_hover_arr # 下坡低温上偏差悬停
+    downhill_lt_upper_deviation_hover_arr = []
+    downhill_gravity_torque_arr.zip(nt_upper_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+      downhill_lt_upper_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+    end
+    downhill_lt_upper_deviation_hover_arr
+  end
 
-      def downhill_lt_after_life_hover_arr # 下坡低温寿命后悬停
-        downhill_lt_after_life_hover_arr = []
-        downhill_gravity_torque_arr.zip(nt_after_life_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
-          downhill_lt_after_life_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
-        end
-        downhill_lt_after_life_hover_arr
-      end
+  def downhill_lt_after_life_hover_arr # 下坡低温寿命后悬停
+    downhill_lt_after_life_hover_arr = []
+    downhill_gravity_torque_arr.zip(nt_after_life_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+      downhill_lt_after_life_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+    end
+    downhill_lt_after_life_hover_arr
+  end
 
-    # 高温
+# 高温
 
-      def downhill_ht_lower_deviation_hover_arr # 下坡高温下偏差悬停
-        downhill_ht_lower_deviation_hover_arr = []
-        downhill_gravity_torque_arr.zip(ht_lower_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
-          downhill_ht_lower_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
-        end
-        downhill_ht_lower_deviation_hover_arr
-      end
+  def downhill_ht_lower_deviation_hover_arr # 下坡高温下偏差悬停
+    downhill_ht_lower_deviation_hover_arr = []
+    downhill_gravity_torque_arr.zip(ht_lower_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+      downhill_ht_lower_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+    end
+    downhill_ht_lower_deviation_hover_arr
+  end
 
-      def downhill_ht_median_hover_arr # 下坡高温中值悬停
-        downhill_ht_median_hover_arr = []
-        downhill_gravity_torque_arr.zip(ht_median_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
-          downhill_ht_median_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
-        end
-        downhill_ht_median_hover_arr
-      end
+  def downhill_ht_median_hover_arr # 下坡高温中值悬停
+    downhill_ht_median_hover_arr = []
+    downhill_gravity_torque_arr.zip(ht_median_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+      downhill_ht_median_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+    end
+    downhill_ht_median_hover_arr
+  end
 
-      def downhill_ht_upper_deviation_hover_arr # 下坡高温上偏差悬停
-        downhill_ht_upper_deviation_hover_arr = []
-        downhill_gravity_torque_arr.zip(ht_upper_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
-          downhill_ht_upper_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
-        end
-        downhill_ht_upper_deviation_hover_arr
-      end
+  def downhill_ht_upper_deviation_hover_arr # 下坡高温上偏差悬停
+    downhill_ht_upper_deviation_hover_arr = []
+    downhill_gravity_torque_arr.zip(ht_upper_deviation_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+      downhill_ht_upper_deviation_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+    end
+    downhill_ht_upper_deviation_hover_arr
+  end
 
-      def downhill_ht_after_life_hover_arr # 下坡高温寿命后悬停
-        downhill_ht_after_life_hover_arr = []
-        downhill_gravity_torque_arr.zip(ht_after_life_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
-          downhill_ht_after_life_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
-        end
-        downhill_ht_after_life_hover_arr
-      end
+  def downhill_ht_after_life_hover_arr # 下坡高温寿命后悬停
+    downhill_ht_after_life_hover_arr = []
+    downhill_gravity_torque_arr.zip(ht_after_life_spring_torque_arr, pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k,m|
+      downhill_ht_after_life_hover_arr << (j - i/2) / k / cos(PI / 180 * m ) * 1000
+    end
+    downhill_ht_after_life_hover_arr
+  end
 
-      # 手动开门力 #
+  # 手动开门力 #
+
+  # 撑杆阻力矩
+
+  def lt_open_resistance_torque_arr # 低温开门阻力矩
+    lt_open_resistance_torque_arr = []
+    pole_force_arm_arr.zip(lt_open_dynamic_friction_arr,vector_ab_xz_angle_arr) do |i,j,k|
+      lt_open_resistance_torque_arr << i * j * cos(PI/180 * k) / 1000
+    end
+    lt_open_resistance_torque_arr
+  end
+
+  def lt_close_resistance_torque_arr # 低温关门阻力矩
+    lt_close_resistance_torque_arr = []
+    pole_force_arm_arr.zip(lt_close_dynamic_friction_arr,vector_ab_xz_angle_arr) do |i,j,k|
+      lt_close_resistance_torque_arr << i * j * cos(PI/180 * k) / 1000
+    end
+    lt_close_resistance_torque_arr
+  end
+
+  def nt_open_resistance_torque_arr # 常温开门阻力矩
+    nt_open_resistance_torque_arr = []
+    pole_force_arm_arr.zip(nt_open_dynamic_friction_arr,vector_ab_xz_angle_arr) do |i,j,k|
+      nt_open_resistance_torque_arr << i * j * cos(PI/180 * k) / 1000
+    end
+    nt_open_resistance_torque_arr
+  end
+
+  def nt_close_resistance_torque_arr # 常温关门阻力矩
+    nt_close_resistance_torque_arr = []
+    pole_force_arm_arr.zip(nt_close_dynamic_friction_arr,vector_ab_xz_angle_arr) do |i,j,k|
+      nt_close_resistance_torque_arr << i * j * cos(PI/180 * k) / 1000
+    end
+    nt_close_resistance_torque_arr
+  end
+
+  def ht_open_resistance_torque_arr # 高温开门阻力矩
+    ht_open_resistance_torque_arr = []
+    pole_force_arm_arr.zip(ht_open_dynamic_friction_arr,vector_ab_xz_angle_arr) do |i,j,k|
+      ht_open_resistance_torque_arr << i * j * cos(PI/180 * k) / 1000
+    end
+    ht_open_resistance_torque_arr
+  end
+
+  def ht_close_resistance_torque_arr # 高温关门阻力矩
+    ht_close_resistance_torque_arr = []
+    pole_force_arm_arr.zip(ht_close_dynamic_friction_arr,vector_ab_xz_angle_arr) do |i,j,k|
+      ht_close_resistance_torque_arr << i * j * cos(PI/180 * k) / 1000
+    end
+    ht_close_resistance_torque_arr
+  end
+
+  # 手动作业点OH上度
+  def open_handle_length #手动开门作用点到旋转中心长度
+    oh = sqrt((open_handle_x - hinge_x) **(2) + ( open_handle_z - hinge_z ) **(2))
+  end
+
+  def close_handle_length #手动关门作用点到旋转中心长度
+    ch = sqrt((close_handle_x - hinge_x) **(2) + ( close_handle_z - hinge_z ) **(2))
+  end
+
+  #  上坡
+
+  def uphill_lt_lower_deviation_manually_open_door_arr  # 上坡低温下偏差手动开门力
+    uphill_lt_lower_deviation_manually_open_door_arr = []
+    uphill_gravity_torque_arr.zip(lt_open_resistance_torque_arr,nt_lower_deviation_spring_torque_arr) do |i,j,k|
+      uphill_lt_lower_deviation_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    uphill_lt_lower_deviation_manually_open_door_arr
+  end
+
+  def uphill_lt_median_manually_open_door_arr  # 上坡低温中值手动开门力
+    uphill_lt_median_manually_open_door_arr = []
+    uphill_gravity_torque_arr.zip(lt_open_resistance_torque_arr,nt_median_spring_torque_arr) do |i,j,k|
+      uphill_lt_median_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    uphill_lt_median_manually_open_door_arr
+  end
+
+  def uphill_lt_upper_deviation_manually_open_door_arr  # 上坡低温上偏差手动开门力
+    uphill_lt_upper_deviation_manually_open_door_arr = []
+    uphill_gravity_torque_arr.zip(lt_open_resistance_torque_arr,nt_upper_deviation_spring_torque_arr) do |i,j,k|
+      uphill_lt_upper_deviation_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    uphill_lt_upper_deviation_manually_open_door_arr
+  end
+
+  def uphill_lt_after_life_manually_open_door_arr  # 上坡低温寿命后手动开门力
+    uphill_lt_after_life_manually_open_door_arr = []
+    uphill_gravity_torque_arr.zip(lt_open_resistance_torque_arr,nt_after_life_spring_torque_arr) do |i,j,k|
+      uphill_lt_after_life_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    uphill_lt_after_life_manually_open_door_arr
+  end
+
+
+  def uphill_nt_lower_deviation_manually_open_door_arr  # 上坡常温下偏差手动开门力
+    uphill_nt_lower_deviation_manually_open_door_arr = []
+    uphill_gravity_torque_arr.zip(nt_open_resistance_torque_arr,nt_lower_deviation_spring_torque_arr) do |i,j,k|
+      uphill_nt_lower_deviation_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    uphill_nt_lower_deviation_manually_open_door_arr
+  end
+
+  def uphill_nt_median_manually_open_door_arr  # 上坡常温中值手动开门力
+    uphill_nt_median_manually_open_door_arr = []
+    uphill_gravity_torque_arr.zip(nt_open_resistance_torque_arr,nt_median_spring_torque_arr) do |i,j,k|
+      uphill_nt_median_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    uphill_nt_median_manually_open_door_arr
+  end
+
+  def uphill_nt_upper_deviation_manually_open_door_arr  # 上坡常温上偏差手动开门力
+    uphill_nt_upper_deviation_manually_open_door_arr = []
+    uphill_gravity_torque_arr.zip(nt_open_resistance_torque_arr,nt_upper_deviation_spring_torque_arr) do |i,j,k|
+      uphill_nt_upper_deviation_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    uphill_nt_upper_deviation_manually_open_door_arr
+  end
+
+  def uphill_nt_after_life_manually_open_door_arr  # 上坡常温寿命后手动开门力
+    uphill_nt_after_life_manually_open_door_arr = []
+    uphill_gravity_torque_arr.zip(nt_open_resistance_torque_arr,nt_after_life_spring_torque_arr) do |i,j,k|
+      uphill_nt_after_life_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    uphill_nt_after_life_manually_open_door_arr
+  end
+
+  def uphill_ht_lower_deviation_manually_open_door_arr  # 上坡高温下偏差手动开门力
+    uphill_ht_lower_deviation_manually_open_door_arr = []
+    uphill_gravity_torque_arr.zip(ht_open_resistance_torque_arr,ht_lower_deviation_spring_torque_arr) do |i,j,k|
+      uphill_ht_lower_deviation_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    uphill_ht_lower_deviation_manually_open_door_arr
+  end
+
+  def uphill_ht_median_manually_open_door_arr  # 上坡高温中值手动开门力
+    uphill_ht_median_manually_open_door_arr = []
+    uphill_gravity_torque_arr.zip(ht_open_resistance_torque_arr,ht_median_spring_torque_arr) do |i,j,k|
+      uphill_ht_median_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    uphill_ht_median_manually_open_door_arr
+  end
+
+  def uphill_ht_upper_deviation_manually_open_door_arr  # 上坡高温上偏差手动开门力
+    uphill_ht_upper_deviation_manually_open_door_arr = []
+    uphill_gravity_torque_arr.zip(ht_open_resistance_torque_arr,ht_upper_deviation_spring_torque_arr) do |i,j,k|
+      uphill_ht_upper_deviation_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    uphill_ht_upper_deviation_manually_open_door_arr
+  end
+
+  def uphill_ht_after_life_manually_open_door_arr  # 上坡高温寿命后手动开门力
+    uphill_ht_after_life_manually_open_door_arr = []
+    uphill_gravity_torque_arr.zip(ht_open_resistance_torque_arr,ht_after_life_spring_torque_arr) do |i,j,k|
+      uphill_ht_after_life_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    uphill_ht_after_life_manually_open_door_arr
+  end
+
+  #  平坡
+
+  def flat_slope_lt_lower_deviation_manually_open_door_arr  # 平坡低温下偏差手动开门力
+    flat_slope_lt_lower_deviation_manually_open_door_arr = []
+    flat_slope_gravity_torque_arr.zip(lt_open_resistance_torque_arr,nt_lower_deviation_spring_torque_arr) do |i,j,k|
+      flat_slope_lt_lower_deviation_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    flat_slope_lt_lower_deviation_manually_open_door_arr
+  end
+
+  def flat_slope_lt_median_manually_open_door_arr  # 平坡低温中值手动开门力
+    flat_slope_lt_median_manually_open_door_arr = []
+    flat_slope_gravity_torque_arr.zip(lt_open_resistance_torque_arr,nt_median_spring_torque_arr) do |i,j,k|
+      flat_slope_lt_median_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    flat_slope_lt_median_manually_open_door_arr
+  end
+
+  def flat_slope_lt_upper_deviation_manually_open_door_arr  # 平坡低温上偏差手动开门力
+    flat_slope_lt_upper_deviation_manually_open_door_arr = []
+    flat_slope_gravity_torque_arr.zip(lt_open_resistance_torque_arr,nt_upper_deviation_spring_torque_arr) do |i,j,k|
+      flat_slope_lt_upper_deviation_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    flat_slope_lt_upper_deviation_manually_open_door_arr
+  end
+
+  def flat_slope_lt_after_life_manually_open_door_arr  # 平坡低温寿命后手动开门力
+    flat_slope_lt_after_life_manually_open_door_arr = []
+    flat_slope_gravity_torque_arr.zip(lt_open_resistance_torque_arr,nt_after_life_spring_torque_arr) do |i,j,k|
+      flat_slope_lt_after_life_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    flat_slope_lt_after_life_manually_open_door_arr
+  end
+
+  def flat_slope_nt_lower_deviation_manually_open_door_arr  # 平坡常温下偏差手动开门力
+    flat_slope_nt_lower_deviation_manually_open_door_arr = []
+    flat_slope_gravity_torque_arr.zip(nt_open_resistance_torque_arr,nt_lower_deviation_spring_torque_arr) do |i,j,k|
+      flat_slope_nt_lower_deviation_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    flat_slope_nt_lower_deviation_manually_open_door_arr
+  end
+
+  def flat_slope_nt_median_manually_open_door_arr  # 平坡常温中值手动开门力
+    flat_slope_nt_median_manually_open_door_arr = []
+    flat_slope_gravity_torque_arr.zip(nt_open_resistance_torque_arr,nt_median_spring_torque_arr) do |i,j,k|
+      flat_slope_nt_median_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    flat_slope_nt_median_manually_open_door_arr
+  end
+
+  def flat_slope_nt_upper_deviation_manually_open_door_arr  # 平坡常温上偏差手动开门力
+    flat_slope_nt_upper_deviation_manually_open_door_arr = []
+    flat_slope_gravity_torque_arr.zip(nt_open_resistance_torque_arr,nt_upper_deviation_spring_torque_arr) do |i,j,k|
+      flat_slope_nt_upper_deviation_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    flat_slope_nt_upper_deviation_manually_open_door_arr
+  end
+
+  def flat_slope_nt_after_life_manually_open_door_arr  # 平坡常温寿命后手动开门力
+    flat_slope_nt_after_life_manually_open_door_arr = []
+    flat_slope_gravity_torque_arr.zip(nt_open_resistance_torque_arr,nt_after_life_spring_torque_arr) do |i,j,k|
+      flat_slope_nt_after_life_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    flat_slope_nt_after_life_manually_open_door_arr
+  end
+
+  def flat_slope_ht_lower_deviation_manually_open_door_arr  # 平坡高温下偏差手动开门力
+    flat_slope_ht_lower_deviation_manually_open_door_arr = []
+    flat_slope_gravity_torque_arr.zip(ht_open_resistance_torque_arr,ht_lower_deviation_spring_torque_arr) do |i,j,k|
+      flat_slope_ht_lower_deviation_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    flat_slope_ht_lower_deviation_manually_open_door_arr
+  end
+
+  def flat_slope_ht_median_manually_open_door_arr  # 平坡高温中值手动开门力
+    flat_slope_ht_median_manually_open_door_arr = []
+    flat_slope_gravity_torque_arr.zip(ht_open_resistance_torque_arr,ht_median_spring_torque_arr) do |i,j,k|
+      flat_slope_ht_median_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    flat_slope_ht_median_manually_open_door_arr
+  end
+
+  def flat_slope_ht_upper_deviation_manually_open_door_arr  # 平坡高温上偏差手动开门力
+    flat_slope_ht_upper_deviation_manually_open_door_arr = []
+    flat_slope_gravity_torque_arr.zip(ht_open_resistance_torque_arr,ht_upper_deviation_spring_torque_arr) do |i,j,k|
+      flat_slope_ht_upper_deviation_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    flat_slope_ht_upper_deviation_manually_open_door_arr
+  end
+
+  def flat_slope_ht_after_life_manually_open_door_arr  # 平坡高温寿命后手动开门力
+    flat_slope_ht_after_life_manually_open_door_arr = []
+    flat_slope_gravity_torque_arr.zip(ht_open_resistance_torque_arr,ht_after_life_spring_torque_arr) do |i,j,k|
+      flat_slope_ht_after_life_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    flat_slope_ht_after_life_manually_open_door_arr
+  end
+
+
+  #  下坡
+
+  def downhill_lt_lower_deviation_manually_open_door_arr  # 下坡低温下偏差手动开门力
+    downhill_lt_lower_deviation_manually_open_door_arr = []
+    downhill_gravity_torque_arr.zip(lt_open_resistance_torque_arr,nt_lower_deviation_spring_torque_arr) do |i,j,k|
+      downhill_lt_lower_deviation_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    downhill_lt_lower_deviation_manually_open_door_arr
+  end
+
+  def downhill_lt_median_manually_open_door_arr  # 下坡低温中值手动开门力
+    downhill_lt_median_manually_open_door_arr = []
+    downhill_gravity_torque_arr.zip(lt_open_resistance_torque_arr,nt_median_spring_torque_arr) do |i,j,k|
+      downhill_lt_median_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    downhill_lt_median_manually_open_door_arr
+  end
+
+  def downhill_lt_upper_deviation_manually_open_door_arr  # 下坡低温上偏差手动开门力
+    downhill_lt_upper_deviation_manually_open_door_arr = []
+    downhill_gravity_torque_arr.zip(lt_open_resistance_torque_arr,nt_upper_deviation_spring_torque_arr) do |i,j,k|
+      downhill_lt_upper_deviation_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    downhill_lt_upper_deviation_manually_open_door_arr
+  end
+
+  def downhill_lt_after_life_manually_open_door_arr  # 下坡低温寿命后手动开门力
+    downhill_lt_after_life_manually_open_door_arr = []
+    downhill_gravity_torque_arr.zip(lt_open_resistance_torque_arr,nt_after_life_spring_torque_arr) do |i,j,k|
+      downhill_lt_after_life_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    downhill_lt_after_life_manually_open_door_arr
+  end
+
+  def downhill_nt_lower_deviation_manually_open_door_arr  # 下坡常温下偏差手动开门力
+    downhill_nt_lower_deviation_manually_open_door_arr = []
+    downhill_gravity_torque_arr.zip(nt_open_resistance_torque_arr,nt_lower_deviation_spring_torque_arr) do |i,j,k|
+      downhill_nt_lower_deviation_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    downhill_nt_lower_deviation_manually_open_door_arr
+  end
+
+  def downhill_nt_median_manually_open_door_arr  # 下坡常温中值手动开门力
+    downhill_nt_median_manually_open_door_arr = []
+    downhill_gravity_torque_arr.zip(nt_open_resistance_torque_arr,nt_median_spring_torque_arr) do |i,j,k|
+      downhill_nt_median_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    downhill_nt_median_manually_open_door_arr
+  end
+
+  def downhill_nt_upper_deviation_manually_open_door_arr  # 下坡常温上偏差手动开门力
+    downhill_nt_upper_deviation_manually_open_door_arr = []
+    downhill_gravity_torque_arr.zip(nt_open_resistance_torque_arr,nt_upper_deviation_spring_torque_arr) do |i,j,k|
+      downhill_nt_upper_deviation_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    downhill_nt_upper_deviation_manually_open_door_arr
+  end
+
+  def downhill_nt_after_life_manually_open_door_arr  # 下坡常温寿命后手动开门力
+    downhill_nt_after_life_manually_open_door_arr = []
+    downhill_gravity_torque_arr.zip(nt_open_resistance_torque_arr,nt_after_life_spring_torque_arr) do |i,j,k|
+      downhill_nt_after_life_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    downhill_nt_after_life_manually_open_door_arr
+  end
+
+  def downhill_ht_lower_deviation_manually_open_door_arr  # 下坡高温下偏差手动开门力
+    downhill_ht_lower_deviation_manually_open_door_arr = []
+    downhill_gravity_torque_arr.zip(ht_open_resistance_torque_arr,ht_lower_deviation_spring_torque_arr) do |i,j,k|
+      downhill_ht_lower_deviation_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    downhill_ht_lower_deviation_manually_open_door_arr
+  end
+
+  def downhill_ht_median_manually_open_door_arr  # 下坡高温中值手动开门力
+    downhill_ht_median_manually_open_door_arr = []
+    downhill_gravity_torque_arr.zip(ht_open_resistance_torque_arr,ht_median_spring_torque_arr) do |i,j,k|
+      downhill_ht_median_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    downhill_ht_median_manually_open_door_arr
+  end
+
+  def downhill_ht_upper_deviation_manually_open_door_arr  # 下坡高温上偏差手动开门力
+    downhill_ht_upper_deviation_manually_open_door_arr = []
+    downhill_gravity_torque_arr.zip(ht_open_resistance_torque_arr,ht_upper_deviation_spring_torque_arr) do |i,j,k|
+      downhill_ht_upper_deviation_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    downhill_ht_upper_deviation_manually_open_door_arr
+  end
+
+  def downhill_ht_after_life_manually_open_door_arr  # 下坡高温寿命后手动开门力
+    downhill_ht_after_life_manually_open_door_arr = []
+    downhill_gravity_torque_arr.zip(ht_open_resistance_torque_arr,ht_after_life_spring_torque_arr) do |i,j,k|
+      downhill_ht_after_life_manually_open_door_arr << (i + j*2 - k*2) / open_handle_length * 1000
+    end
+    downhill_ht_after_life_manually_open_door_arr
+  end
+
+
+  #  手动关门力  #
+
+  #  上坡
+
+  def uphill_lt_lower_deviation_manually_close_door_arr  # 上坡低温下偏差手动关门力
+    uphill_lt_lower_deviation_manually_close_door_arr = []
+    uphill_gravity_torque_arr.zip(lt_close_resistance_torque_arr,nt_lower_deviation_spring_torque_arr) do |i,j,k|
+      uphill_lt_lower_deviation_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    uphill_lt_lower_deviation_manually_close_door_arr
+  end
+
+  def uphill_lt_median_manually_close_door_arr  # 上坡低温中值手动关门力
+    uphill_lt_median_manually_close_door_arr = []
+    uphill_gravity_torque_arr.zip(lt_close_resistance_torque_arr,nt_median_spring_torque_arr) do |i,j,k|
+      uphill_lt_median_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    uphill_lt_median_manually_close_door_arr
+  end
+
+  def uphill_lt_upper_deviation_manually_close_door_arr  # 上坡低温上偏差手动关门力
+    uphill_lt_upper_deviation_manually_close_door_arr = []
+    uphill_gravity_torque_arr.zip(lt_close_resistance_torque_arr,nt_upper_deviation_spring_torque_arr) do |i,j,k|
+      uphill_lt_upper_deviation_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    uphill_lt_upper_deviation_manually_close_door_arr
+  end
+
+  def uphill_lt_after_life_manually_close_door_arr  # 上坡低温寿命后手动关门力
+    uphill_lt_after_life_manually_close_door_arr = []
+    uphill_gravity_torque_arr.zip(lt_close_resistance_torque_arr,nt_after_life_spring_torque_arr) do |i,j,k|
+      uphill_lt_after_life_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    uphill_lt_after_life_manually_close_door_arr
+  end
+
+
+  def uphill_nt_lower_deviation_manually_close_door_arr  # 上坡常温下偏差手动关门力
+    uphill_nt_lower_deviation_manually_close_door_arr = []
+    uphill_gravity_torque_arr.zip(nt_close_resistance_torque_arr,nt_lower_deviation_spring_torque_arr) do |i,j,k|
+      uphill_nt_lower_deviation_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    uphill_nt_lower_deviation_manually_close_door_arr
+  end
+
+  def uphill_nt_median_manually_close_door_arr  # 上坡常温中值手动关门力
+    uphill_nt_median_manually_close_door_arr = []
+    uphill_gravity_torque_arr.zip(nt_close_resistance_torque_arr,nt_median_spring_torque_arr) do |i,j,k|
+      uphill_nt_median_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    uphill_nt_median_manually_close_door_arr
+  end
+
+  def uphill_nt_upper_deviation_manually_close_door_arr  # 上坡常温上偏差手动关门力
+    uphill_nt_upper_deviation_manually_close_door_arr = []
+    uphill_gravity_torque_arr.zip(nt_close_resistance_torque_arr,nt_upper_deviation_spring_torque_arr) do |i,j,k|
+      uphill_nt_upper_deviation_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    uphill_nt_upper_deviation_manually_close_door_arr
+  end
+
+  def uphill_nt_after_life_manually_close_door_arr  # 上坡常温寿命后手动关门力
+    uphill_nt_after_life_manually_close_door_arr = []
+    uphill_gravity_torque_arr.zip(nt_close_resistance_torque_arr,nt_after_life_spring_torque_arr) do |i,j,k|
+      uphill_nt_after_life_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    uphill_nt_after_life_manually_close_door_arr
+  end
+
+  def uphill_ht_lower_deviation_manually_close_door_arr  # 上坡高温下偏差手动关门力
+    uphill_ht_lower_deviation_manually_close_door_arr = []
+    uphill_gravity_torque_arr.zip(ht_close_resistance_torque_arr,ht_lower_deviation_spring_torque_arr) do |i,j,k|
+      uphill_ht_lower_deviation_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    uphill_ht_lower_deviation_manually_close_door_arr
+  end
+
+  def uphill_ht_median_manually_close_door_arr  # 上坡高温中值手动关门力
+    uphill_ht_median_manually_close_door_arr = []
+    uphill_gravity_torque_arr.zip(ht_close_resistance_torque_arr,ht_median_spring_torque_arr) do |i,j,k|
+      uphill_ht_median_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    uphill_ht_median_manually_close_door_arr
+  end
+
+  def uphill_ht_upper_deviation_manually_close_door_arr  # 上坡高温上偏差手动关门力
+    uphill_ht_upper_deviation_manually_close_door_arr = []
+    uphill_gravity_torque_arr.zip(ht_close_resistance_torque_arr,ht_upper_deviation_spring_torque_arr) do |i,j,k|
+      uphill_ht_upper_deviation_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    uphill_ht_upper_deviation_manually_close_door_arr
+  end
+
+  def uphill_ht_after_life_manually_close_door_arr  # 上坡高温寿命后手动关门力
+    uphill_ht_after_life_manually_close_door_arr = []
+    uphill_gravity_torque_arr.zip(ht_close_resistance_torque_arr,ht_after_life_spring_torque_arr) do |i,j,k|
+      uphill_ht_after_life_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    uphill_ht_after_life_manually_close_door_arr
+  end
+
+  #  平坡
+
+  def flat_slope_lt_lower_deviation_manually_close_door_arr  # 平坡低温下偏差手动关门力
+    flat_slope_lt_lower_deviation_manually_close_door_arr = []
+    flat_slope_gravity_torque_arr.zip(lt_close_resistance_torque_arr,nt_lower_deviation_spring_torque_arr) do |i,j,k|
+      flat_slope_lt_lower_deviation_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    flat_slope_lt_lower_deviation_manually_close_door_arr
+  end
+
+  def flat_slope_lt_median_manually_close_door_arr  # 平坡低温中值手动关门力
+    flat_slope_lt_median_manually_close_door_arr = []
+    flat_slope_gravity_torque_arr.zip(lt_close_resistance_torque_arr,nt_median_spring_torque_arr) do |i,j,k|
+      flat_slope_lt_median_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    flat_slope_lt_median_manually_close_door_arr
+  end
+
+  def flat_slope_lt_upper_deviation_manually_close_door_arr  # 平坡低温上偏差手动关门力
+    flat_slope_lt_upper_deviation_manually_close_door_arr = []
+    flat_slope_gravity_torque_arr.zip(lt_close_resistance_torque_arr,nt_upper_deviation_spring_torque_arr) do |i,j,k|
+      flat_slope_lt_upper_deviation_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    flat_slope_lt_upper_deviation_manually_close_door_arr
+  end
+
+  def flat_slope_lt_after_life_manually_close_door_arr  # 平坡低温寿命后手动关门力
+    flat_slope_lt_after_life_manually_close_door_arr = []
+    flat_slope_gravity_torque_arr.zip(lt_close_resistance_torque_arr,nt_after_life_spring_torque_arr) do |i,j,k|
+      flat_slope_lt_after_life_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    flat_slope_lt_after_life_manually_close_door_arr
+  end
+
+  def flat_slope_nt_lower_deviation_manually_close_door_arr  # 平坡常温下偏差手动关门力
+    flat_slope_nt_lower_deviation_manually_close_door_arr = []
+    flat_slope_gravity_torque_arr.zip(nt_close_resistance_torque_arr,nt_lower_deviation_spring_torque_arr) do |i,j,k|
+      flat_slope_nt_lower_deviation_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    flat_slope_nt_lower_deviation_manually_close_door_arr
+  end
+
+  def flat_slope_nt_median_manually_close_door_arr  # 平坡常温中值手动关门力
+    flat_slope_nt_median_manually_close_door_arr = []
+    flat_slope_gravity_torque_arr.zip(nt_close_resistance_torque_arr,nt_median_spring_torque_arr) do |i,j,k|
+      flat_slope_nt_median_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    flat_slope_nt_median_manually_close_door_arr
+  end
+
+  def flat_slope_nt_upper_deviation_manually_close_door_arr  # 平坡常温上偏差手动关门力
+    flat_slope_nt_upper_deviation_manually_close_door_arr = []
+    flat_slope_gravity_torque_arr.zip(nt_close_resistance_torque_arr,nt_upper_deviation_spring_torque_arr) do |i,j,k|
+      flat_slope_nt_upper_deviation_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    flat_slope_nt_upper_deviation_manually_close_door_arr
+  end
+
+  def flat_slope_nt_after_life_manually_close_door_arr  # 平坡常温寿命后手动关门力
+    flat_slope_nt_after_life_manually_close_door_arr = []
+    flat_slope_gravity_torque_arr.zip(nt_close_resistance_torque_arr,nt_after_life_spring_torque_arr) do |i,j,k|
+      flat_slope_nt_after_life_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    flat_slope_nt_after_life_manually_close_door_arr
+  end
+
+  def flat_slope_ht_lower_deviation_manually_close_door_arr  # 平坡高温下偏差手动关门力
+    flat_slope_ht_lower_deviation_manually_close_door_arr = []
+    flat_slope_gravity_torque_arr.zip(ht_close_resistance_torque_arr,ht_lower_deviation_spring_torque_arr) do |i,j,k|
+      flat_slope_ht_lower_deviation_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    flat_slope_ht_lower_deviation_manually_close_door_arr
+  end
+
+  def flat_slope_ht_median_manually_close_door_arr  # 平坡高温中值手动关门力
+    flat_slope_ht_median_manually_close_door_arr = []
+    flat_slope_gravity_torque_arr.zip(ht_close_resistance_torque_arr,ht_median_spring_torque_arr) do |i,j,k|
+      flat_slope_ht_median_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    flat_slope_ht_median_manually_close_door_arr
+  end
+
+  def flat_slope_ht_upper_deviation_manually_close_door_arr  # 平坡高温上偏差手动关门力
+    flat_slope_ht_upper_deviation_manually_close_door_arr = []
+    flat_slope_gravity_torque_arr.zip(ht_close_resistance_torque_arr,ht_upper_deviation_spring_torque_arr) do |i,j,k|
+      flat_slope_ht_upper_deviation_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    flat_slope_ht_upper_deviation_manually_close_door_arr
+  end
+
+  def flat_slope_ht_after_life_manually_close_door_arr  # 平坡高温寿命后手动关门力
+    flat_slope_ht_after_life_manually_close_door_arr = []
+    flat_slope_gravity_torque_arr.zip(ht_close_resistance_torque_arr,ht_after_life_spring_torque_arr) do |i,j,k|
+      flat_slope_ht_after_life_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    flat_slope_ht_after_life_manually_close_door_arr
+  end
+
+
+  #  下坡
+
+  def downhill_lt_lower_deviation_manually_close_door_arr  # 下坡低温下偏差手动关门力
+    downhill_lt_lower_deviation_manually_close_door_arr = []
+    downhill_gravity_torque_arr.zip(lt_close_resistance_torque_arr,nt_lower_deviation_spring_torque_arr) do |i,j,k|
+      downhill_lt_lower_deviation_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    downhill_lt_lower_deviation_manually_close_door_arr
+  end
+
+  def downhill_lt_median_manually_close_door_arr  # 下坡低温中值手动关门力
+    downhill_lt_median_manually_close_door_arr = []
+    downhill_gravity_torque_arr.zip(lt_close_resistance_torque_arr,nt_median_spring_torque_arr) do |i,j,k|
+      downhill_lt_median_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    downhill_lt_median_manually_close_door_arr
+  end
+
+  def downhill_lt_upper_deviation_manually_close_door_arr  # 下坡低温上偏差手动关门力
+    downhill_lt_upper_deviation_manually_close_door_arr = []
+    downhill_gravity_torque_arr.zip(lt_close_resistance_torque_arr,nt_upper_deviation_spring_torque_arr) do |i,j,k|
+      downhill_lt_upper_deviation_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    downhill_lt_upper_deviation_manually_close_door_arr
+  end
+
+  def downhill_lt_after_life_manually_close_door_arr  # 下坡低温寿命后手动关门力
+    downhill_lt_after_life_manually_close_door_arr = []
+    downhill_gravity_torque_arr.zip(lt_close_resistance_torque_arr,nt_after_life_spring_torque_arr) do |i,j,k|
+      downhill_lt_after_life_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    downhill_lt_after_life_manually_close_door_arr
+  end
+
+  def downhill_nt_lower_deviation_manually_close_door_arr  # 下坡常温下偏差手动关门力
+    downhill_nt_lower_deviation_manually_close_door_arr = []
+    downhill_gravity_torque_arr.zip(nt_close_resistance_torque_arr,nt_lower_deviation_spring_torque_arr) do |i,j,k|
+      downhill_nt_lower_deviation_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    downhill_nt_lower_deviation_manually_close_door_arr
+  end
+
+  def downhill_nt_median_manually_close_door_arr  # 下坡常温中值手动关门力
+    downhill_nt_median_manually_close_door_arr = []
+    downhill_gravity_torque_arr.zip(nt_close_resistance_torque_arr,nt_median_spring_torque_arr) do |i,j,k|
+      downhill_nt_median_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    downhill_nt_median_manually_close_door_arr
+  end
+
+  def downhill_nt_upper_deviation_manually_close_door_arr  # 下坡常温上偏差手动关门力
+    downhill_nt_upper_deviation_manually_close_door_arr = []
+    downhill_gravity_torque_arr.zip(nt_close_resistance_torque_arr,nt_upper_deviation_spring_torque_arr) do |i,j,k|
+      downhill_nt_upper_deviation_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    downhill_nt_upper_deviation_manually_close_door_arr
+  end
+
+  def downhill_nt_after_life_manually_close_door_arr  # 下坡常温寿命后手动关门力
+    downhill_nt_after_life_manually_close_door_arr = []
+    downhill_gravity_torque_arr.zip(nt_close_resistance_torque_arr,nt_after_life_spring_torque_arr) do |i,j,k|
+      downhill_nt_after_life_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    downhill_nt_after_life_manually_close_door_arr
+  end
+
+  def downhill_ht_lower_deviation_manually_close_door_arr  # 下坡高温下偏差手动关门力
+    downhill_ht_lower_deviation_manually_close_door_arr = []
+    downhill_gravity_torque_arr.zip(ht_close_resistance_torque_arr,ht_lower_deviation_spring_torque_arr) do |i,j,k|
+      downhill_ht_lower_deviation_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    downhill_ht_lower_deviation_manually_close_door_arr
+  end
+
+  def downhill_ht_median_manually_close_door_arr  # 下坡高温中值手动关门力
+    downhill_ht_median_manually_close_door_arr = []
+    downhill_gravity_torque_arr.zip(ht_close_resistance_torque_arr,ht_median_spring_torque_arr) do |i,j,k|
+      downhill_ht_median_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    downhill_ht_median_manually_close_door_arr
+  end
+
+  def downhill_ht_upper_deviation_manually_close_door_arr  # 下坡高温上偏差手动关门力
+    downhill_ht_upper_deviation_manually_close_door_arr = []
+    downhill_gravity_torque_arr.zip(ht_close_resistance_torque_arr,ht_upper_deviation_spring_torque_arr) do |i,j,k|
+      downhill_ht_upper_deviation_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    downhill_ht_upper_deviation_manually_close_door_arr
+  end
+
+  def downhill_ht_after_life_manually_close_door_arr  # 下坡高温寿命后手动关门力
+    downhill_ht_after_life_manually_close_door_arr = []
+    downhill_gravity_torque_arr.zip(ht_close_resistance_torque_arr,ht_after_life_spring_torque_arr) do |i,j,k|
+      downhill_ht_after_life_manually_close_door_arr << ( k*2 - j*2 - i ) / close_handle_length * 1000
+    end
+    downhill_ht_after_life_manually_close_door_arr
+  end
+
+
+  #  图表  #
+
+  def bg_colors
+    bg_colors = ['rgba(255, 99, 132, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(255, 206, 86, 0.2)',
+                 'rgba(75, 192, 192, 0.2)',
+                 'rgba(153, 102, 255, 0.2)',
+                 'rgba(255, 159, 64, 0.2)'
+                ]
+  end
+  def bd_colors
+    bd_colors = [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(51,51,51,51)'
+                ]
+  end
+
+  def lt_hover_chart
+    @data1 = {
+        labels: open_angle_arr,
+        datasets: [{
+            label: '上坡低温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_lt_lower_deviation_hover_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+            borderDash: [10, 5],
+          },{
+            label: '上坡低温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: uphill_lt_median_hover_arr,
+            backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+          },{
+            label: '上坡低温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_lt_upper_deviation_hover_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '上坡低温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_lt_after_life_hover_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+            borderDash: [2, 3],
+          },{
+            label: '平坡低温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_lt_lower_deviation_hover_arr,
+            # backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+            borderDash: [10, 5],
+
+          },{
+            label: '平坡低温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: flat_slope_lt_median_hover_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+          },{
+            label: '平坡低温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_lt_upper_deviation_hover_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '平坡低温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_lt_after_life_hover_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+            borderDash: [2, 3],
+          },{
+            label: '下坡低温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_lt_lower_deviation_hover_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+            borderDash: [10, 5],
+          },{
+            label: '下坡低温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: downhill_lt_median_hover_arr,
+            backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+          },{
+            label: '下坡低温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_lt_upper_deviation_hover_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '下坡低温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_lt_after_life_hover_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+            borderDash: [2, 3],
+          },{
+            label: '开门内阻',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: lt_open_static_friction_arr,
+            backgroundColor: bd_colors[6],
+            borderColor: bd_colors[6],
+            borderWidth: 1.5,
+
+          },{
+            label: '关门内阻',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: lt_close_static_friction_arr,
+            backgroundColor: bd_colors[6],
+            borderColor: bd_colors[6],
+            borderWidth: 2,
+
+          }]
+    }
+  end
+
+  def nt_hover_chart
+    @data1 = {
+        labels: open_angle_arr,
+        datasets: [{
+            label: '上坡常温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_lt_lower_deviation_hover_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+            borderDash: [10, 5],
+          },{
+            label: '上坡常温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: uphill_lt_median_hover_arr,
+            backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+          },{
+            label: '上坡常温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_lt_upper_deviation_hover_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '上坡常温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_lt_after_life_hover_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+            borderDash: [2, 3],
+          },{
+            label: '平坡常温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_lt_lower_deviation_hover_arr,
+            # backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+            borderDash: [10, 5],
+
+          },{
+            label: '平坡常温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: flat_slope_lt_median_hover_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+          },{
+            label: '平坡常温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_lt_upper_deviation_hover_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '平坡常温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_lt_after_life_hover_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+            borderDash: [2, 3],
+          },{
+            label: '下坡常温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_lt_lower_deviation_hover_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+            borderDash: [10, 5],
+          },{
+            label: '下坡常温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: downhill_lt_median_hover_arr,
+            backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+          },{
+            label: '下坡常温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_lt_upper_deviation_hover_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '下坡常温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_lt_after_life_hover_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+            borderDash: [2, 3],
+          },{
+            label: '开门内阻',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: nt_open_static_friction_arr,
+            backgroundColor: bd_colors[6],
+            borderColor: bd_colors[6],
+            borderWidth: 1.5,
+          },{
+            label: '关门内阻',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: nt_close_static_friction_arr,
+            backgroundColor: bd_colors[6],
+            borderColor: bd_colors[6],
+            borderWidth: 2,
+
+          }]
+    }
+  end
+
+  def ht_hover_chart
+    @data1 = {
+        labels: open_angle_arr,
+        datasets: [{
+            label: '上坡高温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_ht_lower_deviation_hover_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+            borderDash: [10, 5],
+          },{
+            label: '上坡高温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: uphill_ht_median_hover_arr,
+            backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+          },{
+            label: '上坡高温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_ht_upper_deviation_hover_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '上坡高温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_ht_after_life_hover_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+            borderDash: [2, 3],
+          },{
+            label: '平坡高温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_ht_lower_deviation_hover_arr,
+            # backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+            borderDash: [10, 5],
+
+          },{
+            label: '平坡高温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: flat_slope_ht_median_hover_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+          },{
+            label: '平坡高温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_ht_upper_deviation_hover_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '平坡高温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_ht_after_life_hover_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+            borderDash: [2, 3],
+          },{
+            label: '下坡高温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_ht_lower_deviation_hover_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+            borderDash: [10, 5],
+          },{
+            label: '下坡高温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: downhill_ht_median_hover_arr,
+            backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+          },{
+            label: '下坡高温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_ht_upper_deviation_hover_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '下坡高温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_ht_after_life_hover_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+            borderDash: [2, 3],
+          },{
+            label: '开门内阻',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: ht_open_static_friction_arr,
+            backgroundColor: bd_colors[6],
+            borderColor: bd_colors[6],
+            borderWidth: 1.5,
+          },{
+            label: '关门内阻',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: ht_close_static_friction_arr,
+            backgroundColor: bd_colors[6],
+            borderColor: bd_colors[6],
+            borderWidth: 2,
+
+          }]
+    }
+  end
+
+# 手动开门力
+
+  def lt_manually_open_door_chart
+    @data1 = {
+        labels: open_angle_arr,
+        datasets: [{
+            label: '上坡低温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_lt_lower_deviation_manually_open_door_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+            borderDash: [10, 5],
+          },{
+            label: '上坡低温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: uphill_lt_median_manually_open_door_arr,
+            backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+          },{
+            label: '上坡低温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_lt_upper_deviation_manually_open_door_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '上坡低温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_lt_after_life_manually_open_door_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+            borderDash: [2, 3],
+          },{
+            label: '平坡低温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_lt_lower_deviation_manually_open_door_arr,
+            # backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+            borderDash: [10, 5],
+
+          },{
+            label: '平坡低温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: flat_slope_lt_median_manually_open_door_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+          },{
+            label: '平坡低温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_lt_upper_deviation_manually_open_door_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '平坡低温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_lt_after_life_manually_open_door_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+            borderDash: [2, 3],
+          },{
+            label: '下坡低温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_lt_lower_deviation_manually_open_door_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+            borderDash: [10, 5],
+          },{
+            label: '下坡低温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: downhill_lt_median_manually_open_door_arr,
+            backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+          },{
+            label: '下坡低温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_lt_upper_deviation_manually_open_door_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '下坡低温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_lt_after_life_manually_open_door_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+            borderDash: [2, 3],
+          }]
+    }
+  end
+
+  def nt_manually_open_door_chart
+    @data1 = {
+        labels: open_angle_arr,
+        datasets: [{
+            label: '上坡常温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_nt_lower_deviation_manually_open_door_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+            borderDash: [10, 5],
+          },{
+            label: '上坡常温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: uphill_nt_median_manually_open_door_arr,
+            backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+          },{
+            label: '上坡常温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_nt_upper_deviation_manually_open_door_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '上坡常温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_nt_after_life_manually_open_door_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+            borderDash: [2, 3],
+          },{
+            label: '平坡常温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_nt_lower_deviation_manually_open_door_arr,
+            # backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+            borderDash: [10, 5],
+
+          },{
+            label: '平坡常温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: flat_slope_nt_median_manually_open_door_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+          },{
+            label: '平坡常温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_nt_upper_deviation_manually_open_door_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '平坡常温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_nt_after_life_manually_open_door_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+            borderDash: [2, 3],
+          },{
+            label: '下坡常温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_nt_lower_deviation_manually_open_door_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+            borderDash: [10, 5],
+          },{
+            label: '下坡常温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: downhill_nt_median_manually_open_door_arr,
+            backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+          },{
+            label: '下坡常温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_nt_upper_deviation_manually_open_door_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '下坡常温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_nt_after_life_manually_open_door_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+            borderDash: [2, 3],
+
+          }]
+    }
+  end
+
+  def ht_manually_open_door_chart
+    @data1 = {
+        labels: open_angle_arr,
+        datasets: [{
+            label: '上坡高温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_ht_lower_deviation_manually_open_door_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+            borderDash: [10, 5],
+          },{
+            label: '上坡高温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: uphill_ht_median_manually_open_door_arr,
+            backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+          },{
+            label: '上坡高温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_ht_upper_deviation_manually_open_door_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '上坡高温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_ht_after_life_manually_open_door_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+            borderDash: [2, 3],
+          },{
+            label: '平坡高温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_ht_lower_deviation_manually_open_door_arr,
+            # backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+            borderDash: [10, 5],
+
+          },{
+            label: '平坡高温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: flat_slope_ht_median_manually_open_door_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+          },{
+            label: '平坡高温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_ht_upper_deviation_manually_open_door_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '平坡高温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_ht_after_life_manually_open_door_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+            borderDash: [2, 3],
+          },{
+            label: '下坡高温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_ht_lower_deviation_manually_open_door_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+            borderDash: [10, 5],
+          },{
+            label: '下坡高温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: downhill_ht_median_manually_open_door_arr,
+            backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+          },{
+            label: '下坡高温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_ht_upper_deviation_manually_open_door_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '下坡高温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_ht_after_life_manually_open_door_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+            borderDash: [2, 3],
+          }]
+    }
+  end
+
+
+
+  # 手动关门力
+
+  def lt_manually_close_door_chart
+    @data1 = {
+        labels: open_angle_arr,
+        datasets: [{
+            label: '上坡低温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_lt_lower_deviation_manually_close_door_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+            borderDash: [10, 5],
+          },{
+            label: '上坡低温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: uphill_lt_median_manually_close_door_arr,
+            backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+          },{
+            label: '上坡低温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_lt_upper_deviation_manually_close_door_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '上坡低温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_lt_after_life_manually_close_door_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+            borderDash: [2, 3],
+          },{
+            label: '平坡低温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_lt_lower_deviation_manually_close_door_arr,
+            # backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+            borderDash: [10, 5],
+
+          },{
+            label: '平坡低温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: flat_slope_lt_median_manually_close_door_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+          },{
+            label: '平坡低温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_lt_upper_deviation_manually_close_door_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '平坡低温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_lt_after_life_manually_close_door_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+            borderDash: [2, 3],
+          },{
+            label: '下坡低温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_lt_lower_deviation_manually_close_door_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+            borderDash: [10, 5],
+          },{
+            label: '下坡低温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: downhill_lt_median_manually_close_door_arr,
+            backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+          },{
+            label: '下坡低温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_lt_upper_deviation_manually_close_door_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '下坡低温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_lt_after_life_manually_close_door_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+            borderDash: [2, 3],
+          }]
+    }
+  end
+
+  def nt_manually_close_door_chart
+    @data1 = {
+        labels: open_angle_arr,
+        datasets: [{
+            label: '上坡常温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_nt_lower_deviation_manually_close_door_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+            borderDash: [10, 5],
+          },{
+            label: '上坡常温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: uphill_nt_median_manually_close_door_arr,
+            backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+          },{
+            label: '上坡常温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_nt_upper_deviation_manually_close_door_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '上坡常温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_nt_after_life_manually_close_door_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+            borderDash: [2, 3],
+          },{
+            label: '平坡常温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_nt_lower_deviation_manually_close_door_arr,
+            # backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+            borderDash: [10, 5],
+
+          },{
+            label: '平坡常温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: flat_slope_nt_median_manually_close_door_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+          },{
+            label: '平坡常温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_nt_upper_deviation_manually_close_door_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '平坡常温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_nt_after_life_manually_close_door_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+            borderDash: [2, 3],
+          },{
+            label: '下坡常温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_nt_lower_deviation_manually_close_door_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+            borderDash: [10, 5],
+          },{
+            label: '下坡常温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: downhill_nt_median_manually_close_door_arr,
+            backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+          },{
+            label: '下坡常温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_nt_upper_deviation_manually_close_door_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '下坡常温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_nt_after_life_manually_close_door_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+            borderDash: [2, 3],
+
+          }]
+    }
+  end
+
+  def ht_manually_close_door_chart
+    @data1 = {
+        labels: open_angle_arr,
+        datasets: [{
+            label: '上坡高温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_ht_lower_deviation_manually_close_door_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+            borderDash: [10, 5],
+          },{
+            label: '上坡高温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: uphill_ht_median_manually_close_door_arr,
+            backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+          },{
+            label: '上坡高温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_ht_upper_deviation_manually_close_door_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '上坡高温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: uphill_ht_after_life_manually_close_door_arr,
+            # backgroundColor: bd_colors[1],
+            borderColor: bd_colors[1],
+            borderWidth: 2,
+            borderDash: [2, 3],
+          },{
+            label: '平坡高温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_ht_lower_deviation_manually_close_door_arr,
+            # backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+            borderDash: [10, 5],
+
+          },{
+            label: '平坡高温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: flat_slope_ht_median_manually_close_door_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+          },{
+            label: '平坡高温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_ht_upper_deviation_manually_close_door_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '平坡高温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: flat_slope_ht_after_life_manually_close_door_arr,
+            backgroundColor: bd_colors[3],
+            borderColor: bd_colors[3],
+            borderWidth: 2,
+            borderDash: [2, 3],
+          },{
+            label: '下坡高温下偏差',
+            fill: false, # 取消这行将填充面积
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_ht_lower_deviation_manually_close_door_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+            borderDash: [10, 5],
+          },{
+            label: '下坡高温中值',
+            fill: false,
+            pointRadius: 1,
+            pointHoverRadius: 3,
+            data: downhill_ht_median_manually_close_door_arr,
+            backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+          },{
+            label: '下坡高温上偏差',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_ht_upper_deviation_manually_close_door_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 1.5,
+            borderDash: [4, 5],
+          },{
+            label: '下坡高温寿命后',
+            fill: false,
+            pointRadius: 0,
+            pointHoverRadius: 3,
+            data: downhill_ht_after_life_manually_close_door_arr,
+            # backgroundColor: bd_colors[0],
+            borderColor: bd_colors[0],
+            borderWidth: 2,
+            borderDash: [2, 3],
+          }]
+    }
+  end
 
 
   protected
@@ -874,5 +2744,7 @@ class ManualCalculation < ApplicationRecord
   def should_validate_all_data?
     current_step == 2   # 做到第二步时需要验证
   end
+
+
 
 end
