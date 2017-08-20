@@ -419,6 +419,28 @@ class ManualCalculation < ApplicationRecord
     pole_length_arr
   end
 
+  def motor_output_speed_arr # 电机输出转速（r/min） ,假定角度增量为2度
+    pla1 = pole_length_arr
+    pla1.delete_at(0)
+    pla2 = pole_length_arr
+    pla2.delete_at(-1)
+    motor_output_speed_arr = [2500]
+    pla1.zip(pla2) do |i, j|
+      motor_output_speed_arr << (i - j) * 60 / (open_time / open_angle * 2 * platform.lead) * platform.gear_transmission_ratio
+    end
+    motor_output_speed_arr
+  end
+
+  def motor_pwm_arr  # PWM调制占空比
+    motor_pwm_arr = [0.33333333]
+    mos = motor_output_speed_arr
+    mos.delete_at(0)
+    mos.each do |i|
+      motor_pwm_arr << i / platform.rated_speed
+    end
+    motor_pwm_arr
+  end
+
   def vector_ba_length_x_arr # 向量BA的实时长度（X方向分量）
     vector_ba_length_x_arr = []
     o_gate_b_x_arr.each do |i|
@@ -2165,600 +2187,1203 @@ class ManualCalculation < ApplicationRecord
 
 
 
-    #  开门电机扭矩  #
+  #  开门电机扭矩  #
 
 
-    #  上坡
+  #  上坡
 
-    def uphill_lt_lower_deviation_open_door_motor_torque_arr # 上坡低温下偏差开门电机扭矩
-      uphill_lt_lower_deviation_open_door_motor_torque_arr = []
-      uphill_lt_lower_deviation_open_door_gearbox_torque_arr.each do |i|
-        uphill_lt_lower_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      uphill_lt_lower_deviation_open_door_motor_torque_arr
+  def uphill_lt_lower_deviation_open_door_motor_torque_arr # 上坡低温下偏差开门电机扭矩
+    uphill_lt_lower_deviation_open_door_motor_torque_arr = []
+    uphill_lt_lower_deviation_open_door_gearbox_torque_arr.each do |i|
+      uphill_lt_lower_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    uphill_lt_lower_deviation_open_door_motor_torque_arr
+  end
 
-    def uphill_lt_median_open_door_motor_torque_arr # 上坡低温中值开门电机扭矩
-      uphill_lt_median_open_door_motor_torque_arr = []
-      uphill_lt_median_open_door_gearbox_torque_arr.each do |i|
-        uphill_lt_median_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      uphill_lt_median_open_door_motor_torque_arr
+  def uphill_lt_median_open_door_motor_torque_arr # 上坡低温中值开门电机扭矩
+    uphill_lt_median_open_door_motor_torque_arr = []
+    uphill_lt_median_open_door_gearbox_torque_arr.each do |i|
+      uphill_lt_median_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    uphill_lt_median_open_door_motor_torque_arr
+  end
 
-    def uphill_lt_upper_deviation_open_door_motor_torque_arr # 上坡低温上偏差开门电机扭矩
-      uphill_lt_upper_deviation_open_door_motor_torque_arr = []
-      uphill_lt_upper_deviation_open_door_gearbox_torque_arr.each do |i|
-        uphill_lt_upper_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      uphill_lt_upper_deviation_open_door_motor_torque_arr
+  def uphill_lt_upper_deviation_open_door_motor_torque_arr # 上坡低温上偏差开门电机扭矩
+    uphill_lt_upper_deviation_open_door_motor_torque_arr = []
+    uphill_lt_upper_deviation_open_door_gearbox_torque_arr.each do |i|
+      uphill_lt_upper_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    uphill_lt_upper_deviation_open_door_motor_torque_arr
+  end
 
-    def uphill_lt_after_life_open_door_motor_torque_arr # 上坡低温寿命后开门电机扭矩
-      uphill_lt_after_life_open_door_motor_torque_arr = []
-      uphill_lt_after_life_open_door_gearbox_torque_arr.each do |i|
-        uphill_lt_after_life_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      uphill_lt_after_life_open_door_motor_torque_arr
+  def uphill_lt_after_life_open_door_motor_torque_arr # 上坡低温寿命后开门电机扭矩
+    uphill_lt_after_life_open_door_motor_torque_arr = []
+    uphill_lt_after_life_open_door_gearbox_torque_arr.each do |i|
+      uphill_lt_after_life_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    uphill_lt_after_life_open_door_motor_torque_arr
+  end
 
-    def uphill_nt_lower_deviation_open_door_motor_torque_arr # 上坡常温下偏差开门电机扭矩
-      uphill_nt_lower_deviation_open_door_motor_torque_arr = []
-      uphill_nt_lower_deviation_open_door_gearbox_torque_arr.each do |i|
-        uphill_nt_lower_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      uphill_nt_lower_deviation_open_door_motor_torque_arr
+  def uphill_nt_lower_deviation_open_door_motor_torque_arr # 上坡常温下偏差开门电机扭矩
+    uphill_nt_lower_deviation_open_door_motor_torque_arr = []
+    uphill_nt_lower_deviation_open_door_gearbox_torque_arr.each do |i|
+      uphill_nt_lower_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    uphill_nt_lower_deviation_open_door_motor_torque_arr
+  end
 
-    def uphill_nt_median_open_door_motor_torque_arr # 上坡常温中值开门电机扭矩
-      uphill_nt_median_open_door_motor_torque_arr = []
-      uphill_nt_median_open_door_gearbox_torque_arr.each do |i|
-        uphill_nt_median_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      uphill_nt_median_open_door_motor_torque_arr
+  def uphill_nt_median_open_door_motor_torque_arr # 上坡常温中值开门电机扭矩
+    uphill_nt_median_open_door_motor_torque_arr = []
+    uphill_nt_median_open_door_gearbox_torque_arr.each do |i|
+      uphill_nt_median_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    uphill_nt_median_open_door_motor_torque_arr
+  end
 
-    def uphill_nt_upper_deviation_open_door_motor_torque_arr # 上坡常温上偏差开门电机扭矩
-      uphill_nt_upper_deviation_open_door_motor_torque_arr = []
-      uphill_nt_upper_deviation_open_door_gearbox_torque_arr.each do |i|
-        uphill_nt_upper_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      uphill_nt_upper_deviation_open_door_motor_torque_arr
+  def uphill_nt_upper_deviation_open_door_motor_torque_arr # 上坡常温上偏差开门电机扭矩
+    uphill_nt_upper_deviation_open_door_motor_torque_arr = []
+    uphill_nt_upper_deviation_open_door_gearbox_torque_arr.each do |i|
+      uphill_nt_upper_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    uphill_nt_upper_deviation_open_door_motor_torque_arr
+  end
 
-    def uphill_nt_after_life_open_door_motor_torque_arr # 上坡常温寿命后开门电机扭矩
-      uphill_nt_after_life_open_door_motor_torque_arr = []
-      uphill_nt_after_life_open_door_gearbox_torque_arr.each do |i|
-        uphill_nt_after_life_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      uphill_nt_after_life_open_door_motor_torque_arr
+  def uphill_nt_after_life_open_door_motor_torque_arr # 上坡常温寿命后开门电机扭矩
+    uphill_nt_after_life_open_door_motor_torque_arr = []
+    uphill_nt_after_life_open_door_gearbox_torque_arr.each do |i|
+      uphill_nt_after_life_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    uphill_nt_after_life_open_door_motor_torque_arr
+  end
 
-    def uphill_ht_lower_deviation_open_door_motor_torque_arr # 上坡高温下偏差开门电机扭矩
-      uphill_ht_lower_deviation_open_door_motor_torque_arr = []
-      uphill_ht_lower_deviation_open_door_gearbox_torque_arr.each do |i|
-        uphill_ht_lower_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      uphill_ht_lower_deviation_open_door_motor_torque_arr
+  def uphill_ht_lower_deviation_open_door_motor_torque_arr # 上坡高温下偏差开门电机扭矩
+    uphill_ht_lower_deviation_open_door_motor_torque_arr = []
+    uphill_ht_lower_deviation_open_door_gearbox_torque_arr.each do |i|
+      uphill_ht_lower_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    uphill_ht_lower_deviation_open_door_motor_torque_arr
+  end
 
-    def uphill_ht_median_open_door_motor_torque_arr # 上坡高温中值开门电机扭矩
-      uphill_ht_median_open_door_motor_torque_arr = []
-      uphill_ht_median_open_door_gearbox_torque_arr.each do |i|
-        uphill_ht_median_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      uphill_ht_median_open_door_motor_torque_arr
+  def uphill_ht_median_open_door_motor_torque_arr # 上坡高温中值开门电机扭矩
+    uphill_ht_median_open_door_motor_torque_arr = []
+    uphill_ht_median_open_door_gearbox_torque_arr.each do |i|
+      uphill_ht_median_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    uphill_ht_median_open_door_motor_torque_arr
+  end
 
-    def uphill_ht_upper_deviation_open_door_motor_torque_arr # 上坡高温上偏差开门电机扭矩
-      uphill_ht_upper_deviation_open_door_motor_torque_arr = []
-      uphill_ht_upper_deviation_open_door_gearbox_torque_arr.each do |i|
-        uphill_ht_upper_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      uphill_ht_upper_deviation_open_door_motor_torque_arr
+  def uphill_ht_upper_deviation_open_door_motor_torque_arr # 上坡高温上偏差开门电机扭矩
+    uphill_ht_upper_deviation_open_door_motor_torque_arr = []
+    uphill_ht_upper_deviation_open_door_gearbox_torque_arr.each do |i|
+      uphill_ht_upper_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    uphill_ht_upper_deviation_open_door_motor_torque_arr
+  end
 
-    def uphill_ht_after_life_open_door_motor_torque_arr # 上坡高温寿命后开门电机扭矩
-      uphill_ht_after_life_open_door_motor_torque_arr = []
-      uphill_ht_after_life_open_door_gearbox_torque_arr.each do |i|
-        uphill_ht_after_life_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      uphill_ht_after_life_open_door_motor_torque_arr
+  def uphill_ht_after_life_open_door_motor_torque_arr # 上坡高温寿命后开门电机扭矩
+    uphill_ht_after_life_open_door_motor_torque_arr = []
+    uphill_ht_after_life_open_door_gearbox_torque_arr.each do |i|
+      uphill_ht_after_life_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    uphill_ht_after_life_open_door_motor_torque_arr
+  end
 
-    # 平坡
+  # 平坡
 
-    def flat_slope_lt_lower_deviation_open_door_motor_torque_arr # 平坡低温下偏差开门电机扭矩
-      flat_slope_lt_lower_deviation_open_door_motor_torque_arr = []
-      flat_slope_lt_lower_deviation_open_door_gearbox_torque_arr.each do |i|
-        flat_slope_lt_lower_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      flat_slope_lt_lower_deviation_open_door_motor_torque_arr
+  def flat_slope_lt_lower_deviation_open_door_motor_torque_arr # 平坡低温下偏差开门电机扭矩
+    flat_slope_lt_lower_deviation_open_door_motor_torque_arr = []
+    flat_slope_lt_lower_deviation_open_door_gearbox_torque_arr.each do |i|
+      flat_slope_lt_lower_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    flat_slope_lt_lower_deviation_open_door_motor_torque_arr
+  end
 
-    def flat_slope_lt_median_open_door_motor_torque_arr # 平坡低温中值开门电机扭矩
-      flat_slope_lt_median_open_door_motor_torque_arr = []
-      flat_slope_lt_median_open_door_gearbox_torque_arr.each do |i|
-        flat_slope_lt_median_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      flat_slope_lt_median_open_door_motor_torque_arr
+  def flat_slope_lt_median_open_door_motor_torque_arr # 平坡低温中值开门电机扭矩
+    flat_slope_lt_median_open_door_motor_torque_arr = []
+    flat_slope_lt_median_open_door_gearbox_torque_arr.each do |i|
+      flat_slope_lt_median_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    flat_slope_lt_median_open_door_motor_torque_arr
+  end
 
-    def flat_slope_lt_upper_deviation_open_door_motor_torque_arr # 平坡低温上偏差开门电机扭矩
-      flat_slope_lt_upper_deviation_open_door_motor_torque_arr = []
-      flat_slope_lt_upper_deviation_open_door_gearbox_torque_arr.each do |i|
-        flat_slope_lt_upper_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      flat_slope_lt_upper_deviation_open_door_motor_torque_arr
+  def flat_slope_lt_upper_deviation_open_door_motor_torque_arr # 平坡低温上偏差开门电机扭矩
+    flat_slope_lt_upper_deviation_open_door_motor_torque_arr = []
+    flat_slope_lt_upper_deviation_open_door_gearbox_torque_arr.each do |i|
+      flat_slope_lt_upper_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    flat_slope_lt_upper_deviation_open_door_motor_torque_arr
+  end
 
-    def flat_slope_lt_after_life_open_door_motor_torque_arr # 平坡低温寿命后开门电机扭矩
-      flat_slope_lt_after_life_open_door_motor_torque_arr = []
-      flat_slope_lt_after_life_open_door_gearbox_torque_arr.each do |i|
-        flat_slope_lt_after_life_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      flat_slope_lt_after_life_open_door_motor_torque_arr
+  def flat_slope_lt_after_life_open_door_motor_torque_arr # 平坡低温寿命后开门电机扭矩
+    flat_slope_lt_after_life_open_door_motor_torque_arr = []
+    flat_slope_lt_after_life_open_door_gearbox_torque_arr.each do |i|
+      flat_slope_lt_after_life_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    flat_slope_lt_after_life_open_door_motor_torque_arr
+  end
 
-    def flat_slope_nt_lower_deviation_open_door_motor_torque_arr # 平坡常温下偏差开门电机扭矩
-      flat_slope_nt_lower_deviation_open_door_motor_torque_arr = []
-      flat_slope_nt_lower_deviation_open_door_gearbox_torque_arr.each do |i|
-        flat_slope_nt_lower_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      flat_slope_nt_lower_deviation_open_door_motor_torque_arr
+  def flat_slope_nt_lower_deviation_open_door_motor_torque_arr # 平坡常温下偏差开门电机扭矩
+    flat_slope_nt_lower_deviation_open_door_motor_torque_arr = []
+    flat_slope_nt_lower_deviation_open_door_gearbox_torque_arr.each do |i|
+      flat_slope_nt_lower_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    flat_slope_nt_lower_deviation_open_door_motor_torque_arr
+  end
 
-    def flat_slope_nt_median_open_door_motor_torque_arr # 平坡常温中值开门电机扭矩
-      flat_slope_nt_median_open_door_motor_torque_arr = []
-      flat_slope_nt_median_open_door_gearbox_torque_arr.each do |i|
-        flat_slope_nt_median_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      flat_slope_nt_median_open_door_motor_torque_arr
+  def flat_slope_nt_median_open_door_motor_torque_arr # 平坡常温中值开门电机扭矩
+    flat_slope_nt_median_open_door_motor_torque_arr = []
+    flat_slope_nt_median_open_door_gearbox_torque_arr.each do |i|
+      flat_slope_nt_median_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    flat_slope_nt_median_open_door_motor_torque_arr
+  end
 
-    def flat_slope_nt_upper_deviation_open_door_motor_torque_arr # 平坡常温上偏差开门电机扭矩
-      flat_slope_nt_upper_deviation_open_door_motor_torque_arr = []
-      flat_slope_nt_upper_deviation_open_door_gearbox_torque_arr.each do |i|
-        flat_slope_nt_upper_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      flat_slope_nt_upper_deviation_open_door_motor_torque_arr
+  def flat_slope_nt_upper_deviation_open_door_motor_torque_arr # 平坡常温上偏差开门电机扭矩
+    flat_slope_nt_upper_deviation_open_door_motor_torque_arr = []
+    flat_slope_nt_upper_deviation_open_door_gearbox_torque_arr.each do |i|
+      flat_slope_nt_upper_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    flat_slope_nt_upper_deviation_open_door_motor_torque_arr
+  end
 
-    def flat_slope_nt_after_life_open_door_motor_torque_arr # 平坡常温寿命后开门电机扭矩
-      flat_slope_nt_after_life_open_door_motor_torque_arr = []
-      flat_slope_nt_after_life_open_door_gearbox_torque_arr.each do |i|
-        flat_slope_nt_after_life_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      flat_slope_nt_after_life_open_door_motor_torque_arr
+  def flat_slope_nt_after_life_open_door_motor_torque_arr # 平坡常温寿命后开门电机扭矩
+    flat_slope_nt_after_life_open_door_motor_torque_arr = []
+    flat_slope_nt_after_life_open_door_gearbox_torque_arr.each do |i|
+      flat_slope_nt_after_life_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    flat_slope_nt_after_life_open_door_motor_torque_arr
+  end
 
-    def flat_slope_ht_lower_deviation_open_door_motor_torque_arr # 平坡高温下偏差开门电机扭矩
-      flat_slope_ht_lower_deviation_open_door_motor_torque_arr = []
-      flat_slope_ht_lower_deviation_open_door_gearbox_torque_arr.each do |i|
-        flat_slope_ht_lower_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      flat_slope_ht_lower_deviation_open_door_motor_torque_arr
+  def flat_slope_ht_lower_deviation_open_door_motor_torque_arr # 平坡高温下偏差开门电机扭矩
+    flat_slope_ht_lower_deviation_open_door_motor_torque_arr = []
+    flat_slope_ht_lower_deviation_open_door_gearbox_torque_arr.each do |i|
+      flat_slope_ht_lower_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    flat_slope_ht_lower_deviation_open_door_motor_torque_arr
+  end
 
-    def flat_slope_ht_median_open_door_motor_torque_arr # 平坡高温中值开门电机扭矩
-      flat_slope_ht_median_open_door_motor_torque_arr = []
-      flat_slope_ht_median_open_door_gearbox_torque_arr.each do |i|
-        flat_slope_ht_median_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      flat_slope_ht_median_open_door_motor_torque_arr
+  def flat_slope_ht_median_open_door_motor_torque_arr # 平坡高温中值开门电机扭矩
+    flat_slope_ht_median_open_door_motor_torque_arr = []
+    flat_slope_ht_median_open_door_gearbox_torque_arr.each do |i|
+      flat_slope_ht_median_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    flat_slope_ht_median_open_door_motor_torque_arr
+  end
 
-    def flat_slope_ht_upper_deviation_open_door_motor_torque_arr # 平坡高温上偏差开门电机扭矩
-      flat_slope_ht_upper_deviation_open_door_motor_torque_arr = []
-      flat_slope_ht_upper_deviation_open_door_gearbox_torque_arr.each do |i|
-        flat_slope_ht_upper_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      flat_slope_ht_upper_deviation_open_door_motor_torque_arr
+  def flat_slope_ht_upper_deviation_open_door_motor_torque_arr # 平坡高温上偏差开门电机扭矩
+    flat_slope_ht_upper_deviation_open_door_motor_torque_arr = []
+    flat_slope_ht_upper_deviation_open_door_gearbox_torque_arr.each do |i|
+      flat_slope_ht_upper_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    flat_slope_ht_upper_deviation_open_door_motor_torque_arr
+  end
 
-    def flat_slope_ht_after_life_open_door_motor_torque_arr # 平坡高温寿命后开门电机扭矩
-      flat_slope_ht_after_life_open_door_motor_torque_arr = []
-      flat_slope_ht_after_life_open_door_gearbox_torque_arr.each do |i|
-        flat_slope_ht_after_life_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      flat_slope_ht_after_life_open_door_motor_torque_arr
+  def flat_slope_ht_after_life_open_door_motor_torque_arr # 平坡高温寿命后开门电机扭矩
+    flat_slope_ht_after_life_open_door_motor_torque_arr = []
+    flat_slope_ht_after_life_open_door_gearbox_torque_arr.each do |i|
+      flat_slope_ht_after_life_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    flat_slope_ht_after_life_open_door_motor_torque_arr
+  end
 
-    # 下坡
+  # 下坡
 
-    def downhill_lt_lower_deviation_open_door_motor_torque_arr # 平坡低温下偏差开门电机扭矩
-      downhill_lt_lower_deviation_open_door_motor_torque_arr = []
-      downhill_lt_lower_deviation_open_door_gearbox_torque_arr.each do |i|
-        downhill_lt_lower_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      downhill_lt_lower_deviation_open_door_motor_torque_arr
+  def downhill_lt_lower_deviation_open_door_motor_torque_arr # 平坡低温下偏差开门电机扭矩
+    downhill_lt_lower_deviation_open_door_motor_torque_arr = []
+    downhill_lt_lower_deviation_open_door_gearbox_torque_arr.each do |i|
+      downhill_lt_lower_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    downhill_lt_lower_deviation_open_door_motor_torque_arr
+  end
 
-    def downhill_lt_median_open_door_motor_torque_arr # 平坡低温中值开门电机扭矩
-      downhill_lt_median_open_door_motor_torque_arr = []
-      downhill_lt_median_open_door_gearbox_torque_arr.each do |i|
-        downhill_lt_median_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      downhill_lt_median_open_door_motor_torque_arr
+  def downhill_lt_median_open_door_motor_torque_arr # 平坡低温中值开门电机扭矩
+    downhill_lt_median_open_door_motor_torque_arr = []
+    downhill_lt_median_open_door_gearbox_torque_arr.each do |i|
+      downhill_lt_median_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    downhill_lt_median_open_door_motor_torque_arr
+  end
 
-    def downhill_lt_upper_deviation_open_door_motor_torque_arr # 平坡低温上偏差开门电机扭矩
-      downhill_lt_upper_deviation_open_door_motor_torque_arr = []
-      downhill_lt_upper_deviation_open_door_gearbox_torque_arr.each do |i|
-        downhill_lt_upper_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      downhill_lt_upper_deviation_open_door_motor_torque_arr
+  def downhill_lt_upper_deviation_open_door_motor_torque_arr # 平坡低温上偏差开门电机扭矩
+    downhill_lt_upper_deviation_open_door_motor_torque_arr = []
+    downhill_lt_upper_deviation_open_door_gearbox_torque_arr.each do |i|
+      downhill_lt_upper_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    downhill_lt_upper_deviation_open_door_motor_torque_arr
+  end
 
-    def downhill_lt_after_life_open_door_motor_torque_arr # 平坡低温寿命后开门电机扭矩
-      downhill_lt_after_life_open_door_motor_torque_arr = []
-      downhill_lt_after_life_open_door_gearbox_torque_arr.each do |i|
-        downhill_lt_after_life_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      downhill_lt_after_life_open_door_motor_torque_arr
+  def downhill_lt_after_life_open_door_motor_torque_arr # 平坡低温寿命后开门电机扭矩
+    downhill_lt_after_life_open_door_motor_torque_arr = []
+    downhill_lt_after_life_open_door_gearbox_torque_arr.each do |i|
+      downhill_lt_after_life_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    downhill_lt_after_life_open_door_motor_torque_arr
+  end
 
-    def downhill_nt_lower_deviation_open_door_motor_torque_arr # 平坡常温下偏差开门电机扭矩
-      downhill_nt_lower_deviation_open_door_motor_torque_arr = []
-      downhill_nt_lower_deviation_open_door_gearbox_torque_arr.each do |i|
-        downhill_nt_lower_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      downhill_nt_lower_deviation_open_door_motor_torque_arr
+  def downhill_nt_lower_deviation_open_door_motor_torque_arr # 平坡常温下偏差开门电机扭矩
+    downhill_nt_lower_deviation_open_door_motor_torque_arr = []
+    downhill_nt_lower_deviation_open_door_gearbox_torque_arr.each do |i|
+      downhill_nt_lower_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    downhill_nt_lower_deviation_open_door_motor_torque_arr
+  end
 
-    def downhill_nt_median_open_door_motor_torque_arr # 平坡常温中值开门电机扭矩
-      downhill_nt_median_open_door_motor_torque_arr = []
-      downhill_nt_median_open_door_gearbox_torque_arr.each do |i|
-        downhill_nt_median_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      downhill_nt_median_open_door_motor_torque_arr
+  def downhill_nt_median_open_door_motor_torque_arr # 平坡常温中值开门电机扭矩
+    downhill_nt_median_open_door_motor_torque_arr = []
+    downhill_nt_median_open_door_gearbox_torque_arr.each do |i|
+      downhill_nt_median_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    downhill_nt_median_open_door_motor_torque_arr
+  end
 
-    def downhill_nt_upper_deviation_open_door_motor_torque_arr # 平坡常温上偏差开门电机扭矩
-      downhill_nt_upper_deviation_open_door_motor_torque_arr = []
-      downhill_nt_upper_deviation_open_door_gearbox_torque_arr.each do |i|
-        downhill_nt_upper_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      downhill_nt_upper_deviation_open_door_motor_torque_arr
+  def downhill_nt_upper_deviation_open_door_motor_torque_arr # 平坡常温上偏差开门电机扭矩
+    downhill_nt_upper_deviation_open_door_motor_torque_arr = []
+    downhill_nt_upper_deviation_open_door_gearbox_torque_arr.each do |i|
+      downhill_nt_upper_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    downhill_nt_upper_deviation_open_door_motor_torque_arr
+  end
 
-    def downhill_nt_after_life_open_door_motor_torque_arr # 平坡常温寿命后开门电机扭矩
-      downhill_nt_after_life_open_door_motor_torque_arr = []
-      downhill_nt_after_life_open_door_gearbox_torque_arr.each do |i|
-        downhill_nt_after_life_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      downhill_nt_after_life_open_door_motor_torque_arr
+  def downhill_nt_after_life_open_door_motor_torque_arr # 平坡常温寿命后开门电机扭矩
+    downhill_nt_after_life_open_door_motor_torque_arr = []
+    downhill_nt_after_life_open_door_gearbox_torque_arr.each do |i|
+      downhill_nt_after_life_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    downhill_nt_after_life_open_door_motor_torque_arr
+  end
 
-    def downhill_ht_lower_deviation_open_door_motor_torque_arr # 平坡高温下偏差开门电机扭矩
-      downhill_ht_lower_deviation_open_door_motor_torque_arr = []
-      downhill_ht_lower_deviation_open_door_gearbox_torque_arr.each do |i|
-        downhill_ht_lower_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      downhill_ht_lower_deviation_open_door_motor_torque_arr
+  def downhill_ht_lower_deviation_open_door_motor_torque_arr # 平坡高温下偏差开门电机扭矩
+    downhill_ht_lower_deviation_open_door_motor_torque_arr = []
+    downhill_ht_lower_deviation_open_door_gearbox_torque_arr.each do |i|
+      downhill_ht_lower_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    downhill_ht_lower_deviation_open_door_motor_torque_arr
+  end
 
-    def downhill_ht_median_open_door_motor_torque_arr # 平坡高温中值开门电机扭矩
-      downhill_ht_median_open_door_motor_torque_arr = []
-      downhill_ht_median_open_door_gearbox_torque_arr.each do |i|
-        downhill_ht_median_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      downhill_ht_median_open_door_motor_torque_arr
+  def downhill_ht_median_open_door_motor_torque_arr # 平坡高温中值开门电机扭矩
+    downhill_ht_median_open_door_motor_torque_arr = []
+    downhill_ht_median_open_door_gearbox_torque_arr.each do |i|
+      downhill_ht_median_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    downhill_ht_median_open_door_motor_torque_arr
+  end
 
-    def downhill_ht_upper_deviation_open_door_motor_torque_arr # 平坡高温上偏差开门电机扭矩
-      downhill_ht_upper_deviation_open_door_motor_torque_arr = []
-      downhill_ht_upper_deviation_open_door_gearbox_torque_arr.each do |i|
-        downhill_ht_upper_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      downhill_ht_upper_deviation_open_door_motor_torque_arr
+  def downhill_ht_upper_deviation_open_door_motor_torque_arr # 平坡高温上偏差开门电机扭矩
+    downhill_ht_upper_deviation_open_door_motor_torque_arr = []
+    downhill_ht_upper_deviation_open_door_gearbox_torque_arr.each do |i|
+      downhill_ht_upper_deviation_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    downhill_ht_upper_deviation_open_door_motor_torque_arr
+  end
 
-    def downhill_ht_after_life_open_door_motor_torque_arr # 平坡高温寿命后开门电机扭矩
-      downhill_ht_after_life_open_door_motor_torque_arr = []
-      downhill_ht_after_life_open_door_gearbox_torque_arr.each do |i|
-        downhill_ht_after_life_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      downhill_ht_after_life_open_door_motor_torque_arr
+  def downhill_ht_after_life_open_door_motor_torque_arr # 平坡高温寿命后开门电机扭矩
+    downhill_ht_after_life_open_door_motor_torque_arr = []
+    downhill_ht_after_life_open_door_gearbox_torque_arr.each do |i|
+      downhill_ht_after_life_open_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    downhill_ht_after_life_open_door_motor_torque_arr
+  end
 
-    #  关门电机扭矩  #
+  #  关门电机扭矩  #
 
 
-    #  上坡
+  #  上坡
 
-    def uphill_lt_lower_deviation_close_door_motor_torque_arr # 上坡低温下偏差关门电机扭矩
-      uphill_lt_lower_deviation_close_door_motor_torque_arr = []
-      uphill_lt_lower_deviation_close_door_gearbox_torque_arr.each do |i|
-        uphill_lt_lower_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      uphill_lt_lower_deviation_close_door_motor_torque_arr
+  def uphill_lt_lower_deviation_close_door_motor_torque_arr # 上坡低温下偏差关门电机扭矩
+    uphill_lt_lower_deviation_close_door_motor_torque_arr = []
+    uphill_lt_lower_deviation_close_door_gearbox_torque_arr.each do |i|
+      uphill_lt_lower_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    uphill_lt_lower_deviation_close_door_motor_torque_arr
+  end
 
-    def uphill_lt_median_close_door_motor_torque_arr # 上坡低温中值关门电机扭矩
-      uphill_lt_median_close_door_motor_torque_arr = []
-      uphill_lt_median_close_door_gearbox_torque_arr.each do |i|
-        uphill_lt_median_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      uphill_lt_median_close_door_motor_torque_arr
+  def uphill_lt_median_close_door_motor_torque_arr # 上坡低温中值关门电机扭矩
+    uphill_lt_median_close_door_motor_torque_arr = []
+    uphill_lt_median_close_door_gearbox_torque_arr.each do |i|
+      uphill_lt_median_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    uphill_lt_median_close_door_motor_torque_arr
+  end
 
-    def uphill_lt_upper_deviation_close_door_motor_torque_arr # 上坡低温上偏差关门电机扭矩
-      uphill_lt_upper_deviation_close_door_motor_torque_arr = []
-      uphill_lt_upper_deviation_close_door_gearbox_torque_arr.each do |i|
-        uphill_lt_upper_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      uphill_lt_upper_deviation_close_door_motor_torque_arr
+  def uphill_lt_upper_deviation_close_door_motor_torque_arr # 上坡低温上偏差关门电机扭矩
+    uphill_lt_upper_deviation_close_door_motor_torque_arr = []
+    uphill_lt_upper_deviation_close_door_gearbox_torque_arr.each do |i|
+      uphill_lt_upper_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    uphill_lt_upper_deviation_close_door_motor_torque_arr
+  end
 
-    def uphill_lt_after_life_close_door_motor_torque_arr # 上坡低温寿命后关门电机扭矩
-      uphill_lt_after_life_close_door_motor_torque_arr = []
-      uphill_lt_after_life_close_door_gearbox_torque_arr.each do |i|
-        uphill_lt_after_life_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      uphill_lt_after_life_close_door_motor_torque_arr
+  def uphill_lt_after_life_close_door_motor_torque_arr # 上坡低温寿命后关门电机扭矩
+    uphill_lt_after_life_close_door_motor_torque_arr = []
+    uphill_lt_after_life_close_door_gearbox_torque_arr.each do |i|
+      uphill_lt_after_life_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    uphill_lt_after_life_close_door_motor_torque_arr
+  end
 
-    def uphill_nt_lower_deviation_close_door_motor_torque_arr # 上坡常温下偏差关门电机扭矩
-      uphill_nt_lower_deviation_close_door_motor_torque_arr = []
-      uphill_nt_lower_deviation_close_door_gearbox_torque_arr.each do |i|
-        uphill_nt_lower_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      uphill_nt_lower_deviation_close_door_motor_torque_arr
+  def uphill_nt_lower_deviation_close_door_motor_torque_arr # 上坡常温下偏差关门电机扭矩
+    uphill_nt_lower_deviation_close_door_motor_torque_arr = []
+    uphill_nt_lower_deviation_close_door_gearbox_torque_arr.each do |i|
+      uphill_nt_lower_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    uphill_nt_lower_deviation_close_door_motor_torque_arr
+  end
 
-    def uphill_nt_median_close_door_motor_torque_arr # 上坡常温中值关门电机扭矩
-      uphill_nt_median_close_door_motor_torque_arr = []
-      uphill_nt_median_close_door_gearbox_torque_arr.each do |i|
-        uphill_nt_median_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      uphill_nt_median_close_door_motor_torque_arr
+  def uphill_nt_median_close_door_motor_torque_arr # 上坡常温中值关门电机扭矩
+    uphill_nt_median_close_door_motor_torque_arr = []
+    uphill_nt_median_close_door_gearbox_torque_arr.each do |i|
+      uphill_nt_median_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    uphill_nt_median_close_door_motor_torque_arr
+  end
 
-    def uphill_nt_upper_deviation_close_door_motor_torque_arr # 上坡常温上偏差关门电机扭矩
-      uphill_nt_upper_deviation_close_door_motor_torque_arr = []
-      uphill_nt_upper_deviation_close_door_gearbox_torque_arr.each do |i|
-        uphill_nt_upper_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      uphill_nt_upper_deviation_close_door_motor_torque_arr
+  def uphill_nt_upper_deviation_close_door_motor_torque_arr # 上坡常温上偏差关门电机扭矩
+    uphill_nt_upper_deviation_close_door_motor_torque_arr = []
+    uphill_nt_upper_deviation_close_door_gearbox_torque_arr.each do |i|
+      uphill_nt_upper_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    uphill_nt_upper_deviation_close_door_motor_torque_arr
+  end
 
-    def uphill_nt_after_life_close_door_motor_torque_arr # 上坡常温寿命后关门电机扭矩
-      uphill_nt_after_life_close_door_motor_torque_arr = []
-      uphill_nt_after_life_close_door_gearbox_torque_arr.each do |i|
-        uphill_nt_after_life_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      uphill_nt_after_life_close_door_motor_torque_arr
+  def uphill_nt_after_life_close_door_motor_torque_arr # 上坡常温寿命后关门电机扭矩
+    uphill_nt_after_life_close_door_motor_torque_arr = []
+    uphill_nt_after_life_close_door_gearbox_torque_arr.each do |i|
+      uphill_nt_after_life_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    uphill_nt_after_life_close_door_motor_torque_arr
+  end
 
-    def uphill_ht_lower_deviation_close_door_motor_torque_arr # 上坡高温下偏差关门电机扭矩
-      uphill_ht_lower_deviation_close_door_motor_torque_arr = []
-      uphill_ht_lower_deviation_close_door_gearbox_torque_arr.each do |i|
-        uphill_ht_lower_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      uphill_ht_lower_deviation_close_door_motor_torque_arr
+  def uphill_ht_lower_deviation_close_door_motor_torque_arr # 上坡高温下偏差关门电机扭矩
+    uphill_ht_lower_deviation_close_door_motor_torque_arr = []
+    uphill_ht_lower_deviation_close_door_gearbox_torque_arr.each do |i|
+      uphill_ht_lower_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    uphill_ht_lower_deviation_close_door_motor_torque_arr
+  end
 
-    def uphill_ht_median_close_door_motor_torque_arr # 上坡高温中值关门电机扭矩
-      uphill_ht_median_close_door_motor_torque_arr = []
-      uphill_ht_median_close_door_gearbox_torque_arr.each do |i|
-        uphill_ht_median_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      uphill_ht_median_close_door_motor_torque_arr
+  def uphill_ht_median_close_door_motor_torque_arr # 上坡高温中值关门电机扭矩
+    uphill_ht_median_close_door_motor_torque_arr = []
+    uphill_ht_median_close_door_gearbox_torque_arr.each do |i|
+      uphill_ht_median_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    uphill_ht_median_close_door_motor_torque_arr
+  end
 
-    def uphill_ht_upper_deviation_close_door_motor_torque_arr # 上坡高温上偏差关门电机扭矩
-      uphill_ht_upper_deviation_close_door_motor_torque_arr = []
-      uphill_ht_upper_deviation_close_door_gearbox_torque_arr.each do |i|
-        uphill_ht_upper_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      uphill_ht_upper_deviation_close_door_motor_torque_arr
+  def uphill_ht_upper_deviation_close_door_motor_torque_arr # 上坡高温上偏差关门电机扭矩
+    uphill_ht_upper_deviation_close_door_motor_torque_arr = []
+    uphill_ht_upper_deviation_close_door_gearbox_torque_arr.each do |i|
+      uphill_ht_upper_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    uphill_ht_upper_deviation_close_door_motor_torque_arr
+  end
 
-    def uphill_ht_after_life_close_door_motor_torque_arr # 上坡高温寿命后关门电机扭矩
-      uphill_ht_after_life_close_door_motor_torque_arr = []
-      uphill_ht_after_life_close_door_gearbox_torque_arr.each do |i|
-        uphill_ht_after_life_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      uphill_ht_after_life_close_door_motor_torque_arr
+  def uphill_ht_after_life_close_door_motor_torque_arr # 上坡高温寿命后关门电机扭矩
+    uphill_ht_after_life_close_door_motor_torque_arr = []
+    uphill_ht_after_life_close_door_gearbox_torque_arr.each do |i|
+      uphill_ht_after_life_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    uphill_ht_after_life_close_door_motor_torque_arr
+  end
 
-    # 平坡
+  # 平坡
 
-    def flat_slope_lt_lower_deviation_close_door_motor_torque_arr # 平坡低温下偏差关门电机扭矩
-      flat_slope_lt_lower_deviation_close_door_motor_torque_arr = []
-      flat_slope_lt_lower_deviation_close_door_gearbox_torque_arr.each do |i|
-        flat_slope_lt_lower_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      flat_slope_lt_lower_deviation_close_door_motor_torque_arr
+  def flat_slope_lt_lower_deviation_close_door_motor_torque_arr # 平坡低温下偏差关门电机扭矩
+    flat_slope_lt_lower_deviation_close_door_motor_torque_arr = []
+    flat_slope_lt_lower_deviation_close_door_gearbox_torque_arr.each do |i|
+      flat_slope_lt_lower_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    flat_slope_lt_lower_deviation_close_door_motor_torque_arr
+  end
 
-    def flat_slope_lt_median_close_door_motor_torque_arr # 平坡低温中值关门电机扭矩
-      flat_slope_lt_median_close_door_motor_torque_arr = []
-      flat_slope_lt_median_close_door_gearbox_torque_arr.each do |i|
-        flat_slope_lt_median_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      flat_slope_lt_median_close_door_motor_torque_arr
+  def flat_slope_lt_median_close_door_motor_torque_arr # 平坡低温中值关门电机扭矩
+    flat_slope_lt_median_close_door_motor_torque_arr = []
+    flat_slope_lt_median_close_door_gearbox_torque_arr.each do |i|
+      flat_slope_lt_median_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    flat_slope_lt_median_close_door_motor_torque_arr
+  end
 
-    def flat_slope_lt_upper_deviation_close_door_motor_torque_arr # 平坡低温上偏差关门电机扭矩
-      flat_slope_lt_upper_deviation_close_door_motor_torque_arr = []
-      flat_slope_lt_upper_deviation_close_door_gearbox_torque_arr.each do |i|
-        flat_slope_lt_upper_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      flat_slope_lt_upper_deviation_close_door_motor_torque_arr
+  def flat_slope_lt_upper_deviation_close_door_motor_torque_arr # 平坡低温上偏差关门电机扭矩
+    flat_slope_lt_upper_deviation_close_door_motor_torque_arr = []
+    flat_slope_lt_upper_deviation_close_door_gearbox_torque_arr.each do |i|
+      flat_slope_lt_upper_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    flat_slope_lt_upper_deviation_close_door_motor_torque_arr
+  end
 
-    def flat_slope_lt_after_life_close_door_motor_torque_arr # 平坡低温寿命后关门电机扭矩
-      flat_slope_lt_after_life_close_door_motor_torque_arr = []
-      flat_slope_lt_after_life_close_door_gearbox_torque_arr.each do |i|
-        flat_slope_lt_after_life_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      flat_slope_lt_after_life_close_door_motor_torque_arr
+  def flat_slope_lt_after_life_close_door_motor_torque_arr # 平坡低温寿命后关门电机扭矩
+    flat_slope_lt_after_life_close_door_motor_torque_arr = []
+    flat_slope_lt_after_life_close_door_gearbox_torque_arr.each do |i|
+      flat_slope_lt_after_life_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    flat_slope_lt_after_life_close_door_motor_torque_arr
+  end
 
-    def flat_slope_nt_lower_deviation_close_door_motor_torque_arr # 平坡常温下偏差关门电机扭矩
-      flat_slope_nt_lower_deviation_close_door_motor_torque_arr = []
-      flat_slope_nt_lower_deviation_close_door_gearbox_torque_arr.each do |i|
-        flat_slope_nt_lower_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      flat_slope_nt_lower_deviation_close_door_motor_torque_arr
+  def flat_slope_nt_lower_deviation_close_door_motor_torque_arr # 平坡常温下偏差关门电机扭矩
+    flat_slope_nt_lower_deviation_close_door_motor_torque_arr = []
+    flat_slope_nt_lower_deviation_close_door_gearbox_torque_arr.each do |i|
+      flat_slope_nt_lower_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    flat_slope_nt_lower_deviation_close_door_motor_torque_arr
+  end
 
-    def flat_slope_nt_median_close_door_motor_torque_arr # 平坡常温中值关门电机扭矩
-      flat_slope_nt_median_close_door_motor_torque_arr = []
-      flat_slope_nt_median_close_door_gearbox_torque_arr.each do |i|
-        flat_slope_nt_median_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      flat_slope_nt_median_close_door_motor_torque_arr
+  def flat_slope_nt_median_close_door_motor_torque_arr # 平坡常温中值关门电机扭矩
+    flat_slope_nt_median_close_door_motor_torque_arr = []
+    flat_slope_nt_median_close_door_gearbox_torque_arr.each do |i|
+      flat_slope_nt_median_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    flat_slope_nt_median_close_door_motor_torque_arr
+  end
 
-    def flat_slope_nt_upper_deviation_close_door_motor_torque_arr # 平坡常温上偏差关门电机扭矩
-      flat_slope_nt_upper_deviation_close_door_motor_torque_arr = []
-      flat_slope_nt_upper_deviation_close_door_gearbox_torque_arr.each do |i|
-        flat_slope_nt_upper_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      flat_slope_nt_upper_deviation_close_door_motor_torque_arr
+  def flat_slope_nt_upper_deviation_close_door_motor_torque_arr # 平坡常温上偏差关门电机扭矩
+    flat_slope_nt_upper_deviation_close_door_motor_torque_arr = []
+    flat_slope_nt_upper_deviation_close_door_gearbox_torque_arr.each do |i|
+      flat_slope_nt_upper_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    flat_slope_nt_upper_deviation_close_door_motor_torque_arr
+  end
 
-    def flat_slope_nt_after_life_close_door_motor_torque_arr # 平坡常温寿命后关门电机扭矩
-      flat_slope_nt_after_life_close_door_motor_torque_arr = []
-      flat_slope_nt_after_life_close_door_gearbox_torque_arr.each do |i|
-        flat_slope_nt_after_life_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      flat_slope_nt_after_life_close_door_motor_torque_arr
+  def flat_slope_nt_after_life_close_door_motor_torque_arr # 平坡常温寿命后关门电机扭矩
+    flat_slope_nt_after_life_close_door_motor_torque_arr = []
+    flat_slope_nt_after_life_close_door_gearbox_torque_arr.each do |i|
+      flat_slope_nt_after_life_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    flat_slope_nt_after_life_close_door_motor_torque_arr
+  end
 
-    def flat_slope_ht_lower_deviation_close_door_motor_torque_arr # 平坡高温下偏差关门电机扭矩
-      flat_slope_ht_lower_deviation_close_door_motor_torque_arr = []
-      flat_slope_ht_lower_deviation_close_door_gearbox_torque_arr.each do |i|
-        flat_slope_ht_lower_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      flat_slope_ht_lower_deviation_close_door_motor_torque_arr
+  def flat_slope_ht_lower_deviation_close_door_motor_torque_arr # 平坡高温下偏差关门电机扭矩
+    flat_slope_ht_lower_deviation_close_door_motor_torque_arr = []
+    flat_slope_ht_lower_deviation_close_door_gearbox_torque_arr.each do |i|
+      flat_slope_ht_lower_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    flat_slope_ht_lower_deviation_close_door_motor_torque_arr
+  end
 
-    def flat_slope_ht_median_close_door_motor_torque_arr # 平坡高温中值关门电机扭矩
-      flat_slope_ht_median_close_door_motor_torque_arr = []
-      flat_slope_ht_median_close_door_gearbox_torque_arr.each do |i|
-        flat_slope_ht_median_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      flat_slope_ht_median_close_door_motor_torque_arr
+  def flat_slope_ht_median_close_door_motor_torque_arr # 平坡高温中值关门电机扭矩
+    flat_slope_ht_median_close_door_motor_torque_arr = []
+    flat_slope_ht_median_close_door_gearbox_torque_arr.each do |i|
+      flat_slope_ht_median_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    flat_slope_ht_median_close_door_motor_torque_arr
+  end
 
-    def flat_slope_ht_upper_deviation_close_door_motor_torque_arr # 平坡高温上偏差关门电机扭矩
-      flat_slope_ht_upper_deviation_close_door_motor_torque_arr = []
-      flat_slope_ht_upper_deviation_close_door_gearbox_torque_arr.each do |i|
-        flat_slope_ht_upper_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      flat_slope_ht_upper_deviation_close_door_motor_torque_arr
+  def flat_slope_ht_upper_deviation_close_door_motor_torque_arr # 平坡高温上偏差关门电机扭矩
+    flat_slope_ht_upper_deviation_close_door_motor_torque_arr = []
+    flat_slope_ht_upper_deviation_close_door_gearbox_torque_arr.each do |i|
+      flat_slope_ht_upper_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    flat_slope_ht_upper_deviation_close_door_motor_torque_arr
+  end
 
-    def flat_slope_ht_after_life_close_door_motor_torque_arr # 平坡高温寿命后关门电机扭矩
-      flat_slope_ht_after_life_close_door_motor_torque_arr = []
-      flat_slope_ht_after_life_close_door_gearbox_torque_arr.each do |i|
-        flat_slope_ht_after_life_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      flat_slope_ht_after_life_close_door_motor_torque_arr
+  def flat_slope_ht_after_life_close_door_motor_torque_arr # 平坡高温寿命后关门电机扭矩
+    flat_slope_ht_after_life_close_door_motor_torque_arr = []
+    flat_slope_ht_after_life_close_door_gearbox_torque_arr.each do |i|
+      flat_slope_ht_after_life_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    flat_slope_ht_after_life_close_door_motor_torque_arr
+  end
 
-    # 下坡
+  # 下坡
 
-    def downhill_lt_lower_deviation_close_door_motor_torque_arr # 下坡低温下偏差关门电机扭矩
-      downhill_lt_lower_deviation_close_door_motor_torque_arr = []
-      downhill_lt_lower_deviation_close_door_gearbox_torque_arr.each do |i|
-        downhill_lt_lower_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      downhill_lt_lower_deviation_close_door_motor_torque_arr
+  def downhill_lt_lower_deviation_close_door_motor_torque_arr # 下坡低温下偏差关门电机扭矩
+    downhill_lt_lower_deviation_close_door_motor_torque_arr = []
+    downhill_lt_lower_deviation_close_door_gearbox_torque_arr.each do |i|
+      downhill_lt_lower_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    downhill_lt_lower_deviation_close_door_motor_torque_arr
+  end
 
-    def downhill_lt_median_close_door_motor_torque_arr # 下坡低温中值关门电机扭矩
-      downhill_lt_median_close_door_motor_torque_arr = []
-      downhill_lt_median_close_door_gearbox_torque_arr.each do |i|
-        downhill_lt_median_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      downhill_lt_median_close_door_motor_torque_arr
+  def downhill_lt_median_close_door_motor_torque_arr # 下坡低温中值关门电机扭矩
+    downhill_lt_median_close_door_motor_torque_arr = []
+    downhill_lt_median_close_door_gearbox_torque_arr.each do |i|
+      downhill_lt_median_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    downhill_lt_median_close_door_motor_torque_arr
+  end
 
-    def downhill_lt_upper_deviation_close_door_motor_torque_arr # 下坡低温上偏差关门电机扭矩
-      downhill_lt_upper_deviation_close_door_motor_torque_arr = []
-      downhill_lt_upper_deviation_close_door_gearbox_torque_arr.each do |i|
-        downhill_lt_upper_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      downhill_lt_upper_deviation_close_door_motor_torque_arr
+  def downhill_lt_upper_deviation_close_door_motor_torque_arr # 下坡低温上偏差关门电机扭矩
+    downhill_lt_upper_deviation_close_door_motor_torque_arr = []
+    downhill_lt_upper_deviation_close_door_gearbox_torque_arr.each do |i|
+      downhill_lt_upper_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    downhill_lt_upper_deviation_close_door_motor_torque_arr
+  end
 
-    def downhill_lt_after_life_close_door_motor_torque_arr # 下坡低温寿命后关门电机扭矩
-      downhill_lt_after_life_close_door_motor_torque_arr = []
-      downhill_lt_after_life_close_door_gearbox_torque_arr.each do |i|
-        downhill_lt_after_life_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      downhill_lt_after_life_close_door_motor_torque_arr
+  def downhill_lt_after_life_close_door_motor_torque_arr # 下坡低温寿命后关门电机扭矩
+    downhill_lt_after_life_close_door_motor_torque_arr = []
+    downhill_lt_after_life_close_door_gearbox_torque_arr.each do |i|
+      downhill_lt_after_life_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    downhill_lt_after_life_close_door_motor_torque_arr
+  end
 
-    def downhill_nt_lower_deviation_close_door_motor_torque_arr # 下坡常温下偏差关门电机扭矩
-      downhill_nt_lower_deviation_close_door_motor_torque_arr = []
-      downhill_nt_lower_deviation_close_door_gearbox_torque_arr.each do |i|
-        downhill_nt_lower_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      downhill_nt_lower_deviation_close_door_motor_torque_arr
+  def downhill_nt_lower_deviation_close_door_motor_torque_arr # 下坡常温下偏差关门电机扭矩
+    downhill_nt_lower_deviation_close_door_motor_torque_arr = []
+    downhill_nt_lower_deviation_close_door_gearbox_torque_arr.each do |i|
+      downhill_nt_lower_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    downhill_nt_lower_deviation_close_door_motor_torque_arr
+  end
 
-    def downhill_nt_median_close_door_motor_torque_arr # 下坡常温中值关门电机扭矩
-      downhill_nt_median_close_door_motor_torque_arr = []
-      downhill_nt_median_close_door_gearbox_torque_arr.each do |i|
-        downhill_nt_median_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      downhill_nt_median_close_door_motor_torque_arr
+  def downhill_nt_median_close_door_motor_torque_arr # 下坡常温中值关门电机扭矩
+    downhill_nt_median_close_door_motor_torque_arr = []
+    downhill_nt_median_close_door_gearbox_torque_arr.each do |i|
+      downhill_nt_median_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    downhill_nt_median_close_door_motor_torque_arr
+  end
 
-    def downhill_nt_upper_deviation_close_door_motor_torque_arr # 下坡常温上偏差关门电机扭矩
-      downhill_nt_upper_deviation_close_door_motor_torque_arr = []
-      downhill_nt_upper_deviation_close_door_gearbox_torque_arr.each do |i|
-        downhill_nt_upper_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      downhill_nt_upper_deviation_close_door_motor_torque_arr
+  def downhill_nt_upper_deviation_close_door_motor_torque_arr # 下坡常温上偏差关门电机扭矩
+    downhill_nt_upper_deviation_close_door_motor_torque_arr = []
+    downhill_nt_upper_deviation_close_door_gearbox_torque_arr.each do |i|
+      downhill_nt_upper_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    downhill_nt_upper_deviation_close_door_motor_torque_arr
+  end
 
-    def downhill_nt_after_life_close_door_motor_torque_arr # 下坡常温寿命后关门电机扭矩
-      downhill_nt_after_life_close_door_motor_torque_arr = []
-      downhill_nt_after_life_close_door_gearbox_torque_arr.each do |i|
-        downhill_nt_after_life_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      downhill_nt_after_life_close_door_motor_torque_arr
+  def downhill_nt_after_life_close_door_motor_torque_arr # 下坡常温寿命后关门电机扭矩
+    downhill_nt_after_life_close_door_motor_torque_arr = []
+    downhill_nt_after_life_close_door_gearbox_torque_arr.each do |i|
+      downhill_nt_after_life_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    downhill_nt_after_life_close_door_motor_torque_arr
+  end
 
-    def downhill_ht_lower_deviation_close_door_motor_torque_arr # 下坡高温下偏差关门电机扭矩
-      downhill_ht_lower_deviation_close_door_motor_torque_arr = []
-      downhill_ht_lower_deviation_close_door_gearbox_torque_arr.each do |i|
-        downhill_ht_lower_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      downhill_ht_lower_deviation_close_door_motor_torque_arr
+  def downhill_ht_lower_deviation_close_door_motor_torque_arr # 下坡高温下偏差关门电机扭矩
+    downhill_ht_lower_deviation_close_door_motor_torque_arr = []
+    downhill_ht_lower_deviation_close_door_gearbox_torque_arr.each do |i|
+      downhill_ht_lower_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    downhill_ht_lower_deviation_close_door_motor_torque_arr
+  end
 
-    def downhill_ht_median_close_door_motor_torque_arr # 下坡高温中值关门电机扭矩
-      downhill_ht_median_close_door_motor_torque_arr = []
-      downhill_ht_median_close_door_gearbox_torque_arr.each do |i|
-        downhill_ht_median_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      downhill_ht_median_close_door_motor_torque_arr
+  def downhill_ht_median_close_door_motor_torque_arr # 下坡高温中值关门电机扭矩
+    downhill_ht_median_close_door_motor_torque_arr = []
+    downhill_ht_median_close_door_gearbox_torque_arr.each do |i|
+      downhill_ht_median_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    downhill_ht_median_close_door_motor_torque_arr
+  end
 
-    def downhill_ht_upper_deviation_close_door_motor_torque_arr # 下坡高温上偏差关门电机扭矩
-      downhill_ht_upper_deviation_close_door_motor_torque_arr = []
-      downhill_ht_upper_deviation_close_door_gearbox_torque_arr.each do |i|
-        downhill_ht_upper_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      downhill_ht_upper_deviation_close_door_motor_torque_arr
+  def downhill_ht_upper_deviation_close_door_motor_torque_arr # 下坡高温上偏差关门电机扭矩
+    downhill_ht_upper_deviation_close_door_motor_torque_arr = []
+    downhill_ht_upper_deviation_close_door_gearbox_torque_arr.each do |i|
+      downhill_ht_upper_deviation_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    downhill_ht_upper_deviation_close_door_motor_torque_arr
+  end
 
-    def downhill_ht_after_life_close_door_motor_torque_arr # 下坡高温寿命后关门电机扭矩
-      downhill_ht_after_life_close_door_motor_torque_arr = []
-      downhill_ht_after_life_close_door_gearbox_torque_arr.each do |i|
-        downhill_ht_after_life_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
-      end
-      downhill_ht_after_life_close_door_motor_torque_arr
+  def downhill_ht_after_life_close_door_motor_torque_arr # 下坡高温寿命后关门电机扭矩
+    downhill_ht_after_life_close_door_motor_torque_arr = []
+    downhill_ht_after_life_close_door_gearbox_torque_arr.each do |i|
+      downhill_ht_after_life_close_door_motor_torque_arr << i / platform.gear_transmission_ratio * 1000
     end
+    downhill_ht_after_life_close_door_motor_torque_arr
+  end
 
+  #  开门电流    #
+
+  # 上坡
+
+  def uphill_lt_lower_deviation_open_door_current_arr  # 上坡低温下偏差开门电流
+    uphill_lt_lower_deviation_open_door_current_arr = []
+    motor_output_speed_arr.zip(uphill_lt_lower_deviation_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      uphill_lt_lower_deviation_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    uphill_lt_lower_deviation_open_door_current_arr
+  end
+
+  def uphill_lt_median_open_door_current_arr  # 上坡低温中值开门电流
+    uphill_lt_median_open_door_current_arr = []
+    motor_output_speed_arr.zip(uphill_lt_median_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      uphill_lt_median_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    uphill_lt_median_open_door_current_arr
+  end
+
+  def uphill_lt_upper_deviation_open_door_current_arr  # 上坡低温上偏差开门电流
+    uphill_lt_upper_deviation_open_door_current_arr = []
+    motor_output_speed_arr.zip(uphill_lt_upper_deviation_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      uphill_lt_upper_deviation_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    uphill_lt_upper_deviation_open_door_current_arr
+  end
+
+  def uphill_lt_after_life_open_door_current_arr  # 上坡低温寿命后开门电流
+    uphill_lt_after_life_open_door_current_arr = []
+    motor_output_speed_arr.zip(uphill_lt_after_life_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      uphill_lt_after_life_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    uphill_lt_after_life_open_door_current_arr
+  end
+
+
+  def uphill_nt_lower_deviation_open_door_current_arr  # 上坡常温下偏差开门电流
+    uphill_nt_lower_deviation_open_door_current_arr = []
+    motor_output_speed_arr.zip(uphill_nt_lower_deviation_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      uphill_nt_lower_deviation_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    uphill_nt_lower_deviation_open_door_current_arr
+  end
+
+  def uphill_nt_median_open_door_current_arr  # 上坡常温中值开门电流
+    uphill_nt_median_open_door_current_arr = []
+    motor_output_speed_arr.zip(uphill_nt_median_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      uphill_nt_median_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    uphill_nt_median_open_door_current_arr
+  end
+
+  def uphill_nt_upper_deviation_open_door_current_arr  # 上坡常温上偏差开门电流
+    uphill_nt_upper_deviation_open_door_current_arr = []
+    motor_output_speed_arr.zip(uphill_nt_upper_deviation_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      uphill_nt_upper_deviation_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    uphill_nt_upper_deviation_open_door_current_arr
+  end
+
+  def uphill_nt_after_life_open_door_current_arr  # 上坡常温寿命后开门电流
+    uphill_nt_after_life_open_door_current_arr = []
+    motor_output_speed_arr.zip(uphill_nt_after_life_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      uphill_nt_after_life_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    uphill_nt_after_life_open_door_current_arr
+  end
+
+
+  def uphill_ht_lower_deviation_open_door_current_arr  # 上坡高温下偏差开门电流
+    uphill_ht_lower_deviation_open_door_current_arr = []
+    motor_output_speed_arr.zip(uphill_ht_lower_deviation_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      uphill_ht_lower_deviation_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    uphill_ht_lower_deviation_open_door_current_arr
+  end
+
+  def uphill_ht_median_open_door_current_arr  # 上坡高温中值开门电流
+    uphill_ht_median_open_door_current_arr = []
+    motor_output_speed_arr.zip(uphill_ht_median_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      uphill_ht_median_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    uphill_ht_median_open_door_current_arr
+  end
+
+  def uphill_ht_upper_deviation_open_door_current_arr  # 上坡高温上偏差开门电流
+    uphill_ht_upper_deviation_open_door_current_arr = []
+    motor_output_speed_arr.zip(uphill_ht_upper_deviation_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      uphill_ht_upper_deviation_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    uphill_ht_upper_deviation_open_door_current_arr
+  end
+
+  def uphill_ht_after_life_open_door_current_arr  # 上坡高温寿命后开门电流
+    uphill_ht_after_life_open_door_current_arr = []
+    motor_output_speed_arr.zip(uphill_ht_after_life_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      uphill_ht_after_life_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    uphill_ht_after_life_open_door_current_arr
+  end
+
+  # 平坡
+
+  def flat_slope_lt_lower_deviation_open_door_current_arr  # 平坡低温下偏差开门电流
+    flat_slope_lt_lower_deviation_open_door_current_arr = []
+    motor_output_speed_arr.zip(flat_slope_lt_lower_deviation_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      flat_slope_lt_lower_deviation_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    flat_slope_lt_lower_deviation_open_door_current_arr
+  end
+
+  def flat_slope_lt_median_open_door_current_arr  # 平坡低温中值开门电流
+    flat_slope_lt_median_open_door_current_arr = []
+    motor_output_speed_arr.zip(flat_slope_lt_median_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      flat_slope_lt_median_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    flat_slope_lt_median_open_door_current_arr
+  end
+
+  def flat_slope_lt_upper_deviation_open_door_current_arr  # 平坡低温上偏差开门电流
+    flat_slope_lt_upper_deviation_open_door_current_arr = []
+    motor_output_speed_arr.zip(flat_slope_lt_upper_deviation_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      flat_slope_lt_upper_deviation_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    flat_slope_lt_upper_deviation_open_door_current_arr
+  end
+
+  def flat_slope_lt_after_life_open_door_current_arr  # 平坡低温寿命后开门电流
+    flat_slope_lt_after_life_open_door_current_arr = []
+    motor_output_speed_arr.zip(flat_slope_lt_after_life_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      flat_slope_lt_after_life_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    flat_slope_lt_after_life_open_door_current_arr
+  end
+
+
+  def flat_slope_nt_lower_deviation_open_door_current_arr  # 平坡常温下偏差开门电流
+    flat_slope_nt_lower_deviation_open_door_current_arr = []
+    motor_output_speed_arr.zip(flat_slope_nt_lower_deviation_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      flat_slope_nt_lower_deviation_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    flat_slope_nt_lower_deviation_open_door_current_arr
+  end
+
+  def flat_slope_nt_median_open_door_current_arr  # 平坡常温中值开门电流
+    flat_slope_nt_median_open_door_current_arr = []
+    motor_output_speed_arr.zip(flat_slope_nt_median_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      flat_slope_nt_median_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    flat_slope_nt_median_open_door_current_arr
+  end
+
+  def flat_slope_nt_upper_deviation_open_door_current_arr  # 平坡常温上偏差开门电流
+    flat_slope_nt_upper_deviation_open_door_current_arr = []
+    motor_output_speed_arr.zip(flat_slope_nt_upper_deviation_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      flat_slope_nt_upper_deviation_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    flat_slope_nt_upper_deviation_open_door_current_arr
+  end
+
+  def flat_slope_nt_after_life_open_door_current_arr  # 平坡常温寿命后开门电流
+    flat_slope_nt_after_life_open_door_current_arr = []
+    motor_output_speed_arr.zip(flat_slope_nt_after_life_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      flat_slope_nt_after_life_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    flat_slope_nt_after_life_open_door_current_arr
+  end
+
+
+  def flat_slope_ht_lower_deviation_open_door_current_arr  # 平坡高温下偏差开门电流
+    flat_slope_ht_lower_deviation_open_door_current_arr = []
+    motor_output_speed_arr.zip(flat_slope_ht_lower_deviation_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      flat_slope_ht_lower_deviation_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    flat_slope_ht_lower_deviation_open_door_current_arr
+  end
+
+  def flat_slope_ht_median_open_door_current_arr  # 平坡高温中值开门电流
+    flat_slope_ht_median_open_door_current_arr = []
+    motor_output_speed_arr.zip(flat_slope_ht_median_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      flat_slope_ht_median_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    flat_slope_ht_median_open_door_current_arr
+  end
+
+  def flat_slope_ht_upper_deviation_open_door_current_arr  # 平坡高温上偏差开门电流
+    flat_slope_ht_upper_deviation_open_door_current_arr = []
+    motor_output_speed_arr.zip(flat_slope_ht_upper_deviation_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      flat_slope_ht_upper_deviation_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    flat_slope_ht_upper_deviation_open_door_current_arr
+  end
+
+  def flat_slope_ht_after_life_open_door_current_arr  # 平坡高温寿命后开门电流
+    flat_slope_ht_after_life_open_door_current_arr = []
+    motor_output_speed_arr.zip(flat_slope_ht_after_life_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      flat_slope_ht_after_life_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    flat_slope_ht_after_life_open_door_current_arr
+  end
+
+  # 下坡
+
+  def downhill_lt_lower_deviation_open_door_current_arr  # 下坡低温下偏差开门电流
+    downhill_lt_lower_deviation_open_door_current_arr = []
+    motor_output_speed_arr.zip(downhill_lt_lower_deviation_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      downhill_lt_lower_deviation_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    downhill_lt_lower_deviation_open_door_current_arr
+  end
+
+  def downhill_lt_median_open_door_current_arr  # 下坡低温中值开门电流
+    downhill_lt_median_open_door_current_arr = []
+    motor_output_speed_arr.zip(downhill_lt_median_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      downhill_lt_median_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    downhill_lt_median_open_door_current_arr
+  end
+
+  def downhill_lt_upper_deviation_open_door_current_arr  # 下坡低温上偏差开门电流
+    downhill_lt_upper_deviation_open_door_current_arr = []
+    motor_output_speed_arr.zip(downhill_lt_upper_deviation_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      downhill_lt_upper_deviation_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    downhill_lt_upper_deviation_open_door_current_arr
+  end
+
+  def downhill_lt_after_life_open_door_current_arr  # 下坡低温寿命后开门电流
+    downhill_lt_after_life_open_door_current_arr = []
+    motor_output_speed_arr.zip(downhill_lt_after_life_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      downhill_lt_after_life_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    downhill_lt_after_life_open_door_current_arr
+  end
+
+
+  def downhill_nt_lower_deviation_open_door_current_arr  # 下坡常温下偏差开门电流
+    downhill_nt_lower_deviation_open_door_current_arr = []
+    motor_output_speed_arr.zip(downhill_nt_lower_deviation_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      downhill_nt_lower_deviation_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    downhill_nt_lower_deviation_open_door_current_arr
+  end
+
+  def downhill_nt_median_open_door_current_arr  # 下坡常温中值开门电流
+    downhill_nt_median_open_door_current_arr = []
+    motor_output_speed_arr.zip(downhill_nt_median_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      downhill_nt_median_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    downhill_nt_median_open_door_current_arr
+  end
+
+  def downhill_nt_upper_deviation_open_door_current_arr  # 下坡常温上偏差开门电流
+    downhill_nt_upper_deviation_open_door_current_arr = []
+    motor_output_speed_arr.zip(downhill_nt_upper_deviation_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      downhill_nt_upper_deviation_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    downhill_nt_upper_deviation_open_door_current_arr
+  end
+
+  def downhill_nt_after_life_open_door_current_arr  # 下坡常温寿命后开门电流
+    downhill_nt_after_life_open_door_current_arr = []
+    motor_output_speed_arr.zip(downhill_nt_after_life_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      downhill_nt_after_life_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    downhill_nt_after_life_open_door_current_arr
+  end
+
+
+  def downhill_ht_lower_deviation_open_door_current_arr  # 下坡高温下偏差开门电流
+    downhill_ht_lower_deviation_open_door_current_arr = []
+    motor_output_speed_arr.zip(downhill_ht_lower_deviation_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      downhill_ht_lower_deviation_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    downhill_ht_lower_deviation_open_door_current_arr
+  end
+
+  def downhill_ht_median_open_door_current_arr  # 下坡高温中值开门电流
+    downhill_ht_median_open_door_current_arr = []
+    motor_output_speed_arr.zip(downhill_ht_median_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      downhill_ht_median_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    downhill_ht_median_open_door_current_arr
+  end
+
+  def downhill_ht_upper_deviation_open_door_current_arr  # 下坡高温上偏差开门电流
+    downhill_ht_upper_deviation_open_door_current_arr = []
+    motor_output_speed_arr.zip(downhill_ht_upper_deviation_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      downhill_ht_upper_deviation_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    downhill_ht_upper_deviation_open_door_current_arr
+  end
+
+  def downhill_ht_after_life_open_door_current_arr  # 下坡高温寿命后开门电流
+    downhill_ht_after_life_open_door_current_arr = []
+    motor_output_speed_arr.zip(downhill_ht_after_life_open_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      downhill_ht_after_life_open_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    downhill_ht_after_life_open_door_current_arr
+  end
+
+  #  关门电流    #
+
+  # 上坡
+
+  def uphill_lt_lower_deviation_close_door_current_arr  # 上坡低温下偏差关门电流
+    uphill_lt_lower_deviation_close_door_current_arr = []
+    motor_output_speed_arr.zip(uphill_lt_lower_deviation_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      uphill_lt_lower_deviation_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    uphill_lt_lower_deviation_close_door_current_arr
+  end
+
+  def uphill_lt_median_close_door_current_arr  # 上坡低温中值关门电流
+    uphill_lt_median_close_door_current_arr = []
+    motor_output_speed_arr.zip(uphill_lt_median_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      uphill_lt_median_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    uphill_lt_median_close_door_current_arr
+  end
+
+  def uphill_lt_upper_deviation_close_door_current_arr  # 上坡低温上偏差关门电流
+    uphill_lt_upper_deviation_close_door_current_arr = []
+    motor_output_speed_arr.zip(uphill_lt_upper_deviation_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      uphill_lt_upper_deviation_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    uphill_lt_upper_deviation_close_door_current_arr
+  end
+
+  def uphill_lt_after_life_close_door_current_arr  # 上坡低温寿命后关门电流
+    uphill_lt_after_life_close_door_current_arr = []
+    motor_output_speed_arr.zip(uphill_lt_after_life_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      uphill_lt_after_life_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    uphill_lt_after_life_close_door_current_arr
+  end
+
+
+  def uphill_nt_lower_deviation_close_door_current_arr  # 上坡常温下偏差关门电流
+    uphill_nt_lower_deviation_close_door_current_arr = []
+    motor_output_speed_arr.zip(uphill_nt_lower_deviation_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      uphill_nt_lower_deviation_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    uphill_nt_lower_deviation_close_door_current_arr
+  end
+
+  def uphill_nt_median_close_door_current_arr  # 上坡常温中值关门电流
+    uphill_nt_median_close_door_current_arr = []
+    motor_output_speed_arr.zip(uphill_nt_median_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      uphill_nt_median_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    uphill_nt_median_close_door_current_arr
+  end
+
+  def uphill_nt_upper_deviation_close_door_current_arr  # 上坡常温上偏差关门电流
+    uphill_nt_upper_deviation_close_door_current_arr = []
+    motor_output_speed_arr.zip(uphill_nt_upper_deviation_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      uphill_nt_upper_deviation_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    uphill_nt_upper_deviation_close_door_current_arr
+  end
+
+  def uphill_nt_after_life_close_door_current_arr  # 上坡常温寿命后关门电流
+    uphill_nt_after_life_close_door_current_arr = []
+    motor_output_speed_arr.zip(uphill_nt_after_life_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      uphill_nt_after_life_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    uphill_nt_after_life_close_door_current_arr
+  end
+
+
+  def uphill_ht_lower_deviation_close_door_current_arr  # 上坡高温下偏差关门电流
+    uphill_ht_lower_deviation_close_door_current_arr = []
+    motor_output_speed_arr.zip(uphill_ht_lower_deviation_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      uphill_ht_lower_deviation_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    uphill_ht_lower_deviation_close_door_current_arr
+  end
+
+  def uphill_ht_median_close_door_current_arr  # 上坡高温中值关门电流
+    uphill_ht_median_close_door_current_arr = []
+    motor_output_speed_arr.zip(uphill_ht_median_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      uphill_ht_median_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    uphill_ht_median_close_door_current_arr
+  end
+
+  def uphill_ht_upper_deviation_close_door_current_arr  # 上坡高温上偏差关门电流
+    uphill_ht_upper_deviation_close_door_current_arr = []
+    motor_output_speed_arr.zip(uphill_ht_upper_deviation_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      uphill_ht_upper_deviation_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    uphill_ht_upper_deviation_close_door_current_arr
+  end
+
+  def uphill_ht_after_life_close_door_current_arr  # 上坡高温寿命后关门电流
+    uphill_ht_after_life_close_door_current_arr = []
+    motor_output_speed_arr.zip(uphill_ht_after_life_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      uphill_ht_after_life_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    uphill_ht_after_life_close_door_current_arr
+  end
+
+  # 平坡
+
+  def flat_slope_lt_lower_deviation_close_door_current_arr  # 平坡低温下偏差关门电流
+    flat_slope_lt_lower_deviation_close_door_current_arr = []
+    motor_output_speed_arr.zip(flat_slope_lt_lower_deviation_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      flat_slope_lt_lower_deviation_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    flat_slope_lt_lower_deviation_close_door_current_arr
+  end
+
+  def flat_slope_lt_median_close_door_current_arr  # 平坡低温中值关门电流
+    flat_slope_lt_median_close_door_current_arr = []
+    motor_output_speed_arr.zip(flat_slope_lt_median_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      flat_slope_lt_median_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    flat_slope_lt_median_close_door_current_arr
+  end
+
+  def flat_slope_lt_upper_deviation_close_door_current_arr  # 平坡低温上偏差关门电流
+    flat_slope_lt_upper_deviation_close_door_current_arr = []
+    motor_output_speed_arr.zip(flat_slope_lt_upper_deviation_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      flat_slope_lt_upper_deviation_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    flat_slope_lt_upper_deviation_close_door_current_arr
+  end
+
+  def flat_slope_lt_after_life_close_door_current_arr  # 平坡低温寿命后关门电流
+    flat_slope_lt_after_life_close_door_current_arr = []
+    motor_output_speed_arr.zip(flat_slope_lt_after_life_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      flat_slope_lt_after_life_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    flat_slope_lt_after_life_close_door_current_arr
+  end
+
+
+  def flat_slope_nt_lower_deviation_close_door_current_arr  # 平坡常温下偏差关门电流
+    flat_slope_nt_lower_deviation_close_door_current_arr = []
+    motor_output_speed_arr.zip(flat_slope_nt_lower_deviation_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      flat_slope_nt_lower_deviation_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    flat_slope_nt_lower_deviation_close_door_current_arr
+  end
+
+  def flat_slope_nt_median_close_door_current_arr  # 平坡常温中值关门电流
+    flat_slope_nt_median_close_door_current_arr = []
+    motor_output_speed_arr.zip(flat_slope_nt_median_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      flat_slope_nt_median_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    flat_slope_nt_median_close_door_current_arr
+  end
+
+  def flat_slope_nt_upper_deviation_close_door_current_arr  # 平坡常温上偏差关门电流
+    flat_slope_nt_upper_deviation_close_door_current_arr = []
+    motor_output_speed_arr.zip(flat_slope_nt_upper_deviation_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      flat_slope_nt_upper_deviation_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    flat_slope_nt_upper_deviation_close_door_current_arr
+  end
+
+  def flat_slope_nt_after_life_close_door_current_arr  # 平坡常温寿命后关门电流
+    flat_slope_nt_after_life_close_door_current_arr = []
+    motor_output_speed_arr.zip(flat_slope_nt_after_life_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      flat_slope_nt_after_life_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    flat_slope_nt_after_life_close_door_current_arr
+  end
+
+
+  def flat_slope_ht_lower_deviation_close_door_current_arr  # 平坡高温下偏差关门电流
+    flat_slope_ht_lower_deviation_close_door_current_arr = []
+    motor_output_speed_arr.zip(flat_slope_ht_lower_deviation_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      flat_slope_ht_lower_deviation_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    flat_slope_ht_lower_deviation_close_door_current_arr
+  end
+
+  def flat_slope_ht_median_close_door_current_arr  # 平坡高温中值关门电流
+    flat_slope_ht_median_close_door_current_arr = []
+    motor_output_speed_arr.zip(flat_slope_ht_median_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      flat_slope_ht_median_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    flat_slope_ht_median_close_door_current_arr
+  end
+
+  def flat_slope_ht_upper_deviation_close_door_current_arr  # 平坡高温上偏差关门电流
+    flat_slope_ht_upper_deviation_close_door_current_arr = []
+    motor_output_speed_arr.zip(flat_slope_ht_upper_deviation_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      flat_slope_ht_upper_deviation_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    flat_slope_ht_upper_deviation_close_door_current_arr
+  end
+
+  def flat_slope_ht_after_life_close_door_current_arr  # 平坡高温寿命后关门电流
+    flat_slope_ht_after_life_close_door_current_arr = []
+    motor_output_speed_arr.zip(flat_slope_ht_after_life_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      flat_slope_ht_after_life_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    flat_slope_ht_after_life_close_door_current_arr
+  end
+
+  # 下坡
+
+  def downhill_lt_lower_deviation_close_door_current_arr  # 下坡低温下偏差关门电流
+    downhill_lt_lower_deviation_close_door_current_arr = []
+    motor_output_speed_arr.zip(downhill_lt_lower_deviation_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      downhill_lt_lower_deviation_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    downhill_lt_lower_deviation_close_door_current_arr
+  end
+
+  def downhill_lt_median_close_door_current_arr  # 下坡低温中值关门电流
+    downhill_lt_median_close_door_current_arr = []
+    motor_output_speed_arr.zip(downhill_lt_median_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      downhill_lt_median_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    downhill_lt_median_close_door_current_arr
+  end
+
+  def downhill_lt_upper_deviation_close_door_current_arr  # 下坡低温上偏差关门电流
+    downhill_lt_upper_deviation_close_door_current_arr = []
+    motor_output_speed_arr.zip(downhill_lt_upper_deviation_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      downhill_lt_upper_deviation_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    downhill_lt_upper_deviation_close_door_current_arr
+  end
+
+  def downhill_lt_after_life_close_door_current_arr  # 下坡低温寿命后关门电流
+    downhill_lt_after_life_close_door_current_arr = []
+    motor_output_speed_arr.zip(downhill_lt_after_life_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      downhill_lt_after_life_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    downhill_lt_after_life_close_door_current_arr
+  end
+
+
+  def downhill_nt_lower_deviation_close_door_current_arr  # 下坡常温下偏差关门电流
+    downhill_nt_lower_deviation_close_door_current_arr = []
+    motor_output_speed_arr.zip(downhill_nt_lower_deviation_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      downhill_nt_lower_deviation_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    downhill_nt_lower_deviation_close_door_current_arr
+  end
+
+  def downhill_nt_median_close_door_current_arr  # 下坡常温中值关门电流
+    downhill_nt_median_close_door_current_arr = []
+    motor_output_speed_arr.zip(downhill_nt_median_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      downhill_nt_median_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    downhill_nt_median_close_door_current_arr
+  end
+
+  def downhill_nt_upper_deviation_close_door_current_arr  # 下坡常温上偏差关门电流
+    downhill_nt_upper_deviation_close_door_current_arr = []
+    motor_output_speed_arr.zip(downhill_nt_upper_deviation_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      downhill_nt_upper_deviation_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    downhill_nt_upper_deviation_close_door_current_arr
+  end
+
+  def downhill_nt_after_life_close_door_current_arr  # 下坡常温寿命后关门电流
+    downhill_nt_after_life_close_door_current_arr = []
+    motor_output_speed_arr.zip(downhill_nt_after_life_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      downhill_nt_after_life_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    downhill_nt_after_life_close_door_current_arr
+  end
+
+
+  def downhill_ht_lower_deviation_close_door_current_arr  # 下坡高温下偏差关门电流
+    downhill_ht_lower_deviation_close_door_current_arr = []
+    motor_output_speed_arr.zip(downhill_ht_lower_deviation_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      downhill_ht_lower_deviation_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    downhill_ht_lower_deviation_close_door_current_arr
+  end
+
+  def downhill_ht_median_close_door_current_arr  # 下坡高温中值关门电流
+    downhill_ht_median_close_door_current_arr = []
+    motor_output_speed_arr.zip(downhill_ht_median_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      downhill_ht_median_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    downhill_ht_median_close_door_current_arr
+  end
+
+  def downhill_ht_upper_deviation_close_door_current_arr  # 下坡高温上偏差关门电流
+    downhill_ht_upper_deviation_close_door_current_arr = []
+    motor_output_speed_arr.zip(downhill_ht_upper_deviation_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      downhill_ht_upper_deviation_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    downhill_ht_upper_deviation_close_door_current_arr
+  end
+
+  def downhill_ht_after_life_close_door_current_arr  # 下坡高温寿命后关门电流
+    downhill_ht_after_life_close_door_current_arr = []
+    motor_output_speed_arr.zip(downhill_ht_after_life_close_door_motor_torque_arr, motor_pwm_arr) do |i,j,k|
+      downhill_ht_after_life_close_door_current_arr << i * j / (9550 * k * platform.rated_voltage * platform.motor_efficiency)
+    end
+    downhill_ht_after_life_close_door_current_arr
+  end
 
   #  图表  #
 
