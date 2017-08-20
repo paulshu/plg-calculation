@@ -21,6 +21,12 @@ class ManualCalculationsController < ApplicationController
     @lt_manually_close_door_chart = @manual_calculation.lt_manually_close_door_chart
     @nt_manually_close_door_chart = @manual_calculation.nt_manually_close_door_chart
     @ht_manually_close_door_chart = @manual_calculation.ht_manually_close_door_chart
+    @lt_open_door_current_chart = @manual_calculation.lt_open_door_current_chart
+    @nt_open_door_current_chart = @manual_calculation.nt_open_door_current_chart
+    @ht_open_door_current_chart = @manual_calculation.ht_open_door_current_chart
+    @lt_close_door_current_chart = @manual_calculation.lt_close_door_current_chart
+    @nt_close_door_current_chart = @manual_calculation.nt_close_door_current_chart
+    @ht_close_door_current_chart = @manual_calculation.ht_close_door_current_chart
 
   end
 
