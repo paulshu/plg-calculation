@@ -19,7 +19,7 @@
             <th>B点X坐标</th>
             <th>B点Y坐标</th>
             <th>B点Z坐标</th>
-            <th colspan="2">设置</th>
+            <th colspan="3">设置</th>
           </tr>
         </thead>
 
@@ -34,6 +34,7 @@
               <td><%= manual_calculation.gate_b_x%></td>
               <td><%= manual_calculation.gate_b_y%></td>
               <td><%= manual_calculation.gate_b_z %></td>
+              <td><%= link_to '布点编辑', edit_manual_calculation_path(manual_calculation) %></td>
               <td><%= link_to 'Edit', input_manual_calculation_manual_calculation_path(manual_calculation) %></td>
               <td><%= link_to 'Destroy', manual_calculation_path(manual_calculation), method: :delete, data: { confirm: 'Are you sure?' } %></td>
             </tr>

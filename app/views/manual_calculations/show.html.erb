@@ -5,6 +5,7 @@
     </div>
     <div class="panel-body">
       <h4>输入参数</h4> 使用的平台：<%= @manual_calculation.platform.try(:platform_name)%>
+      <!-- 避免调用 nil.name 就会出现 NoMethodError 了 -->
       <div class="table-responsive">
         <table class="table table-striped table-bordered">
           <tr>
@@ -72,27 +73,6 @@
             <td><%= @manual_calculation.close_static_friction %></td>
             <td>N</td>
           </tr>
-          <tr>
-            <td align="right">使用的平台：</td>
-            <td><%= @manual_calculation.platform.try(:platform_name) %></td>
-            <!-- 避免调用 nil.name 就会出现 NoMethodError 了 -->
-            <%#= @manual_calculation.platform.platform_name %>
-          </tr>
-
-          <!-- <tr>
-            <td><%= @manual_calculation.downhill_ht_lower_deviation_open_door_current_arr %> </td>
-            <td><%= @manual_calculation.uphill_lt_median_close_door_current_arr %></td>
-            <td><%= @manual_calculation.uphill_lt_upper_deviation_close_door_current_arr %></td>
-            <td><%= @manual_calculation.uphill_lt_after_life_close_door_current_arr %></td>
-            <td><%= @manual_calculation.uphill_nt_lower_deviation_close_door_current_arr %> </td>
-            <td><%= @manual_calculation.uphill_nt_median_close_door_current_arr %></td>
-            <td><%= @manual_calculation.uphill_nt_upper_deviation_close_door_current_arr %></td>
-            <td><%= @manual_calculation.uphill_nt_after_life_close_door_current_arr %></td>
-            <td><%= @manual_calculation.uphill_ht_lower_deviation_close_door_current_arr %> </td>
-            <td><%= @manual_calculation.uphill_ht_median_close_door_current_arr %></td>
-            <td><%= @manual_calculation.uphill_ht_upper_deviation_close_door_current_arr %></td>
-            <td><%= @manual_calculation.uphill_ht_after_life_close_door_current_arr %></td>
-          </tr> -->
 
         </table>
       </div>
@@ -166,7 +146,7 @@ var myChart = new Chart(ctx, {
     options: {
         responsive: true,
         legend: {
-          position: 'top',
+          position: 'right',
         },
         title:{
             display:true,
@@ -310,7 +290,7 @@ var myChart = new Chart(ctx, {
     options: {
         responsive: true,
         legend: {
-          position: 'top',
+          position: 'right',
         },
         title:{
             display:true,

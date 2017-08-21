@@ -147,3 +147,13 @@
 //       }
 //   });
 // })
+
+
+//  手动编辑而面  turbolinks:load 可以不加载turbolinks
+$(document).on("turbolinks:load", function(){
+  $(".customer_parameters").hide();   // 先马上藏起来
+
+  $(".toggle-click").click(function(){
+    $(".customer_parameters").fadeToggle();   // 点击会有开关的效果
+  })
+})
