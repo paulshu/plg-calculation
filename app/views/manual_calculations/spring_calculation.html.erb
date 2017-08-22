@@ -3,7 +3,9 @@
 </div>
 
 <div class="container col-md-10 col-md-offset-2 mt20">
-  <div class="cspring mb15" ></div>
+  <div style="width:70%" class="ml20">
+    <canvas id="spring_gravity_torque_comparison_chart"></canvas>
+  </div>
   <%= simple_form_for [@manual_calculation], :url => update_spring_calculation_manual_calculation_path(@manual_calculation) do |f| %>
     <div class="form-group col-md-3">
       <%= f.input :active_coil_num, autofocus: true %>
@@ -19,7 +21,7 @@
     </div>
 
     <div class="form-group col-md-3">
-      <%= f.input :wire_diameter, collection: [3.5, 3.6, 3.7, 3.8, 3.9, 4.0, 4.1, 4.2] %>
+      <%= f.input :wire_diameter, collection: [3.5, 3.6, 3.7, 3.8, 3.9, 4.0, 4.1, 4.2], prompt: true  %>
       <h5>理论线径d： <%= @manual_calculation.theoretical_wire_diameter.round(3)%> </h5>
       <h5>弹簧实际刚度： <%= @manual_calculation.spring_rate.round(3)%></h5>
       <%= f.submit "更新", disable_with: "Submiting..." , class: "btn btn-sm btn-info pull-right"  %>
@@ -144,3 +146,40 @@
     </div>
   <% end %>
 </div>
+
+<script>
+var ctx = $("#spring_gravity_torque_comparison_chart");
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: <%= raw @spring_gravity_torque_comparison_chart.to_json %>,
+
+    options: {
+        responsive: true,
+        legend: {
+          position: 'top',
+        },
+        title:{
+            display:true,
+            fontSize: 20,
+            text:'高温开门电流曲线'
+        },
+        hover: {
+            mode: 'nearest',
+            intersect: true
+        },
+        scales: {
+            xAxes: [{
+                display: true,
+                // scaleLabel: {
+                //     display: true,
+                //     labelString: '开门角度',
+                // }
+            }],
+            yAxes: [{
+                display: true,
+                scaleStepWidth: 3,
+            }]
+        }
+    }
+});
+</script>

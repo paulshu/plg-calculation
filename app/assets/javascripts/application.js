@@ -106,7 +106,7 @@
 //   });
 // })
 
-$(document).ready(function() {
+$(document).on("turbolinks:load", function() {
   var ctx = document.getElementById("myChart");
   var myChart = new Chart(ctx, {
       type: 'line',
@@ -147,6 +147,51 @@ $(document).ready(function() {
       }
   });
 })
+
+// $(document).on("turbolinks:load", function() {
+//   var ctx = $("#lt_hover_chart");
+//   var myChart = new Chart(ctx, {
+//       type: 'line',
+//       data: gon.lt_hover_chart,
+//
+//       options: {
+//           responsive: true,
+//           legend: {
+//             position: 'right',
+//           },
+//           title:{
+//               display:true,
+//               fontSize: 20,
+//               text:'低温悬停曲线'
+//           },
+//           // tooltips: {
+//           //     mode: 'index',
+//           //     intersect: false,
+//           // },
+//           // tooltips 可以设置鼠标悬停时同时显示多条曲线相同位置的值
+//           hover: {
+//               mode: 'nearest',
+//               intersect: true
+//           },
+//           scales: {
+//               xAxes: [{
+//                   display: true,
+//                   scaleLabel: {
+//                       display: true,
+//                       labelString: '开门角度',
+//                   }
+//               }],
+//               yAxes: [{
+//                   display: true,
+//                   scaleStepWidth: 3,
+//                   // ticks: {
+//                   //     beginAtZero:true
+//                   // }
+//               }]
+//           }
+//       }
+//   });
+// })
 
 
 //  手动编辑而面  turbolinks:load 可以不加载turbolinks

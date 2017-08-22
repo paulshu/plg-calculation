@@ -601,6 +601,14 @@ class ManualCalculation < ApplicationRecord
     nt_median_spring_torque_arr
   end
 
+  def double_nt_median_spring_torque_arr # 常温中值两根弹簧力矩
+    double_nt_median_spring_torque_arr = []
+    nt_spring_force_arr.zip(pole_force_arm_arr,vector_ab_xz_angle_arr) do |j,h,k|
+      double_nt_median_spring_torque_arr << 2 * j * h * cos(PI / 180 * k) / 1000
+    end
+    double_nt_median_spring_torque_arr
+  end
+
   def nt_upper_deviation_spring_torque_arr # 常温上偏差弹簧力矩
     nt_upper_deviation_spring_torque_arr = []
     nt_upper_deviation_spring_force_arr.zip(pole_force_arm_arr,vector_ab_xz_angle_arr) do |i,j,k|
@@ -5355,6 +5363,55 @@ class ManualCalculation < ApplicationRecord
     }
   end
 
+  #  重力矩与弹簧力矩对比
+
+  def spring_gravity_torque_comparison_chart # 弹簧力矩与重力矩对比图
+    if self.free_length.present?
+      @data1 = {
+          labels: open_angle_arr,
+          datasets: [{
+              label: '上坡重力矩',
+              fill: false, # 取消这行将填充面积
+              pointRadius: 0,
+              pointHoverRadius: 3,
+              data: uphill_gravity_torque_arr,
+              backgroundColor: bd_colors[0],
+              borderColor: bd_colors[0],
+              borderWidth: 1.5,
+              # borderDash: [10, 5],
+            },{
+              label: '平坡重力矩',
+              fill: false,
+              pointRadius: 1,
+              pointHoverRadius: 3,
+              data: flat_slope_gravity_torque_arr,
+              backgroundColor: bd_colors[1],
+              borderColor: bd_colors[1],
+              borderWidth: 2,
+            },{
+              label: '下坡重力矩',
+              fill: false,
+              pointRadius: 0,
+              pointHoverRadius: 3,
+              data: downhill_gravity_torque_arr,
+              backgroundColor: bd_colors[2],
+              borderColor: bd_colors[2],
+              borderWidth: 1.5,
+              # borderDash: [4, 5],
+            },{
+              label: '常温中值弹簧力矩',
+              fill: false,
+              pointRadius: 1,
+              pointHoverRadius: 3,
+              data: double_nt_median_spring_torque_arr,
+              backgroundColor: bd_colors[3],
+              borderColor: bd_colors[3],
+              borderWidth: 2,
+              # borderDash: [2, 3],
+            }]
+      }
+    end
+  end
 
   protected
 

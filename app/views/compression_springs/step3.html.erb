@@ -22,7 +22,7 @@
     </div> -->
 
     <div class="form-group col-md-3">
-      <%= f.input :wire_diameter, collection: [3.5, 3.6, 3.7, 3.8, 3.9, 4.0] %>
+      <%= f.input :wire_diameter, collection: [3.5, 3.6, 3.7, 3.8, 3.9, 4.0], prompt: true %>
       <h5>理论线径d： <%= render_theoretical_wire_diameter(@compression_spring).round(3)%> </h5>
       <h5>弹簧实际刚度： <%= render_spring_rate(@compression_spring).round(3)%></h5>
       <%= f.submit "更新", disable_with: "Submiting..." , class: "btn btn-sm btn-info pull-right"  %>

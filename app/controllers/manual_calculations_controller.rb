@@ -87,6 +87,7 @@ class ManualCalculationsController < ApplicationController
   def spring_calculation
     @manual_calculation = ManualCalculation.find(params[:id])
     @platform = Platform.find(@manual_calculation.platform_id)
+    @spring_gravity_torque_comparison_chart = @manual_calculation.spring_gravity_torque_comparison_chart
   end
 
   def spring_calculation_update
