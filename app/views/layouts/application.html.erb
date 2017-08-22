@@ -4,7 +4,8 @@
 
     <title>PLG Calculation</title>
     <%= csrf_meta_tags %>
-
+    <%= Gon::Base.render_data({}) %>
+    <!-- include your action js code -->
     <%= stylesheet_link_tag    'application', media: 'all' , 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <link rel="shortcut icon" href="/images/favicon.ico">

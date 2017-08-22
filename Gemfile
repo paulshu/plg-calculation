@@ -38,6 +38,7 @@ gem 'rubyzip'    # 以下三个gem用于导出Excel 专用的 xlsx 格式
 gem 'axlsx'
 gem 'axlsx_rails'
 gem 'chart-js-rails' # cart.js图表
+gem 'gon' # js中引用ruby中的变量
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

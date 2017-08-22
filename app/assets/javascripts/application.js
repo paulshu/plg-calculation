@@ -106,47 +106,47 @@
 //   });
 // })
 
-// $(document).ready(function() {
-//   var ctx = document.getElementById("myChart");
-//   var myChart = new Chart(ctx, {
-//       type: 'line',
-//       data: <%= raw @data1.to_json%>,
-//
-//       options: {
-//           responsive: true,
-//           title:{
-//               display:true,
-//               fontSize: 20,
-//               text:'弹簧曲线图'
-//           },
-//           // tooltips: {
-//           //     mode: 'index',
-//           //     intersect: false,
-//           // },
-//           // tooltips 可以设置鼠标悬停时同时显示多条曲线相同位置的值
-//           hover: {
-//               mode: 'nearest',
-//               intersect: true
-//           },
-//           scales: {
-//               xAxes: [{
-//                   display: true,
-//                   scaleLabel: {
-//                       display: true,
-//                       labelString: '长度位置'
-//                   }
-//               }],
-//               yAxes: [{
-//                   display: true,
-//                   scaleStepWidth: 3,
-//                   ticks: {
-//                       beginAtZero:true
-//                   }
-//               }]
-//           }
-//       }
-//   });
-// })
+$(document).ready(function() {
+  var ctx = document.getElementById("myChart");
+  var myChart = new Chart(ctx, {
+      type: 'line',
+      data: gon.data,
+
+      options: {
+          responsive: true,
+          title:{
+              display:true,
+              fontSize: 20,
+              text:'弹簧曲线图'
+          },
+          // tooltips: {
+          //     mode: 'index',
+          //     intersect: false,
+          // },
+          // tooltips 可以设置鼠标悬停时同时显示多条曲线相同位置的值
+          hover: {
+              mode: 'nearest',
+              intersect: true
+          },
+          scales: {
+              xAxes: [{
+                  display: true,
+                  scaleLabel: {
+                      display: true,
+                      labelString: '长度位置'
+                  }
+              }],
+              yAxes: [{
+                  display: true,
+                  scaleStepWidth: 3,
+                  ticks: {
+                      beginAtZero:true
+                  }
+              }]
+          }
+      }
+  });
+})
 
 
 //  手动编辑而面  turbolinks:load 可以不加载turbolinks
