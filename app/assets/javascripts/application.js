@@ -106,47 +106,47 @@
 //   });
 // })
 
-$(document).on("turbolinks:load", function() {
-  var ctx = document.getElementById("myChart");
-  var myChart = new Chart(ctx, {
-      type: 'line',
-      data: gon.data,
-
-      options: {
-          responsive: true,
-          title:{
-              display:true,
-              fontSize: 20,
-              text:'弹簧曲线图'
-          },
-          // tooltips: {
-          //     mode: 'index',
-          //     intersect: false,
-          // },
-          // tooltips 可以设置鼠标悬停时同时显示多条曲线相同位置的值
-          hover: {
-              mode: 'nearest',
-              intersect: true
-          },
-          scales: {
-              xAxes: [{
-                  display: true,
-                  scaleLabel: {
-                      display: true,
-                      labelString: '长度位置'
-                  }
-              }],
-              yAxes: [{
-                  display: true,
-                  scaleStepWidth: 3,
-                  ticks: {
-                      beginAtZero:true
-                  }
-              }]
-          }
-      }
-  });
-})
+// $(document).on("turbolinks:load", function() {
+//   var ctx = document.getElementById("myChart");
+//   var myChart = new Chart(ctx, {
+//       type: 'line',
+//       data: gon.data,
+//
+//       options: {
+//           responsive: true,
+//           title:{
+//               display:true,
+//               fontSize: 20,
+//               text:'弹簧曲线图'
+//           },
+//           // tooltips: {
+//           //     mode: 'index',
+//           //     intersect: false,
+//           // },
+//           // tooltips 可以设置鼠标悬停时同时显示多条曲线相同位置的值
+//           hover: {
+//               mode: 'nearest',
+//               intersect: true
+//           },
+//           scales: {
+//               xAxes: [{
+//                   display: true,
+//                   scaleLabel: {
+//                       display: true,
+//                       labelString: '长度位置'
+//                   }
+//               }],
+//               yAxes: [{
+//                   display: true,
+//                   scaleStepWidth: 3,
+//                   ticks: {
+//                       beginAtZero:true
+//                   }
+//               }]
+//           }
+//       }
+//   });
+// })
 
 // $(document).on("turbolinks:load", function() {
 //   var ctx = $("#lt_hover_chart");

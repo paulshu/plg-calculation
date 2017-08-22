@@ -1,7 +1,7 @@
 <div class="container col-md-10 col-md-offset-1 mt20">
 <h2>Edit Manual calculation</h2>
 
-<%= simple_form_for [@manual_calculation] do |f| %>
+<%= simple_form_for [@manual_calculation], :url => update_input_manual_calculation_manual_calculation_path(@manual_calculation) do |f| %>
   <div class="group col-md-12">
     <%= f.label :platform_id, @platforms %><br>
     <%#= f.select :platform_id, @platforms %>

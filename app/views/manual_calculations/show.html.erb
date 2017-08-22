@@ -79,20 +79,30 @@
     </div>
   </div>
 </div>
+<p>
+  <a class="toggle-click pl100"> <h4>悬停曲线</h4></a>
+</p>
+<div class="hover_chart">
+  <div style="width:80%" class="mb20 bc">
+    <canvas id="lt_hover_chart"></canvas>
+  </div>
 
-<div style="width:80%" class="mb20 bc">
-  <canvas id="lt_hover_chart"></canvas>
-</div>
+  <div style="width:80%" class="mb20 bc">
+    <canvas id="nt_hover_chart"></canvas>
+  </div>
 
-<div style="width:80%" class="mb20 bc">
-  <canvas id="nt_hover_chart"></canvas>
-</div>
-
-<div style="width:80%" class="mb20 bc">
-  <canvas id="ht_hover_chart"></canvas>
+  <div style="width:80%" class="mb20 bc">
+    <canvas id="ht_hover_chart"></canvas>
+  </div>
 </div>
 
 <script>
+$(document).ready(function(){
+$(".hover_chart").show();   // 先显示出来
+
+$(".toggle-click").click(function(){
+  $(".hover_chart").fadeToggle();   // 点击会有开关的效果
+})
 var ctx = $("#lt_hover_chart");
 var myChart = new Chart(ctx, {
     type: 'line',
@@ -135,9 +145,8 @@ var myChart = new Chart(ctx, {
         }
     }
 });
-</script>
 
-<script>
+
 var ctx = $("#nt_hover_chart");
 var myChart = new Chart(ctx, {
     type: 'line',
@@ -177,9 +186,7 @@ var myChart = new Chart(ctx, {
         }
     }
 });
-</script>
 
-<script>
 var ctx = $("#ht_hover_chart");
 var myChart = new Chart(ctx, {
     type: 'line',
@@ -214,29 +221,39 @@ var myChart = new Chart(ctx, {
         }
     }
 });
+})
 </script>
 
 
 <!-- 手动开门力 -->
 
+<p>
+  <a class="toggle-click-mfo pl100"> <h4>手动开门力曲线</h4></a>
+</p>
+<div class="manually_force_chart">
+  <div style="width:80%" class="mb20 bc">
+    <hr>
+    <canvas id="lt_manually_open_door_chart"></canvas>
+    <h4 class="ml50">低温平坡手动开门力最大值：<%=  @manual_calculation.flat_slope_lt_median_manually_open_door_arr.max.round(3) %> N</h4>
+  </div>
 
-<div style="width:80%" class="mb20 bc">
-  <hr>
-  <canvas id="lt_manually_open_door_chart"></canvas>
-  <h4 class="ml50">低温平坡手动开门力最大值：<%=  @manual_calculation.flat_slope_lt_median_manually_open_door_arr.max.round(3) %> N</h4>
+  <div style="width:80%" class="mb20 bc">
+    <canvas id="nt_manually_open_door_chart"></canvas>
+    <h4 class="ml50">常温平坡手动开门力最大值：<%=  @manual_calculation.flat_slope_nt_median_manually_open_door_arr.max.round(3) %> N</h4>
+  </div>
+
+  <div style="width:80%" class="mb20 bc">
+    <canvas id="ht_manually_open_door_chart"></canvas>
+    <h4 class="ml50">高温平坡手动开门力最大值：<%=  @manual_calculation.flat_slope_ht_median_manually_open_door_arr.max.round(3) %> N</h4>
+  </div>
 </div>
-
-<div style="width:80%" class="mb20 bc">
-  <canvas id="nt_manually_open_door_chart"></canvas>
-  <h4 class="ml50">常温平坡手动开门力最大值：<%=  @manual_calculation.flat_slope_nt_median_manually_open_door_arr.max.round(3) %> N</h4>
-</div>
-
-<div style="width:80%" class="mb20 bc">
-  <canvas id="ht_manually_open_door_chart"></canvas>
-  <h4 class="ml50">高温平坡手动开门力最大值：<%=  @manual_calculation.flat_slope_ht_median_manually_open_door_arr.max.round(3) %> N</h4>
-</div>
-
 <script>
+$(document).ready(function(){
+$(".manually_force_chart").hide();   // 先马上藏起来
+
+$(".toggle-click-mfo").click(function(){
+  $(".manually_force_chart").fadeToggle();   // 点击会有开关的效果
+})
 var ctx = $("#lt_manually_open_door_chart");
 var myChart = new Chart(ctx, {
     type: 'line',
@@ -279,9 +296,7 @@ var myChart = new Chart(ctx, {
         }
     }
 });
-</script>
 
-<script>
 var ctx = $("#nt_manually_open_door_chart");
 var myChart = new Chart(ctx, {
     type: 'line',
@@ -321,9 +336,7 @@ var myChart = new Chart(ctx, {
         }
     }
 });
-</script>
 
-<script>
 var ctx = $("#ht_manually_open_door_chart");
 var myChart = new Chart(ctx, {
     type: 'line',
@@ -358,29 +371,40 @@ var myChart = new Chart(ctx, {
         }
     }
 });
+})
 </script>
 
 
 <!-- 手动关门力 -->
 
+<p>
+  <a class="toggle-click-mfc pl100"> <h4>手动关门力曲线</h4></a>
+</p>
+<div class="manually_force_close_chart">
+  <div style="width:80%" class="mb20 bc">
+    <hr>
+    <canvas id="lt_manually_close_door_chart"></canvas>
+    <h4 class="ml50">低温平坡手动关门力最大值：<%=  @manual_calculation.flat_slope_lt_median_manually_close_door_arr.max.round(3) %> N</h4>
+  </div>
 
-<div style="width:80%" class="mb20 bc">
-  <hr>
-  <canvas id="lt_manually_close_door_chart"></canvas>
-  <h4 class="ml50">低温平坡手动关门力最大值：<%=  @manual_calculation.flat_slope_lt_median_manually_close_door_arr.max.round(3) %> N</h4>
-</div>
+  <div style="width:80%" class="mb20 bc">
+    <canvas id="nt_manually_close_door_chart"></canvas>
+    <h4 class="ml50">常温平坡手动关门力最大值：<%=  @manual_calculation.flat_slope_nt_median_manually_close_door_arr.max.round(3) %> N</h4>
+  </div>
 
-<div style="width:80%" class="mb20 bc">
-  <canvas id="nt_manually_close_door_chart"></canvas>
-  <h4 class="ml50">常温平坡手动关门力最大值：<%=  @manual_calculation.flat_slope_nt_median_manually_close_door_arr.max.round(3) %> N</h4>
-</div>
-
-<div style="width:80%" class="mb20 bc">
-  <canvas id="ht_manually_close_door_chart"></canvas>
-  <h4 class="ml50">高温平坡手动关门力最大值：<%=  @manual_calculation.flat_slope_ht_median_manually_close_door_arr.max.round(3) %> N</h4>
+  <div style="width:80%" class="mb20 bc">
+    <canvas id="ht_manually_close_door_chart"></canvas>
+    <h4 class="ml50">高温平坡手动关门力最大值：<%=  @manual_calculation.flat_slope_ht_median_manually_close_door_arr.max.round(3) %> N</h4>
+  </div>
 </div>
 
 <script>
+$(document).ready(function(){
+$(".manually_force_close_chart").hide();   // 先马上藏起来
+
+$(".toggle-click-mfc").click(function(){
+  $(".manually_force_close_chart").fadeToggle();   // 点击会有开关的效果
+})
 var ctx = $("#lt_manually_close_door_chart");
 var myChart = new Chart(ctx, {
     type: 'line',
@@ -423,9 +447,7 @@ var myChart = new Chart(ctx, {
         }
     }
 });
-</script>
 
-<script>
 var ctx = $("#nt_manually_close_door_chart");
 var myChart = new Chart(ctx, {
     type: 'line',
@@ -465,9 +487,7 @@ var myChart = new Chart(ctx, {
         }
     }
 });
-</script>
 
-<script>
 var ctx = $("#ht_manually_close_door_chart");
 var myChart = new Chart(ctx, {
     type: 'line',
@@ -502,29 +522,39 @@ var myChart = new Chart(ctx, {
         }
     }
 });
+})
 </script>
 
 
 
 <!-- 开门电流曲线 -->
 
+<p>
+  <a class="toggle-click-co pl100"> <h4>开门电流曲线</h4></a>
+</p>
+<div class="current_open_chart">
+  <div style="width:80%" class="mb20 bc">
+    <br>
+    <hr>
+    <br>
+    <canvas id="lt_open_door_current_chart"></canvas>
+  </div>
 
-<div style="width:80%" class="mb20 bc">
-  <br>
-  <hr>
-  <br>
-  <canvas id="lt_open_door_current_chart"></canvas>
+  <div style="width:80%" class="mb20 bc">
+    <canvas id="nt_open_door_current_chart"></canvas>
+  </div>
+
+  <div style="width:80%" class="mb20 bc">
+    <canvas id="ht_open_door_current_chart"></canvas>
+  </div>
 </div>
-
-<div style="width:80%" class="mb20 bc">
-  <canvas id="nt_open_door_current_chart"></canvas>
-</div>
-
-<div style="width:80%" class="mb20 bc">
-  <canvas id="ht_open_door_current_chart"></canvas>
-</div>
-
 <script>
+$(document).ready(function(){
+$(".current_open_chart").hide();   // 先马上藏起来
+
+$(".toggle-click-co").click(function(){
+  $(".current_open_chart").fadeToggle();   // 点击会有开关的效果
+})
 var ctx = $("#lt_open_door_current_chart");
 var myChart = new Chart(ctx, {
     type: 'line',
@@ -567,9 +597,7 @@ var myChart = new Chart(ctx, {
         }
     }
 });
-</script>
 
-<script>
 var ctx = $("#nt_open_door_current_chart");
 var myChart = new Chart(ctx, {
     type: 'line',
@@ -609,9 +637,7 @@ var myChart = new Chart(ctx, {
         }
     }
 });
-</script>
 
-<script>
 var ctx = $("#ht_open_door_current_chart");
 var myChart = new Chart(ctx, {
     type: 'line',
@@ -646,26 +672,37 @@ var myChart = new Chart(ctx, {
         }
     }
 });
+})
 </script>
 
 
 <!-- 关门电流曲线 -->
 
+<p>
+  <a class="toggle-click-cc pl100"> <h4>关门电流曲线</h4></a>
+</p>
+<div class="current_close_chart">
+  <div style="width:80%" class="mb20 bc">
+    <hr>
+    <canvas id="lt_close_door_current_chart"></canvas>
+  </div>
 
-<div style="width:80%" class="mb20 bc">
-  <hr>
-  <canvas id="lt_close_door_current_chart"></canvas>
-</div>
+  <div style="width:80%" class="mb20 bc">
+    <canvas id="nt_close_door_current_chart"></canvas>
+  </div>
 
-<div style="width:80%" class="mb20 bc">
-  <canvas id="nt_close_door_current_chart"></canvas>
-</div>
-
-<div style="width:80%" class="mb20 bc">
-  <canvas id="ht_close_door_current_chart"></canvas>
+  <div style="width:80%" class="mb20 bc">
+    <canvas id="ht_close_door_current_chart"></canvas>
+  </div>
 </div>
 
 <script>
+$(document).ready(function(){
+$(".current_close_chart").hide();   // 先马上藏起来
+
+$(".toggle-click-cc").click(function(){
+  $(".current_close_chart").fadeToggle();   // 点击会有开关的效果
+})
 var ctx = $("#lt_close_door_current_chart");
 var myChart = new Chart(ctx, {
     type: 'line',
@@ -708,9 +745,7 @@ var myChart = new Chart(ctx, {
         }
     }
 });
-</script>
 
-<script>
 var ctx = $("#nt_close_door_current_chart");
 var myChart = new Chart(ctx, {
     type: 'line',
@@ -750,9 +785,7 @@ var myChart = new Chart(ctx, {
         }
     }
 });
-</script>
 
-<script>
 var ctx = $("#ht_close_door_current_chart");
 var myChart = new Chart(ctx, {
     type: 'line',
@@ -787,4 +820,5 @@ var myChart = new Chart(ctx, {
         }
     }
 });
+})
 </script>
